@@ -11,4 +11,4 @@ jobs:
       - uses: actions/checkout@v2
       - run: sh ./scripts/install.sh
       - name: Validate files
-        run: pwd && ls -alh && ls -alh ~/.pwd && ls -alh ~
+        run: pwd && ls -alh && ls -alh ~/.pms && ls -alh ~
