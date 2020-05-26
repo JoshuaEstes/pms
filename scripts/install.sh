@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 set -e # Exit immediately if SHTF
 ####
 #
@@ -19,7 +19,11 @@ REPO=https://github.com/JoshuaEstes/pms.git
 setup_pms() {
   # @todo check requirements (git, etc.)
   echo "Setting up PMS..."
-  git clone "$REPO" "$PMS"
+  if [ -d $PMS ]; then
+    echo "$PMS already exists, should we update instead of install? Or should we blow it away and re-install?"
+  else
+    git clone "$REPO" "$PMS"
+  fi
   echo
 }
 
@@ -28,9 +32,12 @@ setup_bashrc() {
  # if file or link
  if [ -f $HOME/.bashrc ] || [ -h $HOME/.bashrc ]; then
    echo "Found existing .bashrc file, backing up"
-   mv -f $HOME/.bashrc $HOME/.bashrc.bak
+   # @todo make this better
+   if [ ! -f $HOME/.bashrc.bak ]; then
+     mv -f $HOME/.bashrc $HOME/.bashrc.bak
+   fi
  fi
- mv -f $PMS/templates/bashrc $HOME/.bashrc
+ cp -f $PMS/templates/bashrc $HOME/.bashrc
  echo
 }
 
@@ -42,6 +49,7 @@ setup_bashrc() {
 setup_dotfiles() {
   echo "Setting up dotfiles"
   setup_bashrc
+  # @todo
   #setup_zshrc
 }
 
@@ -50,6 +58,8 @@ setup_dotfiles() {
 #   to change that shell to another.
 setup_shell() {
   echo "Setting up shell"
+  # @todo
+  echo
 }
 
 # Main function, this will be called to install everything
@@ -60,6 +70,17 @@ main() {
 
   # @todo make this better and more informative for users
   echo "PMS has been installed, please view documentation"
+
+  # @todo ask user?
+  # @todo inform user of "pms" command?
+  case "$SHELL" in
+    "/bin/bash" | "/usr/bin/bash" )
+      source $HOME/.bashrc
+    ;;
+    "/bin/zsh" )
+      source $HOME/.zshrc
+    ;;
+  esac
 }
 
 # this will be used later
