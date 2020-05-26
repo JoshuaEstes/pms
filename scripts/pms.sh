@@ -4,7 +4,7 @@
 set -e
 # some defaults
 PMS=${PMS:-~/.pms}
-PMS_DEBUG=0
+PMS_DEBUG=${PMS_DEBUG:-0}
 
 main() {
   while getopts "d" o; do

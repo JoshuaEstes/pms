@@ -1,14 +1,18 @@
 name: CI
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  test:
+    runs-on: ${{ matric.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v2
-      - run: sh ./scripts/install.sh
-      - name: Validate files
-        run: pwd && ls -alh && ls -alh ~/.pms && ls -alh ~
+      - run: PMS_DEBUG=1 sh ./scripts/install.sh
+      - run: PMS_DEBUG=1 sh ~/.pms/scripts/uninstall.sh -n
