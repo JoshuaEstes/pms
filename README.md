@@ -15,10 +15,14 @@ It supports easy install/uninstall and a wide variety of plugins and themes
 Installation can be done manually or by using curl or wget
 
 ### Using curl
-`sh -c "$(curl -fsSL https://raw.githubusercontent.com/JoshuaEstes/pms/master/scripts/install.sh)"`
+```
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/JoshuaEstes/pms/master/scripts/install.sh)"
+```
 
 ### Using wget
-`sh -c "$(wget -O- https://raw.githubusercontent.com/JoshuaEstes/pms/master/scripts/install.sh)"`
+```
+sh -c "$(wget -O- https://raw.githubusercontent.com/JoshuaEstes/pms/master/scripts/install.sh)"
+```
 
 ### Manual install
 ```
@@ -48,3 +52,9 @@ git pull origin master
 # Plugins
 
 # Themes
+
+# Shells
+PMS supprts a number of different shells. Switching from one shell to another
+is easy and allows you to compare which shell works best for you and your needs.
+
+To see a list of shells, you can run `cat /etc/shells`
