@@ -43,18 +43,58 @@ git clone https://github.com/JoshuaEstes/pms.git ~/.pms
 ```
 
 ## Updating PMS
+### auto
+```
+pms upgrade
+```
+
 ### Manual update
 ```
 cd ~/.pms
 git pull origin master
 ```
 
-# Plugins
-
 # Themes
+```
+# List all themes available
+pms theme list
+
+# switch to a new theme
+pms theme switch default
+```
+
+# Plugins
+```
+# List all available plugins
+pms plugin list
+
+# Display enabled plugins
+pms plugin list enabled
+
+# Enabled a plugin
+pms plugin enable example
+
+# Disable a plugin
+pms plugin disable example
+```
 
 # Shells
 PMS supprts a number of different shells. Switching from one shell to another
 is easy and allows you to compare which shell works best for you and your needs.
 
 To see a list of shells, you can run `cat /etc/shells`
+
+# Documentation
+See the "docs/" directory
+
+# License
+See [LICENSE.md](https://github.com/JoshuaEstes/pms/blob/master/LICENSE.md)
+
+# @todo
+  * [CHANGELOG.md](https://github.com/JoshuaEstes/pms/blob/master/CHANGELOG.md)
+  * [CONTRIBUTING.md](https://github.com/JoshuaEstes/pms/blob/master/CONTRIBUTING.md)
+  * [CODE_OF_CONDUCT.md](https://github.com/JoshuaEstes/pms/blob/master/CODE_OF_CONDUCT.md)
+  * .github/ directory
+    * actions
+    * pull request templates
+    * issue templates

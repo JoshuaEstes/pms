@@ -1,0 +1,9 @@
+# Path to PMS install
+export PMS=$HOME/.pms
+
+# Theme
+PMS_THEME=default
+
+plugins=(example)
+
+source $PMS/pms.sh
