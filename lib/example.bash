@@ -1,0 +1,1 @@
+echo "example lib loaded"

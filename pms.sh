@@ -6,9 +6,9 @@ set -e
 #
 
 # Default env vars
-PMS=${PMS:-~/.pms}
-PMS_LOCAL=${PMS_LOCAL:-~/.pms/local}
-PMS_THEME=${PMS_THEME:-default}
+export PMS=${PMS:-~/.pms}
+export PMS_LOCAL=${PMS_LOCAL:-~/.pms/local}
+export PMS_THEME=${PMS_THEME:-default}
 plugins=(example example2)
 
 # We need to figure out what shell the user is in and load files based on that
@@ -20,6 +20,9 @@ case "$SHELL" in
   "/bin/zsh" )
     SHORT_SHELL=zsh ;;
 esac
+
+# Make sure we can use some commands
+alias pms="$PMS/scripts/pms.sh"
 
 # We want to make sure that each shell has it's on "rc" script here
 if [ -f $PMS/plugins/pms/pms.plugin.$SHORT_SHELL ]; then

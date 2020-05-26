@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-echo $PMS
-echo $PMS_LOCAL
-echo $PMS_THEME
-echo $SHORT_SHELL
+# Load libs
+for lib in $PMS/lib/*.bash; do
+  echo "Loading Library >>> $(basename $lib)"
+  source $lib
+done
 
 # Load plugins
 for plugin in "${plugins[@]}"; do

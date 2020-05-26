@@ -12,4 +12,4 @@ echo "  theme    Helps to manage themes"
 echo "  plugin   Helps to manage plugins"
 echo
 
-return
+exit
