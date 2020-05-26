@@ -1,13 +1,5 @@
 #!/usr/bin/env sh
-####
-#
-# Uninstall Script
-#
-# 1) Revert Files (ie ~/.bashrc) (confirm with user)
-# 2) Delete PMS Config Files (confirm with user)
-# 3) Delete PMS directory (confirm with user)
-#
-
+set -e
 # Confirm with user they really want to uninstall PMS
 read -r -p "Are you sure you want to uninstall PMS? [y/N] " confirm
 if [ "$confirm" != "y" ] && [ "$config" != "Y" ]; then
@@ -24,7 +16,9 @@ if [ -f ~/.bashrc.pms.bak ] && [ -f ~/.bashrc ]; then
 fi
 
 # Delete PMS Config files
+echo "Removing ~/.pms.theme file"
 rm -fv ~/.pms.theme
+echo "Removing ~/.pms.plugins file"
 rm -fv ~/.pms.plugins
 
 # Delete .env (user confirmation)
@@ -36,6 +30,7 @@ if [ -f ~/.env ]; then
 fi
 
 # Delete $PMS directory
+echo "Removing ~/.pms directory"
 rm -rf ~/.pms
 
 echo "PMS has been uninstalled. You should restart your terminal"

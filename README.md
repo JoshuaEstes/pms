@@ -87,6 +87,14 @@ To see a list of shells, you can run `cat /etc/shells`
 # Documentation
 See the "docs/" directory
 
+# Uninstall
+By default, PMS in installed in `~/.pms` directory. You will just need to run
+the "uninstall" script and this will revert you system back to how it was before
+you installed PMS.
+```
+~/.pms/scripts/uninstall.sh
+```
+
 # License
 See [LICENSE.md](https://github.com/JoshuaEstes/pms/blob/master/LICENSE.md)
 
