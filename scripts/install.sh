@@ -44,4 +44,5 @@ main() {
   echo 'PMS has been installed, please view documentation'
 }
 
+# this will be used later
 main "$@"
