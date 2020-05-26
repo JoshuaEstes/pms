@@ -7,6 +7,9 @@ set -e # Exit immediately if SHTF
 # Environment Variables
 #   PMS = path to pms repository
 #
+#   @todo change repo url (in case code is stored on gitlab.com)
+#   @todo change branch (master, develop, etc.)
+#
 PMS=${PMS:-~/.pms}
 REPO=https://github.com/JoshuaEstes/pms.git
 
@@ -14,8 +17,21 @@ REPO=https://github.com/JoshuaEstes/pms.git
 #   This will basically clone the repo into a directory that we can manage up
 #   update later
 setup_pms() {
-  echo 'Setting up PMS'
+  # @todo check requirements (git, etc.)
+  echo "Setting up PMS..."
   git clone "$REPO" "$PMS"
+  echo
+}
+
+# bashrc
+setup_bashrc() {
+ # if file or link
+ if [ -f $HOME/.bashrc ] || [ -h $HOME/.bashrc ]; then
+   echo "Found existing .bashrc file, backing up"
+   mv -f $HOME/.bashrc $HOME/.bashrc.bak
+ fi
+ mv -f $PMS/templates/bashrc $HOME/.bashrc
+ echo
 }
 
 # Setup dotfiles
@@ -24,14 +40,16 @@ setup_pms() {
 #   backed up so that the uninstall script can put everything back the way
 #   we found it
 setup_dotfiles() {
-  echo 'Setting up dotfiles'
+  echo "Setting up dotfiles"
+  setup_bashrc
+  #setup_zshrc
 }
 
 # Setup shell
 #   The user should be allowed to keep their current shell, or have the option
 #   to change that shell to another.
 setup_shell() {
-  echo 'Setting up shell'
+  echo "Setting up shell"
 }
 
 # Main function, this will be called to install everything
@@ -41,7 +59,7 @@ main() {
   setup_shell
 
   # @todo make this better and more informative for users
-  echo 'PMS has been installed, please view documentation'
+  echo "PMS has been installed, please view documentation"
 }
 
 # this will be used later
