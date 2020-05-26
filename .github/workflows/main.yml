@@ -1,0 +1,14 @@
+name: CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: sh ./scripts/install.sh
+      - name: Validate files
+        run: pwd && ls -alh && ls -alh ~/.pwd && ls -alh ~
