@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
-# @todo make this a function?
-# @todo make better in general
 set -e
-# some defaults
 PMS=${PMS:-~/.pms}
-PMS_DEBUG=${PMS_DEBUG:-0}
 
-main() {
+pms() {
   while getopts "d" o; do
     case ${o} in
       d)
@@ -36,5 +32,3 @@ main() {
 
   source $PMS/scripts/pms-help.sh
 }
-
-main "$@"

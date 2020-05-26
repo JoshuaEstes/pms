@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "plugins/pms/pms.plugin.bash | PMS_DEBUG: $PMS_DEBUG"
+#echo "plugins/pms/pms.plugin.bash | PMS_DEBUG: $PMS_DEBUG"
 
 # Load libs
 # @todo local overwrites
