@@ -19,6 +19,7 @@ main() {
   if [ ! -z "$1" ] && [ ! -z "$2" ]; then
     if [ -f $PMS/scripts/pms-$1-$2.sh ]; then
       source $PMS/scripts/pms-$1-$2.sh
+      return
     else
       echo "Could not load: $PMS/scripts/pms-$1-$2.sh"
       return
@@ -26,6 +27,7 @@ main() {
   elif [ ! -z "$1" ]; then
     if [ -f $PMS/scripts/pms-$1.sh ]; then
       source $PMS/scripts/pms-$1.sh
+      return
     else
       echo "Could not load: $PMS/scripts/pms-$1.sh"
       return
