@@ -1,7 +1,15 @@
-#!/usr/bin/env bash
-set -e
+####
+# lib/pms.sh
+####
+# Required Environment Variables
 PMS=${PMS:-~/.pms}
 
+####
+#
+# Usage: pms [OPTIONS] [COMMAND]
+#
+# Tool that helps manage PMS, easy to expand and add to
+#
 pms() {
   while getopts "d" o; do
     case ${o} in
@@ -31,4 +39,23 @@ pms() {
   fi
 
   source $PMS/scripts/pms-help.sh
+}
+
+####
+# "loads" the theme file
+#
+# Usage: _pms_load_theme
+#
+# @todo this is more like "config"
+_pms_load_theme() {
+  if [ -f ~/.pms.theme ]; then
+    source ~/.pms.theme
+  fi
+}
+
+# @todo this is more like "config"
+_pms_load_plugins() {
+  if [ -f ~/.pms.plugins ]; then
+    source ~/.pms.plugins
+  fi
 }

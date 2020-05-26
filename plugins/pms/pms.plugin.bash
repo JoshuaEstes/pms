@@ -1,10 +1,20 @@
-#!/usr/bin/env bash
-#echo "plugins/pms/pms.plugin.bash | PMS_DEBUG: $PMS_DEBUG"
+# @todo find somewhere else to shove these
+HISTCONTROL=ignoreboth
+HISTSIZE=1000
+HISTFILESIZE=2000
+shopt -s histappend
+shopt -s checkwinsize
 
 # Load libs
 # @todo local overwrites
 for lib in $PMS/lib/*.bash; do
+  if [ "$PMS_DEBUG" -eq "1" ]; then
+    echo "[DEBUG] Library '$lib' Loading..."
+  fi
   source $lib
+  if [ "$PMS_DEBUG" -eq "1" ]; then
+    echo "[DEBUG] Library '$lib' Loaded"
+  fi
 done
 
 # Load plugins
