@@ -65,6 +65,8 @@ pms theme list
 pms theme switch default
 ```
 
+You can manually modify the theme by editing `~/.pms.theme`
+
 # Plugins
 ```
 # List all available plugins
@@ -79,6 +81,8 @@ pms plugin enable example
 # Disable a plugin
 pms plugin disable example
 ```
+
+You can manually modify the enabled plugins by editing `~/.pms.plugins`
 
 # Shells
 PMS supprts a number of different shells. Switching from one shell to another
