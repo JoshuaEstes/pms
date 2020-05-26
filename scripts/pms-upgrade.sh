@@ -18,6 +18,9 @@ main() {
   echo "Upgrading to latest PMS version"
   git pull origin master
   echo
+  echo "Upgrade complete"
+  echo
+  cd -
 }
 
-main "$@"
+main
