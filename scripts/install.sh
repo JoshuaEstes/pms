@@ -5,13 +5,17 @@ set -e # Exit immediately if SHTF
 # Usage: @todo
 #
 # Environment Variables
-#   PMS = path to pms repository
-#
-#   @todo change repo url (in case code is stored on gitlab.com)
-#   @todo change branch (master, develop, etc.)
+#   PMS         = path to PMS repository
+#   PMS_DEBUG   = 1 = enabled, 0 = disabled
+#   PMS_REPO    = default: JoshuaEstes/pms
+#   PMS_REMOTE  = default: https://github.com/$PMS_REPO.git
+#   PMS_BRANCH  = master
 #
 PMS=${PMS:-~/.pms}
-REPO=https://github.com/JoshuaEstes/pms.git
+PMS_DEBUG=${PMS_DEBUG:-1}
+PMS_REPO=${PMS_REPO:-JoshuaEstes/pms}
+PMS_REOMTE=${PMS_REMOTE:-https://github.com/${PMS_REPO}.git}
+PMS_BRANCH=${PMS_BRANCH:-master}
 
 # Setup PMS
 #   This will basically clone the repo into a directory that we can manage up
@@ -22,22 +26,34 @@ setup_pms() {
   if [ -d $PMS ]; then
     echo "$PMS already exists, should we update instead of install? Or should we blow it away and re-install?"
   else
-    git clone "$REPO" "$PMS"
+    git clone --branch "$PMS_BRANCH" "$PMS_REMOTE" "$PMS"
   fi
+
+  # Copy over config files if they do not currently exist
+  if [ ! -f ~/.env ]; then
+    cp $PMS/templates/env ~/.env
+  fi
+  if [ ! -f ~/.pms.theme ]; then
+    cp $PMS/templates/pms.theme ~/.pms.theme
+  fi
+  if [ ! -f ~/.pms.plugins ]; then
+    cp $PMS/templates/pms.plugins ~/.pms.plugins
+  fi
+
   echo
 }
 
 # bashrc
 setup_bashrc() {
  # if file or link
- if [ -f $HOME/.bashrc ] || [ -h $HOME/.bashrc ]; then
+ if [ -f ~/.bashrc ] || [ -h ~/.bashrc ]; then
    echo "Found existing .bashrc file, backing up"
    # @todo make this better
-   if [ ! -f $HOME/.bashrc.bak ]; then
-     mv -f $HOME/.bashrc $HOME/.bashrc.bak
+   if [ ! -f ~/.bashrc.bak ]; then
+     mv -f ~/.bashrc ~/.bashrc.bak
    fi
  fi
- cp -f $PMS/templates/bashrc $HOME/.bashrc
+ cp -f $PMS/templates/bashrc ~/.bashrc
  echo
 }
 
@@ -75,13 +91,12 @@ main() {
   # @todo inform user of "pms" command?
   case "$SHELL" in
     "/bin/bash" | "/usr/bin/bash" )
-      source $HOME/.bashrc
+      exec bash
     ;;
     "/bin/zsh" )
-      source $HOME/.zshrc
+      exec bash
     ;;
   esac
 }
 
-# this will be used later
 main "$@"

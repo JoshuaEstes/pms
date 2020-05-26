@@ -1,0 +1,4 @@
+# ~/.pms.plugins
+plugins=(
+  example
+)

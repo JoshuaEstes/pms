@@ -1,9 +1,30 @@
-# Path to PMS install
-export PMS=$HOME/.pms
+# ~/.bashrc
+####
+#
+# .bashrc
+#
+# This file may get updated when running an install or update, please use
+# the config files to modify PMS
+#
 
-# Theme
-PMS_THEME=default
+# Load Environment Variables
+if [ -f ~/.env ]; then
+  source ~/.env
+fi
 
-plugins=(example)
+# Use the .env.local to overwrite previous env vars
+if [ -f ~/.env.local ]; then
+  source ~/.env.local
+fi
+
+# PMS Theme we want to use
+if [ -f ~/.pms.theme ]; then
+  source ~/.pms.theme
+fi
+
+# PMS Plugins that we want to use
+if [ -f ~/.pms.plugins ]; then
+  source ~/.pms.plugins
+fi
 
 source $PMS/pms.sh

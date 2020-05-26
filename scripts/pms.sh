@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# @todo make this a function?
+# @todo make better in general
 set -e
 # some defaults
 PMS=${PMS:-~/.pms}
