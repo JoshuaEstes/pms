@@ -14,7 +14,7 @@ set -e # Exit immediately if SHTF
 PMS=${PMS:-~/.pms}
 PMS_DEBUG=${PMS_DEBUG:-1}
 PMS_REPO=${PMS_REPO:-JoshuaEstes/pms}
-PMS_REOMTE=${PMS_REMOTE:-https://github.com/${PMS_REPO}.git}
+PMS_REMOTE=${PMS_REMOTE:-https://github.com/${PMS_REPO}.git}
 PMS_BRANCH=${PMS_BRANCH:-master}
 
 # Setup PMS
@@ -23,6 +23,17 @@ PMS_BRANCH=${PMS_BRANCH:-master}
 setup_pms() {
   # @todo check requirements (git, etc.)
   echo "Setting up PMS..."
+
+  if [ "$PMS_DEBUG" -eq "1" ]; then
+    echo
+    echo "-=[ Debug ]=-"
+    echo "PMS_REPO:   $PMS_REPO"
+    echo "PMS_REMOTE: $PMS_REMOTE"
+    echo "PMS_BRANCH: $PMS_BRANCH"
+    echo "-=[ Debug ]=-"
+    echo
+  fi
+
   if [ -d $PMS ]; then
     echo "$PMS already exists, should we update instead of install? Or should we blow it away and re-install?"
   else
@@ -49,8 +60,8 @@ setup_bashrc() {
  if [ -f ~/.bashrc ] || [ -h ~/.bashrc ]; then
    echo "Found existing .bashrc file, backing up"
    # @todo make this better
-   if [ ! -f ~/.bashrc.bak ]; then
-     mv -f ~/.bashrc ~/.bashrc.bak
+   if [ ! -f ~/.bashrc.pms.bak ]; then
+     mv -f ~/.bashrc ~/.bashrc.pms.bak
    fi
  fi
  cp -f $PMS/templates/bashrc ~/.bashrc
