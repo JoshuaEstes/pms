@@ -17,7 +17,6 @@ _update_pms_files() {
 }
 
 main() {
-  cwd_checkpoint=$CWD
   if [ "$PMS_DEBUG" -eq "1" ]; then
     echo
     echo "-=[ PMS Debug ]=-"
@@ -32,6 +31,7 @@ main() {
     echo "-=[ PMS Debug ]=-"
     echo
   fi
+  cwd_checkpoint="$CWD"
   cd "$PMS"
   echo
   echo "Upgrading to latest PMS version"
@@ -45,7 +45,7 @@ main() {
   echo "Upgrade complete"
   echo
   exec $PMS_SHELL
-  cd $cwd_checkpoint
+  cd "$cwd_checkpoint"
 }
 
 main
