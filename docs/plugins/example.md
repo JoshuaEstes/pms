@@ -28,7 +28,7 @@ pms plugin enable example
   <tbody>
     <tr>
       <td>PMS_EXAMPLE</td>
-      <td>`1`</td>
+      <td>1</td>
       <td>This will do nothing</td>
     </tr>
     <tr>
@@ -40,20 +40,50 @@ pms plugin enable example
 </table>
 
 # Aliases
-| Alias   | Command        | Notes                   |
-|---------|----------------|-------------------------|
-| example | `example -als` | This is going to be fun |
+<table>
+  <thead>
+    <tr>
+      <th>Alias</th>
+      <th>Command</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>example</td>
+      <td>example -als</td>
+      <td>This is not a real alias</td>
+    </tr>
+  </tbody>
+</table>
 
 # Functions
 | Function            | Notes                               |
 |---------------------|-------------------------------------|
 | `_example_function` | This doesn't output anything        |
 | `example`           | This doesn't output anything either |
+<table>
+  <thead>
+    <tr>
+      <th>Function</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>_example_function</td>
+      <td>This is not a real function and will not work</td>
+    </tr>
+    <tr>
+      <td>example</td>
+      <td>This is not a real function and will not work either</td>
+    </tr>
+  </tbody>
+</table>
 
 # Auto Completion
 Should this be here?
 
 # See Also
-* Link 1
-* Link 2
-
+* [Link 1](/pms)
+* [Link 2](/pms)
