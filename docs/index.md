@@ -17,8 +17,8 @@ It supports easy install/uninstall and a wide variety of plugins and themes.
   * Easy upgrade PMS
   * Preview and switch themes
   * Easy Plugin enabled and disable
-* Focus on using environment varables to modify functionality of PMS
-* Easy Uninstall process that leaves your system in the orginal state before installing PMS
+* Focus on using environment variables to modify functionality of PMS
+* Easy Uninstall process that leaves your system in the ordinal state before installing PMS
 * Easy to extend and overwrite any file, even the PMS core
 * [View All Features](/pms/features.html)
 
@@ -104,3 +104,5 @@ Pages that need to be created
 * [Requirements](/pms/requirements.html)
 * [Shells](/pms/shells.html)
   * Document supported shells along with any specific features for that shell
+  * Each shell should have it's on page
+* [PMS Manager](/pms/pms-manager.html)

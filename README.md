@@ -1,8 +1,8 @@
 PMS
 ===
-
-PMS is a framework for using different shells along with various "dotfiles".
-It supports easy install/uninstall and a wide variety of plugins and themes.
+PMS allows users to manage their shell in a way to increase productivity. It has
+support for themes (change the way your shell looks), plugins (adds
+functionality to your shell), and dotfile management.
 
 ![CI](https://github.com/JoshuaEstes/pms/workflows/CI/badge.svg?branch=master)
 
