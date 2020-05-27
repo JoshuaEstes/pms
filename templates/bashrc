@@ -4,6 +4,8 @@
 # This file may get updated when running an install or pms update, please use
 # the config files and PMS_LOCAL directory to modify PMS
 #
+PMS=~/.pms
+PMS_DEBUG=1
 if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "[DEBUG] PMS Loading ~/.bashrc"
 fi

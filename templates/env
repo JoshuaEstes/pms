@@ -12,6 +12,3 @@ PMS_DEBUG=1
 PMS_REPO=JoshuaEstes/pms
 PMS_REMOTE=https://github.com/${PMS_REPO}.git
 PMS_BRANCH=master
-
-# This is modified based on your settings, setting this will do nothing
-PMS_SHELL=
