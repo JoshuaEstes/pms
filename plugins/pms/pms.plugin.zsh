@@ -1,3 +1,4 @@
 ####
 # Plugin: pms
+# Shell:  zsh
 ####

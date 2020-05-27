@@ -118,6 +118,9 @@ _pms_load_theme() {
 # Example: _pms_load_plugin git
 #
 _pms_load_plugin() {
+  # @todo Check directory exists in either PMS_LOCAL or PMS
+
+  plugin_loaded=0
   # sh may or may not be found, we don't need to notify user if this is not
   # found because shell specific files are more important
   if [ -f $PMS_LOCAL/plugins/$1/$1.plugin.sh ]; then
@@ -125,12 +128,14 @@ _pms_load_plugin() {
       _pms_message_info "Loading plugin '$1' (sh) via local"
     fi
     source $PMS_LOCAL/plugins/$1/$1.plugin.sh
+    plugin_loaded=1
   # check core plugins
   elif [ -f $PMS/plugins/$1/$1.plugin.sh ]; then
     if [ "$PMS_DEBUG" -eq "1" ]; then
       _pms_message_info "Loading plugin '$1' (sh)"
     fi
     source $PMS/plugins/$1/$1.plugin.sh
+    plugin_loaded=1
   fi
 
   # check local directory first
@@ -139,14 +144,18 @@ _pms_load_plugin() {
       _pms_message_info "Loading plugin '$1' ($PMS_SHELL) via local"
     fi
     source $PMS_LOCAL/plugins/$1/$1.plugin.$PMS_SHELL
+    plugin_loaded=1
   # check core plugins
   elif [ -f $PMS/plugins/$1/$1.plugin.$PMS_SHELL ]; then
     if [ "$PMS_DEBUG" -eq "1" ]; then
       _pms_message_info "Loading plugin '$1' ($PMS_SHELL)"
     fi
     source $PMS/plugins/$1/$1.plugin.$PMS_SHELL
+    plugin_loaded=1
+  fi
+
   # Let user know plugin could not be found
-  else
+  if [ "$plugin_loaded" -eq "0" ]; then
     _pms_message_error "Plugin '$1' could not be loaded"
   fi
 }
@@ -173,9 +182,199 @@ _pms_shell_set() {
   fi
 }
 
-if [ "$PMS_DEBUG" -eq "1" ]; then
-  _pms_message_info "Initializing PMS"
+####
+# PMS Manager
+# Usage: pms
+_pms() {
+  if [ "$PMS_DEBUG" -eq "1" ]; then
+      _pms_message_info "PMS:         $PMS"
+      _pms_message_info "PMS_LOCAL:   $PMS_LOCAL"
+      _pms_message_info "PMS_SHELL:   $PMS_SHELL"
+      _pms_message_info "PMS_PLUGINS: ${PMS_PLUGINS[*]}"
+      _pms_message_info "#:           $#"
+      _pms_message_info "@:           $@"
+      _pms_message_info "0:           $0"
+      _pms_message_info "1:           $1"
+      _pms_message_info "2:           $2"
+      _pms_message_info "3:           $3"
+  fi
+
+  if [ ! -z "$1" ] && [ ! -z "$2" ]; then
+      type _pms_command_${1}_${2} &>/dev/null && {
+          _pms_command_${1}_${2} "$@"
+          return $?
+      }
+  fi
+
+  if [ ! -z "$1" ]; then
+      type _pms_command_${1} &>/dev/null && {
+          _pms_command_${1} "$@"
+          return $?
+      }
+  fi
+
+  _pms_command_help
+  return 1
+}
+_pms_command_about() {
+  echo
+  echo "PMS Manager"
+  echo "Making you more productive in your shell than a turtle"
+  echo
+  echo "Source:         https://github.com/JoshuaEstes/pms"
+  echo "User Docs:      https://joshuaestes.github.io/pms/"
+  echo "Developer Docs: https://github.com/JoshuaEstes/pms/wiki"
+  echo
+
+  return 0
+}
+_pms_command_help() {
+  echo
+  echo "Usage: pms [OPTIONS] COMMAND"
+  echo
+  echo "Commands:"
+  echo "  about              Show PMS information"
+  echo "  help               Show help messages"
+  echo "  upgrade            Upgrade PMS to latest version"
+  echo "  diagnostic         Outputs diagnostic information"
+  echo "  reload             Reloads all of PMS"
+  echo "  theme              Helps to manage themes"
+  echo "    list             Displays available themes"
+  #echo "    switch           Switch to a specific theme"
+  #echo "    preview          Preview theme"
+  #echo "    validate         Validate theme"
+  #echo "    reload           Reloads theme"
+  echo "  plugin             Helps to manage plugins"
+  echo "    list             Lists all available plugins"
+  #echo "    enable           Enables a plugin"
+  #echo "    disable          Disables a plugin"
+  #echo "    update           Updates a plugin"
+  #echo "    validate         Validate plugin"
+  #echo "    reload           Reloads enabled plugins"
+  echo
+
+  return 0
+}
+_pms_command_diagnostic() {
+echo
+echo "-=[ PMS ]=-"
+echo "PMS:         $PMS"
+echo "PMS_LOCAL:   $PMS_LOCAL"
+echo "PMS_DEBUG:   $PMS_DEBUG"
+echo "PMS_REPO:    $PMS_REPO"
+echo "PMS_REMOTE:  $PMS_REMOTE"
+echo "PMS_BRANCH:  $PMS_BRANCH"
+echo "PMS_THEME:   $PMS_THEME"
+echo "PMS_PLUGINS: ${PMS_PLUGINS[*]}"
+echo "PMS_SHELL:   $PMS_SHELL"
+if [ -d $PMS ]; then
+  echo "Hash:        $(cd $PMS; git rev-parse --short HEAD)"
+else
+  echo "Hash:        PMS not installed"
 fi
+echo
+echo "-=[ Shell ]=-"
+echo "SHELL: $SHELL"
+echo
+echo "-=[ Terminal ]=-"
+echo "TERM: $TERM"
+echo
+echo "-=[ OS ]=-"
+echo "OSTYPE: $OSTYPE"
+echo "USER:   $USER"
+echo "umask:  $(umask)"
+case "$OSTYPE" in
+  darwin*)
+    echo "Product Name:     $(sw_vers -productName)"
+    echo "Product Version:  $(sw_vers -productVersion)"
+    echo "Build Version:    $(sw_vers -buildVersion)"
+    ;;
+  linux*)
+    echo "Release: $(lsb_release -s -d)"
+    ;;
+esac
+echo
+echo "-=[ Programs ]=-"
+echo "git: $(git --version)"
+if [ -x "$(command -v bash)" ]; then
+  echo "bash: $(bash --version | grep bash)"
+else
+  echo "bash: Not Installed"
+fi
+if [ -x "$(command -v zsh)" ]; then
+  echo "zsh: $(zsh --version)"
+else
+  echo "zsh: Not Installed"
+fi
+echo
+echo "-=[ Metadata ]=-"
+echo "Created At: $(date)"
+echo
+}
+_pms_command_upgrade() {
+  local checkpoint="$PWD"
+  cd "$PMS"
+  echo "Upgrading to latest PMS version"
+  echo
+  git pull origin master
+  echo
+  echo "Copying files"
+  echo
+  cp -v $PMS/templates/bashrc ~/.bashrc
+  cp -v $PMS/templates/zshrc ~/.zshrc
+  echo
+  echo "Upgrade complete, you may need to reload your environment"
+  echo
+  cd "$_checkpoint"
+  #_pms "reload"
+}
+_pms_command_reload() {
+  echo "Reloading PMS..."
+  # @todo which is best?
+  #source ~/.${PMS_SHELL}rc
+  exec $PMS_SHELL
+  #sh $PMS/pms.sh $PMS_SHELL $PMS_DEBUG
+  echo "PMS Reloaded"
+}
+_pms_command_theme_list() {
+  echo
+  echo "Core Themes:"
+  for theme in $PMS/themes/*; do
+    theme=${theme%*/}
+    echo "  ${theme##*/}"
+  done
+  echo
+  echo "Local Themes:"
+  for theme in $PMS_LOCAL/themes/*; do
+    theme=${theme%*/}
+    echo "  ${theme##*/}"
+  done
+  echo
+  echo "Current Theme: $PMS_THEME"
+  echo
+}
+_pms_command_plugin_list() {
+  echo
+  echo "Core Plugins:"
+  for plugin in $PMS/plugins/*; do
+    plugin=${plugin%*/}
+    echo "  ${plugin##*/}"
+  done
+  echo
+  echo "Local Plugins:"
+  for plugin in $PMS_LOCAL/plugins/*; do
+    plugin=${plugin%*/}
+    echo "  ${plugin##*/}"
+  done
+  echo
+  echo "Enabled Plugins:"
+  for plugin in "${PMS_PLUGINS[@]}"; do
+    plugin=${plugin%*/}
+    echo "  ${plugin##*/}"
+  done
+  echo
+}
+### PMS Manager
 
 # 2) environment file loader
 # load the plugins and theme first so that they can be modified later
@@ -276,7 +475,3 @@ done
 
 # 5) load theme
 _pms_load_theme $PMS_THEME
-
-if [ "$PMS_DEBUG" -eq "1" ]; then
-  _pms_message_info "PMS Load Completed"
-fi
