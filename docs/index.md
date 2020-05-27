@@ -107,6 +107,8 @@ pms plugin disable example
 
 You can manually modify the enabled plugins by editing `~/.pms.plugins`
 
+[View All Plugins](/pms/plugins.html)
+
 # Dotfiles
 Dotfiles will change the look and feel of various programs. For example the
 "vim" dotfiles will modify how vim works in your environment.

@@ -3,7 +3,7 @@ layout: default
 title: PMS Features
 ---
 
-# Features
+# PMS Features
   * Themes - Change the way your environment looks
   * Plugins - Change the way your environment functions
   * Dotfiles - Change the way programs work in your environment
