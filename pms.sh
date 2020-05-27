@@ -26,21 +26,20 @@ done
 # shell, this should be improved at some point
 case "$SHELL" in
   "/bin/bash" | "/usr/bin/bash" )
-    SHORT_SHELL=bash ;;
+    PMS_SHELL=bash ;;
   "/bin/zsh" )
-    SHORT_SHELL=zsh ;;
+    PMS_SHELL=zsh ;;
   * )
-    SHORT_SHELL=sh ;;
+    PMS_SHELL=sh ;;
 esac
-
 if [ "$PMS_DEBUG" -eq "1" ]; then
-  echo "[DEBUG] Shell: '$SHORT_SHELL'"
+  echo "[DEBUG] PMS_SHELL: '$PMS_SHELL'"
 fi
 
 # Load Environment Variables
 # @depends _env_load
 # @see lib/env.sh
-_env_load ~/.env ~/.env.$SHORT_SHELL ~/.env.local ~/.env.$SHORT_SHELL.local
+_env_load ~/.env ~/.env.$PMS_SHELL ~/.env.local ~/.env.$PMS_SHELL.local
 
 # theme
 # @see lib/pms.sh
@@ -51,10 +50,10 @@ _pms_load_theme
 _pms_load_plugins
 
 # We want to make sure that each shell has it's on "rc" script here
-if [ -f $PMS/plugins/pms/pms.plugin.$SHORT_SHELL ]; then
-  source $PMS/plugins/pms/pms.plugin.$SHORT_SHELL
+if [ -f $PMS/plugins/pms/pms.plugin.$PMS_SHELL ]; then
+  source $PMS/plugins/pms/pms.plugin.$PMS_SHELL
 else
-  echo "[PMS] Could not find: $PMS/plugins/pms/pms.plugin.$SHORT_SHELL"
+  echo "[PMS] Could not find: $PMS/plugins/pms/pms.plugin.$PMS_SHELL"
   exit 1
 fi
 

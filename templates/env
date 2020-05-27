@@ -1,8 +1,17 @@
 # ~/.env
-# Various environmental variables
+# Various environmental variables that are required
+
+# Full path to where PMS is installed
 PMS=~/.pms
 PMS_LOCAL=$PMS/local
+
+# 0 = disabled, 1 = enabled
 PMS_DEBUG=1
+
+# Setup the git repo that we pull from for updates
 PMS_REPO=JoshuaEstes/pms
 PMS_REMOTE=https://github.com/${PMS_REPO}.git
 PMS_BRANCH=master
+
+# This is modified based on your settings, setting this will do nothing
+PMS_SHELL=

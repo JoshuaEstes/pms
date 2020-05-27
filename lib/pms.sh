@@ -55,6 +55,7 @@ _pms_diagnostic_dump() {
   echo "PMS_BRANCH:  $PMS_BRANCH"
   echo "PMS_THEME:   $PMS_THEME"
   echo "PMS_PLUGINS: $PMS_PLUGINS"
+  echo "PMS_SHELL:   $PMS_SHELL"
   if [ -d $PMS ]; then
     echo "Hash:        $(cd $PMS; git rev-parse --short HEAD)"
   else

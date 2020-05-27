@@ -38,6 +38,7 @@ setup_pms() {
 
   if [ -d $PMS ]; then
     echo "$PMS already exists, should we update instead of install? Or should we blow it away and re-install?"
+    exit 1
   else
     git clone --branch "$PMS_BRANCH" "$PMS_REMOTE" "$PMS"
   fi
@@ -107,7 +108,7 @@ main() {
       exec bash
     ;;
     "/bin/zsh" )
-      exec bash
+      exec zsh
     ;;
   esac
 }

@@ -1,4 +1,5 @@
 # ~/.bashrc
+set -e
 ####
 #
 # .bashrc
