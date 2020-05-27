@@ -1,9 +1,11 @@
-# Path to PMS install
-export PMS=$HOME/.pms
-
-# Theme
-PMS_THEME=default
-
-plugins=(example)
-
-source $PMS/pms.sh
+# ~/.zshrc
+####
+PMS=~/.pms
+PMS_DEBUG=1
+if [ "$PMS_DEBUG" -eq "1" ]; then
+  echo "[DEBUG] PMS Loading ~/.zshrc"
+fi
+source $PMS/pms.sh zsh $PMS_DEBUG
+if [ "$PMS_DEBUG" -eq "1" ]; then
+  echo "[DEBUG] PMS Completed Loading ~/.zshrc"
+fi
