@@ -32,9 +32,6 @@ pms() {
     elif [ -f $PMS/plugins/pms/pms-$1-$2.sh ]; then
       source $PMS/plugins/pms/pms-$1-$2.sh
       return
-    else
-      echo "Could not load: pms-$1-$2"
-      return
     fi
   # ex: pms upgrade
   elif [ ! -z "$1" ]; then
@@ -49,9 +46,6 @@ pms() {
       return
     elif [ -f $PMS/plugins/pms/pms-$1.sh ]; then
       source $PMS/plugins/pms/pms-$1.sh
-      return
-    else
-      echo "Could not load: pms-$1"
       return
     fi
   fi
