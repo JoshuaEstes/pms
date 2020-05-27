@@ -10,6 +10,8 @@
 
 # Load Environment Variables
 env_files=(
+  ~/.pms.plugins
+  ~/.pms.theme
   ~/.env
   ~/.env.bash
   ~/.env.local
