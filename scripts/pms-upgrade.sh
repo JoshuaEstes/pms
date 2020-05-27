@@ -5,12 +5,12 @@
 
 # Defaults variables
 # @todo remove these defaults
-PMS=${PMS:-~/.pms}
-PMS_DEBUG=${PMS_DEBUG:-1}
-PMS_REPO=${PMS_REPO:-JoshuaEstes/pms}
-PMS_REOMTE=${PMS_REMOTE:-https://github.com/${PMS_REPO}.git}
-PMS_BRANCH=${PMS_BRANCH:-master}
-PMS_SHELL=${PMS_SHELL:-bash}
+#PMS=${PMS:-~/.pms}
+#PMS_DEBUG=${PMS_DEBUG:-1}
+#PMS_REPO=${PMS_REPO:-JoshuaEstes/pms}
+#PMS_REOMTE=${PMS_REMOTE:-https://github.com/${PMS_REPO}.git}
+#PMS_BRANCH=${PMS_BRANCH:-master}
+#PMS_SHELL=${PMS_SHELL:-bash}
 
 _update_pms_files() {
   cp -v $PMS/templates/bashrc ~/.bashrc
@@ -44,6 +44,7 @@ main() {
   echo "Upgrade complete"
   echo
   exec $PMS_SHELL
+  cd -
 }
 
 main
