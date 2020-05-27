@@ -27,9 +27,11 @@ setup_pms() {
   if [ "$PMS_DEBUG" -eq "1" ]; then
     echo
     echo "-=[ Debug ]=-"
-    echo "PMS_REPO:   $PMS_REPO"
-    echo "PMS_REMOTE: $PMS_REMOTE"
-    echo "PMS_BRANCH: $PMS_BRANCH"
+    echo "PMS:         $PMS"
+    echo "PMS_DEBUG:   $PMS_DEBUG"
+    echo "PMS_REPO:    $PMS_REPO"
+    echo "PMS_REMOTE:  $PMS_REMOTE"
+    echo "PMS_BRANCH:  $PMS_BRANCH"
     echo "-=[ Debug ]=-"
     echo
   fi
