@@ -1,5 +1,4 @@
-# pms help
-# @todo should in be "pms plugin install" or "pms plugin enable"
+#!/usr/bin/env sh
 echo
 echo "Usage: pms [OPTIONS] COMMAND"
 echo

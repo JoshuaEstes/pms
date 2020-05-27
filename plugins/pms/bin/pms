@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 # Defaults
 PMS_DEBUG=${PMS_DEBUG:-0}
+PMS_NO_INTERACTION=${PMS_NO_INTERACTION:-0}
 
 # Validation Checks
 if [ -z "$PMS" ]; then
@@ -27,47 +28,39 @@ main() {
   done
 
   if [ "$PMS_DEBUG" -eq "1" ]; then
-      echo "[DEBUG] PMS:       $PMS"
-      echo "[DEBUG] PMS_LOCAL: $PMS_LOCAL"
-      echo "[DEBUG] PMS_SHELL: $PMS_SHELL"
-      echo "[DEBUG] 0:         $0"
-      echo "[DEBUG] 1:         $1"
-      echo "[DEBUG] 2:         $2"
-      echo "[DEBUG] 3:         $3"
+      echo "[DEBUG] PMS:                $PMS"
+      echo "[DEBUG] PMS_LOCAL:          $PMS_LOCAL"
+      echo "[DEBUG] PMS_SHELL:          $PMS_SHELL"
+      echo "[DEBUG] PMS_NO_INTERACTION: $PMS_NO_INTERACTION"
+      echo "[DEBUG] @:                  $@"
+      echo "[DEBUG] 0:                  $0"
+      echo "[DEBUG] 1:                  $1"
+      echo "[DEBUG] 2:                  $2"
+      echo "[DEBUG] 3:                  $3"
   fi
 
   # ex: pms plugin list
   if [ ! -z "$1" ] && [ ! -z "$2" ]; then
-    if [ -f $PMS_LOCAL/plugins/pms/pms-$1-$2.$PMS_SHELL ]; then
-      source $PMS_LOCAL/plugins/pms/pms-$1-$2.$PMS_SHELL "$@"
-      return
-    elif [ -f $PMS_LOCAL/plugins/pms/pms-$1-$2.sh ]; then
-      source $PMS_LOCAL/plugins/pms/pms-$1-$2.sh "$@"
-      return
-    elif [ -f $PMS/plugins/pms/pms-$1-$2.$PMS_SHELL ]; then
-      source $PMS/plugins/pms/pms-$1-$2.$PMS_SHELL "$@"
-      return
-    elif [ -f $PMS/plugins/pms/pms-$1-$2.sh ]; then
-      source $PMS/plugins/pms/pms-$1-$2.sh "$@"
+    if [ $(command -v pms-$1-$2) ]; then
+      pms-$1-$2 "$@"
+      return $?
+    elif [ -f $PMS/plugins/pms/bin/pms-$1-$2 ]; then
+      source $PMS/plugins/pms/bin/pms-$1-$2 "$@"
       return
     else
       if [ "$PMS_DEBUG" -eq "1" ]; then
         echo "[DEBUG] Could not find 'pms-$1-$2'"
       fi
     fi
+  fi
+
   # ex: pms upgrade
-  elif [ ! -z "$1" ]; then
-    if [ -f $PMS_LOCAL/plugins/pms/pms-$1.$PMS_SHELL ]; then
-      source $PMS_LOCAL/plugins/pms/pms-$1.$PMS_SHELL "$@"
-      return
-    elif [ -f $PMS_LOCAL/plugins/pms/pms-$1.sh ]; then
-      source $PMS_LOCAL/plugins/pms/pms-$1.sh "$@"
-      return
-    elif [ -f $PMS/plugins/pms/pms-$1.$PMS_SHELL ]; then
-      source $PMS/plugins/pms/pms-$1.$PMS_SHELL "$@"
-      return
-    elif [ -f $PMS/plugins/pms/pms-$1.sh ]; then
-      source $PMS/plugins/pms/pms-$1.sh "$@"
+  if [ ! -z "$1" ]; then
+    if [ $(command -v pms-$1) ]; then
+      pms-$1 "$@"
+      return $?
+    elif [ -f $PMS/plugins/pms/bin/pms-$1 ]; then
+      source $PMS/plugins/pms/bin/pms-$1 "$@"
       return
     else
       if [ "$PMS_DEBUG" -eq "1" ]; then
@@ -76,7 +69,7 @@ main() {
     fi
   fi
 
-  source $PMS/plugins/pms/pms-help.sh
+  source $PMS/plugins/pms/bin/pms-help
 }
 
 main "$@"

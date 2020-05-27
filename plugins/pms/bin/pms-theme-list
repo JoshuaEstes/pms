@@ -1,3 +1,4 @@
+#!/usr/bin/env sh
 # pms theme list
 echo
 echo "Core Themes:"

@@ -1,9 +1,10 @@
+#!/usr/bin/env sh
 # pms upgrade
 _update_pms_files() {
   cp -v $PMS/templates/bashrc ~/.bashrc
 }
 
-# @todo make sure this can be done 
+# @todo make sure this can be done
 
 _checkpoint="$PWD"
 if [[ "$PMS_DEBUG" -eq "1" ]]; then

@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+echo
+echo "@todo pms-plugin-enable"
+echo
