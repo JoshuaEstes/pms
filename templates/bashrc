@@ -8,6 +8,8 @@ set -e
 # the config files to modify PMS
 #
 
+source ~/.env
+
 if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "[DEBUG] PMS Loading ~/.bashrc"
 fi
@@ -21,6 +23,7 @@ if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "PMS_BRANCH:  $PMS_BRANCH"
   echo "PMS_THEME:   $PMS_THEME"
   echo "PMS_PLUGINS: $PMS_PLUGINS"
+  echo "PMS_SHELL:   $PMS_SHELL"
   if [ -d $PMS ]; then
     echo "Hash:        $(cd $PMS; git rev-parse --short HEAD)"
   else

@@ -1,11 +1,6 @@
 # pms.sh
 set -e
 
-echo
-echo "0: $0"
-echo "1: $1"
-echo
-
 if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "[DEBUG] PMS Loading Starting"
 fi
@@ -33,7 +28,7 @@ case "$SHELL" in
     PMS_SHELL=sh ;;
 esac
 if [ "$PMS_DEBUG" -eq "1" ]; then
-  echo "[DEBUG] PMS_SHELL: '$PMS_SHELL'"
+  echo "[DEBUG] PMS_SHELL set to '$PMS_SHELL'"
 fi
 
 # Load Environment Variables
