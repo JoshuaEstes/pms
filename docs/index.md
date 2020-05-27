@@ -1,5 +1,7 @@
-PMS
-===
+---
+layout: default
+title: PMS
+---
 
 PMS is a framework for using different shells along with various "dotfiles".
 It supports easy install/uninstall and a wide variety of plugins and themes.
@@ -18,6 +20,7 @@ It supports easy install/uninstall and a wide variety of plugins and themes.
     * Easy Plugin enabled and disable
   * Focus on using environment varables to modify functionality of PMS
   * Easy Uninstall process that leaves your system in the orginal state before installing PMS
+  * [View All PMS Features](./features.html)
 
 # Getting Started
 ## Requirements
