@@ -7,20 +7,24 @@ It supports easy install/uninstall and a wide variety of plugins and themes.
 ![CI](https://github.com/JoshuaEstes/pms/workflows/CI/badge.svg?branch=master)
 
 # Features
-* Themes - Change the way your environment looks
+* [Themes](https://joshuaestes.github.io/pms/themes.html) - Change the way your environment looks
 * [Plugins](https://joshuaestes.github.io/pms/plugins.html) - Change the way your environment functions
 * Dotfiles - Change the way programs work in your environment
 * Multiple Shell Support
-  * No matter the shell, you can easily swap between them and maintain similar functionality
+  * Bash
+  * Zsh
+  * And others!
 * PMS Manager - Easy to use and up modify tool to help you manage PMS
   * Easy upgrade PMS
   * Preview and switch themes
   * Easy Plugin enabled and disable
 * Focus on using environment varables to modify functionality of PMS
 * Easy Uninstall process that leaves your system in the orginal state before installing PMS
+* [View All Features](https://joshuaestes.github.io/pms/features.html)
 
 # Getting Started
 ## Requirements
+* MacOS or Linux (could work on windows, but I don't use windows)
 * curl or wget
 * git
 * A shell such as bash, zsh, etc.
