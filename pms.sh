@@ -258,6 +258,7 @@ _pms_command_help() {
   return 0
 }
 _pms_command_diagnostic() {
+    # @todo Alert user to any known issues with configurations
 echo
 echo "-=[ PMS ]=-"
 echo "PMS:         $PMS"
@@ -316,18 +317,20 @@ echo
 _pms_command_upgrade() {
   local checkpoint=$PWD
   cd "$PMS"
-  echo "Upgrading to latest PMS version"
-  echo
+  _pms_message_section_info "Upgrading to latest PMS version"
   git pull origin master
-  echo
-  echo "Copying files"
-  echo
+  _pms_message_info "Copying files"
   cp -v $PMS/templates/bashrc ~/.bashrc
   cp -v $PMS/templates/zshrc ~/.zshrc
-  # @todo run update.sh scripts for enabled plugins
-  echo
-  echo "Upgrade complete, you may need to reload your environment"
-  echo
+  _pms_message_info "Running update scripts for enabled plugins"
+  for plugin in "${PMS_PLUGINS[@]}"; do
+    if [ -f $PMS_LOCAL/plugins/$plugin/update.sh ]; then
+        source $PMS_LOCAL/plugins/$plugin/update.sh
+    elif [ -f $PMS/plugins/$plugin/update.sh ]; then
+        source $PMS/plugins/$plugin/update.sh
+    fi
+  done
+  _pms_message_success "Upgrade complete, you may need to reload your environment"
   cd "$checkpoint"
   # @todo ask if user wants to reload environment
   #pms "reload"
@@ -408,7 +411,38 @@ _pms_command_plugin_enable() {
     _pms_load_plugin $3
 }
 _pms_command_plugin_disable() {
-    echo "@todo"
+    # is enabled?
+    local _is_enabled=0
+    for p in "${PMS_PLUGINS[@]}"; do
+        if [ "$p" = "$3" ]; then
+            _is_enabled=1
+            break
+        fi
+    done
+    if [ "$_is_enabled" -eq "0" ]; then
+        _pms_message_error "The plugin '$3' is not enabled"
+    fi
+
+    # Remove from plugins
+    local _plugins=()
+    for i in "${PMS_PLUGINS[@]}"; do
+        if [ "$i" != "$3" ]; then
+            _plugins+=($i)
+        fi
+    done
+    PMS_PLUGINS=$_plugins
+    # save .pms.plugins
+    echo "PMS_PLUGINS=(${PMS_PLUGINS[*]})" > ~/.pms.plugins
+
+    # Run uninstall script (if available)
+    if [ -f $PMS_LOCAL/plugins/$3/uninstall.sh ]; then
+        source $PMS_LOCAL/plugins/$3/uninstall.sh
+    elif [ -f $PMS/plugins/$3/uninstall.sh ]; then
+        source $PMS/plugins/$3/uninstall.sh
+    fi
+
+    _pms_message_success "Plugin has been disabled, you may need to reload environment"
+    # @todo Ask user to reload environment
 }
 ### PMS Manager
 
