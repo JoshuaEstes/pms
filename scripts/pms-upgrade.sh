@@ -41,8 +41,9 @@ main() {
   echo
   _update_pms_files
   echo
-  echo "Upgrade complete, reload your shell"
+  echo "Upgrade complete"
   echo
+  exec $PMS_SHELL
 }
 
 main
