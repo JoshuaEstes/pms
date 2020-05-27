@@ -18,7 +18,7 @@ for lib in $PMS/lib/*.bash; do
 done
 
 # Load plugins
-for plugin in "${plugins[@]}"; do
+for plugin in "${PMS_PLUGINS[@]}"; do
   if [ -f $PMS_LOCAL/plugins/$plugin/$plugin.plugin.bash ]; then
     source $PMS_LOCAL/plugins/$plugin/$plugin.plugin.bash
   elif [ -f $PMS/plugins/$plugin/$plugin.plugin.bash ]; then

@@ -42,6 +42,40 @@ pms() {
 }
 
 ####
+# Dump various information about the system so we can troubleshoot issues a
+# little better
+#
+# @todo dump to file
+_pms_diagnostic_dump() {
+  echo "-=[ PMS ]=-"
+  echo "PMS:         $PMS"
+  echo "PMS_DEBUG:   $PMS_DEBUG"
+  echo "PMS_REPO:    $PMS_REPO"
+  echo "PMS_REMOTE:  $PMS_REMOTE"
+  echo "PMS_BRANCH:  $PMS_BRANCH"
+  echo "PMS_THEME:   $PMS_THEME"
+  echo "PMS_PLUGINS: $PMS_PLUGINS"
+  if [ -d $PMS ]; then
+    echo "Hash:        $(cd $PMS; git rev-parse --short HEAD)"
+  else
+    echo "Hash:        PMS not installed"
+  fi
+  echo
+  echo "-=[ Shell ]=-"
+  echo "SHELL: $SHELL"
+  echo
+  echo "-=[ Terminal ]=-"
+  echo "TERM: $TERM"
+  echo
+  echo "-=[ OS ]=-"
+  echo "OSTYPE: $OSTYPE"
+  echo
+  echo "-=[ Metadata ]=-"
+  echo "Created At: $(date)"
+  echo
+}
+
+####
 # "loads" the theme file
 #
 # Usage: _pms_load_theme
