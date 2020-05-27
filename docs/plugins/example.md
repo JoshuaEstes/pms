@@ -11,7 +11,7 @@ The example plugin will be documented here. Top part gives a few details.
 Requirements are listed here
 * example >= 1.2.3
 
-# Options
+# Enviroment Variables
 These options are set in your environment variables file.
 <table>
   <thead>

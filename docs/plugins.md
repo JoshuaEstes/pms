@@ -17,6 +17,7 @@ pms plugin disable [PLUGIN]
 # PMS Plugins
 <!-- Keep this in ABC order -->
 * [example](/pms/plugins/example.html) - Show how to create and document a plugin
+* [pms](/pms/plugins/pms.html) - PMS Plugin, this will always load
 
 <hr/>
 

@@ -62,7 +62,7 @@ done
 
 # 4) Load plugins
 # make sure the pms and "PMS_SHELL" plugins are loaded up
-#_pms_load_plugin pms
+_pms_load_plugin pms
 _pms_load_plugin $PMS_SHELL
 for plugin in "${PMS_PLUGINS[@]}"; do
   _pms_load_plugin $plugin
