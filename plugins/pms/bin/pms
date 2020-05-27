@@ -1,4 +1,8 @@
 #!/usr/bin/env sh
+# Defaults
+PMS_DEBUG=${PMS_DEBUG:-0}
+
+# Validation Checks
 if [ -z "$PMS" ]; then
     echo
     echo "Could not find the PMS directory"
@@ -35,32 +39,40 @@ main() {
   # ex: pms plugin list
   if [ ! -z "$1" ] && [ ! -z "$2" ]; then
     if [ -f $PMS_LOCAL/plugins/pms/pms-$1-$2.$PMS_SHELL ]; then
-      source $PMS_LOCAL/plugins/pms/pms-$1-$2.$PMS_SHELL
+      source $PMS_LOCAL/plugins/pms/pms-$1-$2.$PMS_SHELL "$@"
       return
     elif [ -f $PMS_LOCAL/plugins/pms/pms-$1-$2.sh ]; then
-      source $PMS_LOCAL/plugins/pms/pms-$1-$2.sh
+      source $PMS_LOCAL/plugins/pms/pms-$1-$2.sh "$@"
       return
     elif [ -f $PMS/plugins/pms/pms-$1-$2.$PMS_SHELL ]; then
-      source $PMS/plugins/pms/pms-$1-$2.$PMS_SHELL
+      source $PMS/plugins/pms/pms-$1-$2.$PMS_SHELL "$@"
       return
     elif [ -f $PMS/plugins/pms/pms-$1-$2.sh ]; then
-      source $PMS/plugins/pms/pms-$1-$2.sh
+      source $PMS/plugins/pms/pms-$1-$2.sh "$@"
       return
+    else
+      if [ "$PMS_DEBUG" -eq "1" ]; then
+        echo "[DEBUG] Could not find 'pms-$1-$2'"
+      fi
     fi
   # ex: pms upgrade
   elif [ ! -z "$1" ]; then
     if [ -f $PMS_LOCAL/plugins/pms/pms-$1.$PMS_SHELL ]; then
-      source $PMS_LOCAL/plugins/pms/pms-$1.$PMS_SHELL
+      source $PMS_LOCAL/plugins/pms/pms-$1.$PMS_SHELL "$@"
       return
     elif [ -f $PMS_LOCAL/plugins/pms/pms-$1.sh ]; then
-      source $PMS_LOCAL/plugins/pms/pms-$1.sh
+      source $PMS_LOCAL/plugins/pms/pms-$1.sh "$@"
       return
     elif [ -f $PMS/plugins/pms/pms-$1.$PMS_SHELL ]; then
-      source $PMS/plugins/pms/pms-$1.$PMS_SHELL
+      source $PMS/plugins/pms/pms-$1.$PMS_SHELL "$@"
       return
     elif [ -f $PMS/plugins/pms/pms-$1.sh ]; then
-      source $PMS/plugins/pms/pms-$1.sh
+      source $PMS/plugins/pms/pms-$1.sh "$@"
       return
+    else
+      if [ "$PMS_DEBUG" -eq "1" ]; then
+        echo "[DEBUG] Could not find 'pms-$1'"
+      fi
     fi
   fi
 
