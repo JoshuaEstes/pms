@@ -1,8 +1,10 @@
+# pms help
 echo
 echo "Usage: pms [OPTIONS] COMMAND"
 echo
 echo "Options:"
 echo "  -d                 Enable Debug"
+#echo "  -n                 No Interaction"
 echo
 echo "Commands:"
 echo "  about              Show PMS information"

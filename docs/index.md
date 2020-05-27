@@ -9,24 +9,25 @@ It supports easy install/uninstall and a wide variety of plugins and themes.
 ![CI](https://github.com/JoshuaEstes/pms/workflows/CI/badge.svg?branch=master)
 
 # Features
-  * Themes - Change the way your environment looks
-  * Plugins - Change the way your environment functions
-  * Dotfiles - Change the way programs work in your environment
-  * Multiple Shell Support
-    * No matter the shell, you can easily swap between them and maintain similar functionality
-  * PMS Manager - Easy to use and up modify tool to help you manage PMS
-    * Easy upgrade PMS
-    * Preview and switch themes
-    * Easy Plugin enabled and disable
-  * Focus on using environment varables to modify functionality of PMS
-  * Easy Uninstall process that leaves your system in the orginal state before installing PMS
-  * [View All PMS Features](/pms/features.html)
+* Themes - Change the way your environment looks
+* Plugins - Change the way your environment functions
+* Dotfiles - Change the way programs work in your environment
+* Multiple Shell Support
+  * No matter the shell, you can easily swap between them and maintain similar functionality
+* PMS Manager - Easy to use and up modify tool to help you manage PMS
+  * Easy upgrade PMS
+  * Preview and switch themes
+  * Easy Plugin enabled and disable
+* Focus on using environment varables to modify functionality of PMS
+* Easy Uninstall process that leaves your system in the orginal state before installing PMS
+* Easy to extend and overwrite any file, even the PMS core
+* [View All PMS Features](/pms/features.html)
 
 # Getting Started
 ## Requirements
-  * curl or wget
-  * git
-  * A shell such as bash, zsh, etc.
+* curl or wget
+* git
+* A shell such as bash, zsh, etc.
 
 ## Installation
 Installation can be done manually or by using curl or wget.
@@ -137,10 +138,11 @@ cd $PMS && ./scripts/uninstall.sh
 See [LICENSE.md](https://github.com/JoshuaEstes/pms/blob/master/LICENSE.md)
 
 # @todo
-  * [CHANGELOG.md](https://github.com/JoshuaEstes/pms/blob/master/CHANGELOG.md)
-    * Need to keep track of versions if this happens
-  * [CONTRIBUTING.md](https://github.com/JoshuaEstes/pms/blob/master/CONTRIBUTING.md)
-  * [CODE_OF_CONDUCT.md](https://github.com/JoshuaEstes/pms/blob/master/CODE_OF_CONDUCT.md)
-  * Github Specific Stuff
-    * Pull Request Templates
-    * Issue Templates
+* [CHANGELOG.md](https://github.com/JoshuaEstes/pms/blob/master/CHANGELOG.md)
+  * Need to keep track of versions if this happens
+* [CONTRIBUTING.md](https://github.com/JoshuaEstes/pms/blob/master/CONTRIBUTING.md)
+* [CODE_OF_CONDUCT.md](https://github.com/JoshuaEstes/pms/blob/master/CODE_OF_CONDUCT.md)
+* Github Specific Stuff
+  * Pull Request Templates
+  * Issue Templates
+* Break up docs/index.md into multiple files and link to them

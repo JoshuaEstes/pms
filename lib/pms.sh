@@ -91,17 +91,38 @@ _pms_load_theme() {
 #
 # Usage: _pms_load_plugin example
 #
+# loads example.plugin.sh (if available)
+# loads example.plugin.$PMS_SHELL (if available)
+# loads from $PMS_LOCAL first
+# loads from $PMS if not found in $PMS_LOCAL
+#
 _pms_load_plugin() {
+  # sh may or may not be found, we don't need to notify user if this is not
+  # found because shell specific files are more important
+  if [ -f $PMS_LOCAL/plugins/$1/$1.plugin.sh ]; then
+    if [ "$PMS_DEBUG" -eq "1" ]; then
+      echo "[DEBUG] Loading plugin '$1' (sh) via local"
+    fi
+    source $PMS_LOCAL/plugins/$1/$1.plugin.sh
+  # check core plugins
+  elif [ -f $PMS/plugins/$1/$1.plugin.sh ]; then
+    if [ "$PMS_DEBUG" -eq "1" ]; then
+      echo "[DEBUG] Loading plugin '$1' (sh)"
+    fi
+    source $PMS/plugins/$1/$1.plugin.sh
+  fi
+
   # check local directory first
   if [ -f $PMS_LOCAL/plugins/$1/$1.plugin.$PMS_SHELL ]; then
     if [ "$PMS_DEBUG" -eq "1" ]; then
-      echo "[DEBUG] Loading plugin '$1' via local"
+      echo "[DEBUG] Loading plugin '$1' ($PMS_SHELL) via local"
     fi
     source $PMS_LOCAL/plugins/$1/$1.plugin.$PMS_SHELL
   # check core plugins
   elif [ -f $PMS/plugins/$1/$1.plugin.$PMS_SHELL ]; then
     if [ "$PMS_DEBUG" -eq "1" ]; then
       echo "[DEBUG] Loading plugin '$1'"
+      echo "[DEBUG] Loading plugin '$1' ($PMS_SHELL)"
     fi
     source $PMS/plugins/$1/$1.plugin.$PMS_SHELL
   # Let user know plugin could not be found

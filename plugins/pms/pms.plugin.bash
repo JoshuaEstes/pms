@@ -2,8 +2,6 @@
 # Plugin: pms
 # Shell:  bash
 ####
-# @todo move function pms into this plugin
-# @todo move other pms files (pms-help), etc to this plugin
 
 ####
 # PMS Manager
@@ -11,35 +9,52 @@
 # Usage: pms [OPTIONS] [COMMAND]
 #
 # Tool that helps manage PMS, easy to expand and add to
-#
-# @todo Move this into the "pms" plugin
 pms() {
-  while getopts "d" o; do
+  while getopts "dn" o; do
     case ${o} in
-      d)
-	PMS_DEBUG=1
-        ;;
+      d) PMS_DEBUG=1 ;;
+      n) PMS_NO_INTERACTION=1 ;;
     esac
     shift
   done
 
+  # ex: pms plugin list
   if [ ! -z "$1" ] && [ ! -z "$2" ]; then
-    if [ -f $PMS/scripts/pms-$1-$2.sh ]; then
-      source $PMS/scripts/pms-$1-$2.sh
+    if [ -f $PMS_LOCAL/plugins/pms/pms-$1-$2.$PMS_SHELL ]; then
+      source $PMS_LOCAL/plugins/pms/pms-$1-$2.$PMS_SHELL
+      return
+    elif [ -f $PMS_LOCAL/plugins/pms/pms-$1-$2.sh ]; then
+      source $PMS_LOCAL/plugins/pms/pms-$1-$2.sh
+      return
+    elif [ -f $PMS/plugins/pms/pms-$1-$2.$PMS_SHELL ]; then
+      source $PMS/plugins/pms/pms-$1-$2.$PMS_SHELL
+      return
+    elif [ -f $PMS/plugins/pms/pms-$1-$2.sh ]; then
+      source $PMS/plugins/pms/pms-$1-$2.sh
       return
     else
-      echo "Could not load: $PMS/scripts/pms-$1-$2.sh"
+      echo "Could not load: pms-$1-$2"
       return
     fi
+  # ex: pms upgrade
   elif [ ! -z "$1" ]; then
-    if [ -f $PMS/scripts/pms-$1.sh ]; then
-      source $PMS/scripts/pms-$1.sh
+    if [ -f $PMS_LOCAL/plugins/pms/pms-$1.$PMS_SHELL ]; then
+      source $PMS_LOCAL/plugins/pms/pms-$1.$PMS_SHELL
+      return
+    elif [ -f $PMS_LOCAL/plugins/pms/pms-$1.sh ]; then
+      source $PMS_LOCAL/plugins/pms/pms-$1.sh
+      return
+    elif [ -f $PMS/plugins/pms/pms-$1.$PMS_SHELL ]; then
+      source $PMS/plugins/pms/pms-$1.$PMS_SHELL
+      return
+    elif [ -f $PMS/plugins/pms/pms-$1.sh ]; then
+      source $PMS/plugins/pms/pms-$1.sh
       return
     else
-      echo "Could not load: $PMS/scripts/pms-$1.sh"
+      echo "Could not load: pms-$1"
       return
     fi
   fi
 
-  source $PMS/scripts/pms-help.sh
+  source $PMS/plugins/pms/pms-help.sh
 }
