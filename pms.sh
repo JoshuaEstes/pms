@@ -34,6 +34,8 @@ _pms_initialize_colors
 #
 # Example: _pms_message_* "This will be the message"
 # Example: _pms_message_section_* "DEBUG" "This will be the message"
+# Example: _pms_message_block_* "DEBUG" "This will be the message"
+#
 _pms_message_info() {
     printf "\r${BLUE}$1${RESET}\n"
 }
@@ -246,8 +248,8 @@ _pms_command_help() {
   #echo "    reload           Reloads theme"
   echo "  plugin             Helps to manage plugins"
   echo "    list             Lists all available plugins"
-  #echo "    enable           Enables a plugin"
-  #echo "    disable          Disables a plugin"
+  echo "    enable           Enables and install plugin"
+  echo "    disable          Disables a plugin"
   #echo "    update           Updates a plugin"
   #echo "    validate         Validate plugin"
   #echo "    reload           Reloads enabled plugins"
@@ -322,6 +324,7 @@ _pms_command_upgrade() {
   echo
   cp -v $PMS/templates/bashrc ~/.bashrc
   cp -v $PMS/templates/zshrc ~/.zshrc
+  # @todo run update.sh scripts for enabled plugins
   echo
   echo "Upgrade complete, you may need to reload your environment"
   echo
@@ -375,10 +378,43 @@ _pms_command_plugin_list() {
   done
   echo
 }
+_pms_command_plugin_enable() {
+    # Does directory exist?
+    if [ ! -d $PMS_LOCAL/plugins/$3 ] && [ ! -d $PMS/plugins/$3 ]; then
+        _pms_message_error "The plugin '$3' is invalid and cannot be enabled"
+        return 1
+    fi
+
+    # Check plugin is not already enabled
+    for p in "${PMS_PLUGINS[@]}"; do
+        if [ "$p" = "$3" ]; then
+            _pms_message_error "The plugin '$3' is already enabled"
+            return 1
+        fi
+    done
+
+    _pms_message_info "Adding '$3' to ~/.pms.plugins"
+    PMS_PLUGINS+=($3)
+    echo "PMS_PLUGINS=(${PMS_PLUGINS[*]})" > ~/.pms.plugins
+
+    _pms_message_info "Checking for plugin install script"
+    if [ -f $PMS_LOCAL/plugins/$3/install.sh ]; then
+        source $PMS_LOCAL/plugins/$3/install.sh
+    elif [ -f $PMS/plugins/$3/install.sh ]; then
+        source $PMS/plugins/$3/install.sh
+    fi
+
+    _pms_message_info "Loading plugin"
+    _pms_load_plugin $3
+}
+_pms_command_plugin_disable() {
+    echo "@todo"
+}
 ### PMS Manager
 
 # 2) environment file loader
-# load the plugins and theme first so that they can be modified later
+# @todo Load plugin environment variable files first so user can override them
+# load the plugins and theme second so that they can be modified later
 if [ "$PMS_DEBUG" -eq "1" ]; then
   _pms_message_info "PMS Loading Environment Files"
 fi

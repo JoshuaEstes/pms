@@ -1,4 +1,1 @@
-# ~/.pms.plugins
-PMS_PLUGINS=(
-  example
-)
+PMS_PLUGINS=(example git)
