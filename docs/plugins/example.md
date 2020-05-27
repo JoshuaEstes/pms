@@ -58,10 +58,6 @@ pms plugin enable example
 </table>
 
 # Functions
-| Function            | Notes                               |
-|---------------------|-------------------------------------|
-| `_example_function` | This doesn't output anything        |
-| `example`           | This doesn't output anything either |
 <table>
   <thead>
     <tr>
