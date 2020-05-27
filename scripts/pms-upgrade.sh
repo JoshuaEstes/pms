@@ -26,7 +26,7 @@ if [[ "$PMS_DEBUG" -eq "1" ]]; then
   echo "PMS_REMOTE:  $PMS_REMOTE"
   echo "PMS_BRANCH:  $PMS_BRANCH"
   echo "PMS_THEME:   $PMS_THEME"
-  echo "PMS_PLUGINS: $PMS_PLUGINS"
+  echo "PMS_PLUGINS: ${PMS_PLUGINS[*]}"
   echo "PMS_SHELL:   $PMS_SHELL"
   echo "_checkpoint: $_checkpoint"
   echo "-=[ PMS Debug ]=-"
