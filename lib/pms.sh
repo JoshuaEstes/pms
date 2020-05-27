@@ -70,6 +70,31 @@ _pms_diagnostic_dump() {
   echo
   echo "-=[ OS ]=-"
   echo "OSTYPE: $OSTYPE"
+  echo "USER:   $USER"
+  echo "umask:  $(umask)"
+  case "$OSTYPE" in
+    darwin*)
+      echo "Product Name:     $(sw_vers -productName)"
+      echo "Product Version:  $(sw_vers -productVersion)"
+      echo "Build Version:    $(sw_vers -buildVersion)"
+      ;;
+    linux*)
+      echo "Release: $(lsb_release -s -d)"
+      ;;
+  esac
+  echo
+  echo "-=[ Programs ]=-"
+  echo "git: $(git --version)"
+  if [ -x "$(command -v bash)" ]; then
+    echo "bash: $(bash --version | grep bash)"
+  else
+    echo "bash: Not Installed"
+  fi
+  if [ -x "$(command -v zsh)" ]; then
+    echo "zsh: $(zsh --version)"
+  else
+    echo "zsh: Not Installed"
+  fi
   echo
   echo "-=[ Metadata ]=-"
   echo "Created At: $(date)"

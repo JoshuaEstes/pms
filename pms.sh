@@ -2,7 +2,8 @@
 #set -xe
 
 if [ "$PMS_DEBUG" -eq "1" ]; then
-  echo "-=[ PMS ]=-"
+  # @todo just do a _pms_diagnostic_dump?
+  echo "-=[ PMS Debug ]=-"
   echo "PMS:         $PMS"
   echo "PMS_DEBUG:   $PMS_DEBUG"
   echo "PMS_REPO:    $PMS_REPO"
@@ -17,12 +18,13 @@ if [ "$PMS_DEBUG" -eq "1" ]; then
     echo "Hash:        PMS not installed"
   fi
   echo
+  # testing, thinking of loading based on "pms.sh bash" or "pms.sh zsh", of course
+  # we could do "pms.sh auto"
   echo "-=[ Args ]=-"
   echo "0: $0"
   echo "1: $1"
-  echo "2: $2"
+  echo
 fi
-
 
 if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "[DEBUG] PMS Loading Starting"
@@ -39,11 +41,6 @@ for lib in $PMS/lib/*.sh; do
     echo "[DEBUG] Library '$lib' Loaded"
   fi
 done
-
-# Load Environment Variables
-# @depends _env_load
-# @see lib/env.sh
-#_env_load ~/.env ~/.env.$PMS_SHELL ~/.env.local ~/.env.$PMS_SHELL.local
 
 # We need to figure out what shell the user is in and load files based on that
 # shell, this should be improved at some point
