@@ -32,6 +32,16 @@ main() {
       mv ~/.bashrc.pms.bak ~/.bashrc
     fi
   fi
+  if [ -f ~/.zshrc.pms.bak ] && [ -f ~/.zshrc ]; then
+    if [ "$NO_INTERACTION" -eq "0" ]; then
+      read -r -p "Restore your ~/.zshrc with the backup ~/.zshrc.pms.bak? [Y/n] " confirm
+      if [ "$confirm" != "n" ] && [ "$config" != "N" ]; then
+        mv ~/.zshrc.pms.bak ~/.zshrc
+      fi
+    else
+      mv ~/.zshrc.pms.bak ~/.zshrc
+    fi
+  fi
   
   # Delete PMS Config files
   echo "Removing ~/.pms.theme file"

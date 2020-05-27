@@ -71,6 +71,20 @@ setup_bashrc() {
  echo
 }
 
+# zshrc
+setup_zshrc() {
+ # if file or link
+ if [ -f ~/.zshrc ] || [ -h ~/.zshrc ]; then
+   echo "Found existing .zshrc file, backing up"
+   # @todo make this better
+   if [ ! -f ~/.zshrc.pms.bak ]; then
+     mv -f ~/.zshrc ~/.zshrc.pms.bak
+   fi
+ fi
+ cp -f $PMS/templates/zshrc ~/.zshrc
+ echo
+}
+
 # Setup dotfiles
 #   Setup various dotfiles and config files that PMS will use. Some dotfiles
 #   may get modified later by plugins. Any dotfile that we find, needs to be
@@ -79,8 +93,7 @@ setup_bashrc() {
 setup_dotfiles() {
   echo "Setting up dotfiles"
   setup_bashrc
-  # @todo
-  #setup_zshrc
+  setup_zshrc
 }
 
 # Setup shell
