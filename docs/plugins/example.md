@@ -40,4 +40,3 @@ Should this be here?
 * Link 1
 * Link 2
 
-{% include plugin_footer.md %}
