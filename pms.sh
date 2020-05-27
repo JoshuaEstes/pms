@@ -74,7 +74,7 @@ _pms_message_section_error() {
 _pms_load_theme() {
   theme_loaded=0
   # Generic sh theme files
-  if [ -f $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.sh]; then
+  if [ -f $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.sh ]; then
     if [ "$PMS_DEBUG" -eq "1" ]; then
       _pms_message_info "Loading theme '$PMS_THEME' (sh) via local"
     fi
