@@ -6,6 +6,3 @@
 # bash, zsh, or some other shell. These files should have the most generic code
 # in them
 #
-if [ "$PMS_DEBUG" -eq "1" ]; then
-  echo "[DEBUG] lib/example.sh loaded"
-fi

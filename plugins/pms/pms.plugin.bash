@@ -35,10 +35,16 @@ done
 # Load theme
 # @todo make function for all this
 if [ -f $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.bash ]; then
+  if [ "$PMS_DEBUG" -eq "1" ]; then
+    echo "[DEBUG] Loading theme '$PMS_THEME' via local"
+  fi
   source $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.bash
 elif [ -f $PMS/themes/$PMS_THEME/$PMS_THEME.theme.bash ]; then
+  if [ "$PMS_DEBUG" -eq "1" ]; then
+    echo "[DEBUG] Loading theme '$PMS_THEME'"
+  fi
   source $PMS/themes/$PMS_THEME/$PMS_THEME.theme.bash
 else
-  echo "[ERROR] Theme '$PMS_THEME' could not be loaded"
-  # @todo if this is the case, should we just load the "default" theme
+  echo "[ERROR] Theme '$PMS_THEME' could not be loaded, loading the 'default' theme"
+  source $PMS/themes/default/default.theme.bash
 fi
