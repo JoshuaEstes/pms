@@ -8,6 +8,8 @@
 # Usage: pms [OPTIONS] [COMMAND]
 #
 # Tool that helps manage PMS, easy to expand and add to
+# @todo move to bin
+# @todo support no interaction
 pms() {
   while getopts "dn" o; do
     case ${o} in
@@ -49,5 +51,8 @@ pms() {
     fi
   fi
 
+  echo
+  echo "Invalid command or command not found"
+  echo
   source $PMS/plugins/pms/pms-help.sh
 }

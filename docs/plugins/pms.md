@@ -3,14 +3,13 @@ layout: default
 title: PMS "pms" Plugin
 ---
 {% include plugin_header.md %}
-
 # pms
-The "pms" plugin will always load. It provides the PMS Manager along with a few extra goodies to help
-manage PMS.
+The "pms" plugin will always load first. It provides the PMS Manager along with
+a few extra goodies to help manage PMS.
 
 This plugin cannot be disabled.
 
-# Enviroment Variables
+# Environment Variables
 <table>
   <thead>
     <tr>
@@ -86,4 +85,4 @@ This plugin cannot be disabled.
 
 # See Also
 * [Plugin Source Code](https://github.com/JoshuaEstes/pms/tree/master/plugins/pms)
-* @todo Link to pms_manager.md
+* [PMS Manager](/pms/pms-manager.html)

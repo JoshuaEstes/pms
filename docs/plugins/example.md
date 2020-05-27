@@ -3,7 +3,6 @@ layout: default
 title: PMS "example" Plugin
 ---
 {% include plugin_header.md %}
-
 # example
 The example plugin will be documented here. Top part gives a few details.
 
@@ -11,7 +10,7 @@ The example plugin will be documented here. Top part gives a few details.
 Requirements are listed here
 * example >= 1.2.3
 
-# Enviroment Variables
+# Environment Variables
 These options are set in your environment variables file.
 <table>
   <thead>
@@ -75,13 +74,36 @@ These are some function that are now available since this plugin has been enable
   </tbody>
 </table>
 
+# Commands
+These are scripts and binaries found in the plugin's `bin/` directory.
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>excmd</td>
+      <td>This is not a real command and will not work</td>
+    </tr>
+  </tbody>
+</table>
+
 # Suggested Plugins
 This plugin will pair well with these plugins
+* [Plugin 1](/pms)
+* [Plugin 2](/pms)
+
+# Conflicts with Plugins
+When these plugins are enabled, it will cause issues
 * [Plugin 1](/pms)
 * [Plugin 2](/pms)
 
 # See Also
 Links to other documentation for this plugin, for example, if this was the
 "git" plugin, we could link to the git manual
+* [Plugin Source Code](https://github.com/JoshuaEstes/pms/tree/master/plugins/example)
 * [Link 1](/pms)
 * [Link 2](/pms)
