@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-set -e
-PMS=${PMS:-~/.pms}
+#set -e
+#PMS=${PMS:-~/.pms}
 
+echo
 echo "Usage: pms [OPTIONS] COMMAND"
 echo
 echo "Options:"
@@ -22,5 +23,3 @@ echo "    disable          Disables a plugin"
 echo "    install          Installs a plugin that is not part of the PMS core"
 echo "  reload             Reloads PMS"
 echo
-
-return
