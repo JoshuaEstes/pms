@@ -17,10 +17,27 @@ pms plugin enable example
 ```
 
 # Options
-| Variable    | Default | Notes                           |
-|-------------|---------|---------------------------------|
-| PMS_EXAMPLE | `1`     | This doesn't do anything        |
-| EXAMPLE     |         | This doesn't do anything either |
+<table>
+  <thead>
+    <tr>
+      <th>Variable</th>
+      <th>Default</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>PMS_EXAMPLE</td>
+      <td>`1`</td>
+      <td>This will do nothing</td>
+    </tr>
+    <tr>
+      <td>EXAMPLE</td>
+      <td></td>
+      <td>This doesn't do nothing either</td>
+    </tr>
+  </tbody>
+</table>
 
 # Aliases
 | Alias   | Command        | Notes                   |
