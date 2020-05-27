@@ -6,7 +6,7 @@ PMS=~/.pms
 PMS_LOCAL=$PMS/local
 
 # 0 = disabled, 1 = enabled
-PMS_DEBUG=1
+PMS_DEBUG=0
 
 # Setup the git repo that we pull from for updates
 PMS_REPO=JoshuaEstes/pms

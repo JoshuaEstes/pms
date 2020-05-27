@@ -70,19 +70,41 @@ _pms_diagnostic_dump() {
 #
 # Usage: _pms_load_theme default
 _pms_load_theme() {
+  theme_loaded=0
+  # Generic sh theme files
+  if [ -f $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.sh]; then
+    if [ "$PMS_DEBUG" -eq "1" ]; then
+      echo "[DEBUG] Loading theme '$PMS_THEME' (sh) via local"
+    fi
+    source $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.sh
+    theme_loaded=1
+  elif [ -f $PMS/themes/$PMS_THEME/$PMS_THEME.theme.sh ]; then
+    if [ "$PMS_DEBUG" -eq "1" ]; then
+      echo "[DEBUG] Loading theme '$PMS_THEME' (sh)"
+    fi
+    source $PMS/themes/$PMS_THEME/$PMS_THEME.theme.sh
+    theme_loaded=1
+  fi
+
+  # Shell specific theme file
   if [ -f $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL ]; then
     if [ "$PMS_DEBUG" -eq "1" ]; then
-      echo "[DEBUG] Loading theme '$PMS_THEME' via local"
+      echo "[DEBUG] Loading theme '$PMS_THEME' ($PMS_SHELL) via local"
     fi
     source $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL
+    theme_loaded=1
   elif [ -f $PMS/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL ]; then
     if [ "$PMS_DEBUG" -eq "1" ]; then
-      echo "[DEBUG] Loading theme '$PMS_THEME'"
+      echo "[DEBUG] Loading theme '$PMS_THEME' ($PMS_SHELL)"
     fi
     source $PMS/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL
-  else
+    theme_loaded=1
+  fi
+
+  if [ "$theme_loaded" -eq "0" ]; then
     echo "[ERROR] Theme '$PMS_THEME' could not be loaded, loading the 'default' theme"
-    source $PMS/themes/default/default.theme.$PMS_SHELL
+    #source $PMS/themes/default/default.theme.$PMS_SHELL
+    _pms_load_theme default
   fi
 }
 
