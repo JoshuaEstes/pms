@@ -1,4 +1,9 @@
 #!/usr/bin/env sh
-echo
-echo "@todo pms-reload"
-echo
+# @todo Add validation to make sure we can reload PMS
+# @todo which is best?
+# source ~/.${PMS_SHELL}rc
+# exec $PMS_SHELL
+# $PMS/pms.sh $PMS_SHELL $PMS_DEBUG
+echo "Reloading PMS..."
+exec ${PMS_SHELL}
+echo "PMS Reloaded"

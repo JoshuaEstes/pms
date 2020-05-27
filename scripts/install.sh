@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 set -e # Exit immediately if SHTF
 ####
-#
-# Usage: @todo
-#
 # Environment Variables
 #   PMS         = path to PMS repository
 #   PMS_DEBUG   = 1 = enabled, 0 = disabled

@@ -1,5 +1,6 @@
 ####
 # lib/example.sh
+# @todo delete
 ####
 #
 # This file will be loaded for ANY shell. This means that we could be using
