@@ -20,6 +20,9 @@ functionality to your shell), and dotfile management.
   * Easy Plugin enabled and disable
 * Focus on using environment varables to modify functionality of PMS
 * Easy Uninstall process that leaves your system in the orginal state before installing PMS
+* Documentation for both Users and Developers
+  * [User Guides](https://joshuaestes.github.io/pms/)
+  * [Developer Guides](https://github.com/JoshuaEstes/pms/wiki)
 * [View All Features](https://joshuaestes.github.io/pms/features.html)
 
 # Getting Started
