@@ -73,12 +73,3 @@ cd $PMS && ./scripts/uninstall.sh
 
 # License
 See [LICENSE.md](https://github.com/JoshuaEstes/pms/blob/master/LICENSE.md)
-
-# @todo
-  * [CHANGELOG.md](https://github.com/JoshuaEstes/pms/blob/master/CHANGELOG.md)
-    * Need to keep track of versions if this happens
-  * [CONTRIBUTING.md](https://github.com/JoshuaEstes/pms/blob/master/CONTRIBUTING.md)
-  * [CODE_OF_CONDUCT.md](https://github.com/JoshuaEstes/pms/blob/master/CODE_OF_CONDUCT.md)
-  * Github Specific Stuff
-    * Pull Request Templates
-    * Issue Templates
