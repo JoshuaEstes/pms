@@ -16,6 +16,11 @@ if [ "$PMS_DEBUG" -eq "1" ]; then
   else
     echo "Hash:        PMS not installed"
   fi
+  echo
+  echo "-=[ Args ]=-"
+  echo "0: $0"
+  echo "1: $1"
+  echo "2: $2"
 fi
 
 
@@ -38,7 +43,7 @@ done
 # Load Environment Variables
 # @depends _env_load
 # @see lib/env.sh
-_env_load ~/.env ~/.env.$PMS_SHELL ~/.env.local ~/.env.$PMS_SHELL.local
+#_env_load ~/.env ~/.env.$PMS_SHELL ~/.env.local ~/.env.$PMS_SHELL.local
 
 # We need to figure out what shell the user is in and load files based on that
 # shell, this should be improved at some point

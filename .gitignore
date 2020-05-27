@@ -1,1 +1,4 @@
 local/
+.env.bash.local
+.env.zsh.local
+.env.local

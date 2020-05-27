@@ -8,7 +8,18 @@
 # the config files to modify PMS
 #
 
-source ~/.env
+# Load Environment Variables
+env_files=(
+  ~/.env
+  ~/.env.bash
+  ~/.env.local
+  ~/.env.bash.local
+)
+for f in $env_files; do
+  if [ -f $f ]; then
+    source $f
+  fi
+done
 
 if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "[DEBUG] PMS Loading ~/.bashrc"
