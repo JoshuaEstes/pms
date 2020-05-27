@@ -16,6 +16,7 @@ _update_pms_files() {
   cp -v $PMS/templates/bashrc ~/.bashrc
 }
 
+_checkpoint="$PWD"
 if [[ "$PMS_DEBUG" -eq "1" ]]; then
   echo
   echo "-=[ PMS Debug ]=-"
@@ -27,12 +28,11 @@ if [[ "$PMS_DEBUG" -eq "1" ]]; then
   echo "PMS_THEME:   $PMS_THEME"
   echo "PMS_PLUGINS: $PMS_PLUGINS"
   echo "PMS_SHELL:   $PMS_SHELL"
+  echo "_checkpoint: $_checkpoint"
   echo "-=[ PMS Debug ]=-"
   echo
 fi
-cwd_checkpoint="$CWD"
 cd "$PMS"
-echo
 echo "Upgrading to latest PMS version"
 echo
 git pull origin master
@@ -46,4 +46,4 @@ echo
 if [ -z $PMS_SHELL ]; then
   exec $PMS_SHELL
 fi
-cd "$cwd_checkpoint"
+cd "$_checkpoint"
