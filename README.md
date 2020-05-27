@@ -7,23 +7,23 @@ It supports easy install/uninstall and a wide variety of plugins and themes.
 ![CI](https://github.com/JoshuaEstes/pms/workflows/CI/badge.svg?branch=master)
 
 # Features
-  * Themes - Change the way your environment looks
-  * Plugins - Change the way your environment functions
-  * Dotfiles - Change the way programs work in your environment
-  * Multiple Shell Support
-    * No matter the shell, you can easily swap between them and maintain similar functionality
-  * PMS Manager - Easy to use and up modify tool to help you manage PMS
-    * Easy upgrade PMS
-    * Preview and switch themes
-    * Easy Plugin enabled and disable
-  * Focus on using environment varables to modify functionality of PMS
-  * Easy Uninstall process that leaves your system in the orginal state before installing PMS
+* Themes - Change the way your environment looks
+* [Plugins](https://joshuaestes.github.io/pms/plugins.html) - Change the way your environment functions
+* Dotfiles - Change the way programs work in your environment
+* Multiple Shell Support
+  * No matter the shell, you can easily swap between them and maintain similar functionality
+* PMS Manager - Easy to use and up modify tool to help you manage PMS
+  * Easy upgrade PMS
+  * Preview and switch themes
+  * Easy Plugin enabled and disable
+* Focus on using environment varables to modify functionality of PMS
+* Easy Uninstall process that leaves your system in the orginal state before installing PMS
 
 # Getting Started
 ## Requirements
-  * curl or wget
-  * git
-  * A shell such as bash, zsh, etc.
+* curl or wget
+* git
+* A shell such as bash, zsh, etc.
 
 ## Installation
 Installation can be done manually or by using curl or wget.
@@ -57,67 +57,10 @@ git clone https://github.com/JoshuaEstes/pms.git ~/.pms
 # ...
 ```
 
-## Updating PMS using the PMS Manager
-### auto
-```
-pms upgrade
-```
-
-### Manual update
-```
-cd $PMS
-git pull origin master
-# Copy over new template files
-# cp ~/.pms/templates/bashrc ~/.bashrc
-# ...
-```
-
-# Themes
-Themes allow you to change the look and feel of your environment.
-
-```
-# List all themes available
-pms theme list
-
-# switch to a new theme
-pms theme switch default
-```
-
-You can manually modify the theme by editing `~/.pms.theme`
-
-# Plugins
-Plugins change the functionality of your environment.
-
-```
-# List all available plugins
-pms plugin list
-
-# Display enabled plugins
-pms plugin list enabled
-
-# Enabled a plugin
-pms plugin enable example
-
-# Disable a plugin
-pms plugin disable example
-```
-
-You can manually modify the enabled plugins by editing `~/.pms.plugins`
-
-# Dotfiles
-Dotfiles will change the look and feel of various programs. For example the
-"vim" dotfiles will modify how vim works in your environment.
-
-# Shells
-PMS supprts a number of different shells. Switching from one shell to another
-is easy and allows you to compare which shell works best for you and your needs.
-
-To see a list of shells on your system, you can run `cat /etc/shells`
-
-If PMS does not support your shell, please open an issue.
-
 # Documentation
-See the "docs/" directory
+* [User Guides](https://joshuaestes.github.io/pms/) - Guides on using PMS
+* [Developer Guides](https://github.com/JoshuaEstes/pms/wiki) - Feel like contributing?
+
 
 # Uninstall
 By default, PMS in installed in `~/.pms` directory. You will just need to run
