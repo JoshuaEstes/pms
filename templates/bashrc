@@ -9,19 +9,24 @@
 #
 
 # Load Environment Variables
-env_files=(
-  ~/.pms.plugins
-  ~/.pms.theme
-  ~/.env
-  ~/.env.bash
-  ~/.env.local
-  ~/.env.bash.local
-)
-for f in $env_files; do
-  if [ -f $f ]; then
-    source $f
-  fi
-done
+if [ -f ~/.pms.plugins ]; then
+  source ~/.pms.plugins
+fi
+if [ -f ~/.pms.theme ]; then
+  source ~/.pms.theme
+fi
+if [ -f ~/.env ]; then
+  source ~/.env
+fi
+if [ -f ~/.env.bash ]; then
+  source ~/.env.bash
+fi
+if [ -f ~/.env.local ]; then
+  source ~/.env.local
+fi
+if [ -f ~/.env.bash.local ]; then
+  source ~/.env.bash.local
+fi
 
 if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "[DEBUG] PMS Loading ~/.bashrc"
