@@ -1,0 +1,70 @@
+#!/usr/bin/env sh
+if [ -z "$PMS" ]; then
+    echo
+    echo "Could not find the PMS directory"
+    echo
+    exit 1
+fi
+
+####
+# PMS Manager
+#
+# Usage: pms [OPTIONS] [COMMAND]
+#
+# Tool that helps manage PMS, easy to expand and add to
+# @todo support no interaction
+main() {
+  while getopts "dn" o; do
+    case ${o} in
+      d) PMS_DEBUG=1 ;;
+      n) PMS_NO_INTERACTION=1 ;;
+    esac
+    shift
+  done
+
+  if [ "$PMS_DEBUG" -eq "1" ]; then
+      echo "[DEBUG] PMS:       $PMS"
+      echo "[DEBUG] PMS_LOCAL: $PMS_LOCAL"
+      echo "[DEBUG] PMS_SHELL: $PMS_SHELL"
+      echo "[DEBUG] 0:         $0"
+      echo "[DEBUG] 1:         $1"
+      echo "[DEBUG] 2:         $2"
+      echo "[DEBUG] 3:         $3"
+  fi
+
+  # ex: pms plugin list
+  if [ ! -z "$1" ] && [ ! -z "$2" ]; then
+    if [ -f $PMS_LOCAL/plugins/pms/pms-$1-$2.$PMS_SHELL ]; then
+      source $PMS_LOCAL/plugins/pms/pms-$1-$2.$PMS_SHELL
+      return
+    elif [ -f $PMS_LOCAL/plugins/pms/pms-$1-$2.sh ]; then
+      source $PMS_LOCAL/plugins/pms/pms-$1-$2.sh
+      return
+    elif [ -f $PMS/plugins/pms/pms-$1-$2.$PMS_SHELL ]; then
+      source $PMS/plugins/pms/pms-$1-$2.$PMS_SHELL
+      return
+    elif [ -f $PMS/plugins/pms/pms-$1-$2.sh ]; then
+      source $PMS/plugins/pms/pms-$1-$2.sh
+      return
+    fi
+  # ex: pms upgrade
+  elif [ ! -z "$1" ]; then
+    if [ -f $PMS_LOCAL/plugins/pms/pms-$1.$PMS_SHELL ]; then
+      source $PMS_LOCAL/plugins/pms/pms-$1.$PMS_SHELL
+      return
+    elif [ -f $PMS_LOCAL/plugins/pms/pms-$1.sh ]; then
+      source $PMS_LOCAL/plugins/pms/pms-$1.sh
+      return
+    elif [ -f $PMS/plugins/pms/pms-$1.$PMS_SHELL ]; then
+      source $PMS/plugins/pms/pms-$1.$PMS_SHELL
+      return
+    elif [ -f $PMS/plugins/pms/pms-$1.sh ]; then
+      source $PMS/plugins/pms/pms-$1.sh
+      return
+    fi
+  fi
+
+  source $PMS/plugins/pms/pms-help.sh
+}
+
+main "$@"
