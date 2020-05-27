@@ -1,6 +1,7 @@
 ####
 # lib/pms.sh
 ####
+# @todo move all this into /pms.sh
 
 ####
 # Loads the theme files
