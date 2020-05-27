@@ -19,5 +19,6 @@ echo "  plugin             Helps to manage plugins"
 echo "    list             Lists all available pluings"
 echo "    enable           Enables a plugin"
 echo "    disable          Disables a plugin"
+echo "    update           Updates a plugin"
 echo "  reload             Reloads PMS"
 echo
