@@ -57,31 +57,16 @@ setup_pms() {
   echo
 }
 
-# bashrc
-setup_bashrc() {
- # if file or link
- if [ -f ~/.bashrc ] || [ -h ~/.bashrc ]; then
-   echo "Found existing .bashrc file, backing up"
-   # @todo make this better
-   if [ ! -f ~/.bashrc.pms.bak ]; then
-     mv -f ~/.bashrc ~/.bashrc.pms.bak
+_setup_shell_rc() {
+ if [ -f ~/.$1 ] || [ -h ~/.$1 ]; then
+   echo "Found existing .$1 file, backing up"
+   if [ ! -f ~/.$1.pms.bak ]; then
+     echo "Moving ~/.$1 -> ~/.$1.pms.bak"
+     mv -f ~/.$1 ~/.$1.pms.bak
    fi
  fi
- cp -f $PMS/templates/bashrc ~/.bashrc
- echo
-}
-
-# zshrc
-setup_zshrc() {
- # if file or link
- if [ -f ~/.zshrc ] || [ -h ~/.zshrc ]; then
-   echo "Found existing .zshrc file, backing up"
-   # @todo make this better
-   if [ ! -f ~/.zshrc.pms.bak ]; then
-     mv -f ~/.zshrc ~/.zshrc.pms.bak
-   fi
- fi
- cp -f $PMS/templates/zshrc ~/.zshrc
+ echo "Copy $PMS/templates/$1 -> ~/.$1"
+ cp -f $PMS/templates/$1 ~/.$1
  echo
 }
 
@@ -92,8 +77,8 @@ setup_zshrc() {
 #   we found it
 setup_dotfiles() {
   echo "Setting up dotfiles"
-  setup_bashrc
-  setup_zshrc
+  _setup_shell_rc bashrc
+  _setup_shell_rc zshrc
 }
 
 # Setup shell
