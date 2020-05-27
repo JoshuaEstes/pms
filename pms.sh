@@ -18,11 +18,13 @@ if [ "$PMS_DEBUG" -eq "1" ]; then
     echo "Hash:        PMS not installed"
   fi
   echo
-  # testing, thinking of loading based on "pms.sh bash" or "pms.sh zsh", of course
-  # we could do "pms.sh auto"
+  # testing, thinking of loading based on "pms.sh bash" or "pms.sh zsh", of
+  # course we could do "pms.sh auto", could also pass in other stuff like debug
+  # options, etc. "pms.sh SHELL DEBUG"
   echo "-=[ Args ]=-"
   echo "0: $0"
   echo "1: $1"
+  echo "2: $2"
   echo
 fi
 

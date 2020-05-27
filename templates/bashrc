@@ -32,7 +32,7 @@ if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "[DEBUG] PMS Loading ~/.bashrc"
 fi
 
-source $PMS/pms.sh bash
+source $PMS/pms.sh bash $PMS_DEBUG
 
 if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "[DEBUG] PMS Completed Loading ~/.bashrc"
