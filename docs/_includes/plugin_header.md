@@ -1,5 +1,5 @@
 <!-- This is used at the top of every plugin plage -->
 <div>
-  [Back to Plugin List](/pms/plugins.html)
+  <a href="/pms/plugins.html">Back to Plugin List</a>
 </div>
 <hr/>
