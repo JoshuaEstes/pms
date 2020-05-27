@@ -1,40 +1,16 @@
 # ~/.bashrc
 #set -xe
 ####
+# This file may get updated when running an install or pms update, please use
+# the config files and PMS_LOCAL directory to modify PMS
 #
-# .bashrc
-#
-# This file may get updated when running an install or update, please use
-# the config files to modify PMS
-#
-
-# Load Environment Variables
-if [ -f ~/.pms.plugins ]; then
-  source ~/.pms.plugins
-fi
-if [ -f ~/.pms.theme ]; then
-  source ~/.pms.theme
-fi
-if [ -f ~/.env ]; then
-  source ~/.env
-fi
-if [ -f ~/.env.bash ]; then
-  source ~/.env.bash
-fi
-if [ -f ~/.env.local ]; then
-  source ~/.env.local
-fi
-if [ -f ~/.env.bash.local ]; then
-  source ~/.env.bash.local
-fi
-
 if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "[DEBUG] PMS Loading ~/.bashrc"
 fi
-
 source $PMS/pms.sh bash $PMS_DEBUG
+# Specific "bash" stuff goes here
 
+# end bash specific
 if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "[DEBUG] PMS Completed Loading ~/.bashrc"
 fi
-

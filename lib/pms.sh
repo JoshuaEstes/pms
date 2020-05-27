@@ -10,6 +10,8 @@ PMS=${PMS:-~/.pms}
 #
 # Tool that helps manage PMS, easy to expand and add to
 #
+# @todo Move this into the "pms" plugin
+#
 pms() {
   while getopts "d" o; do
     case ${o} in
@@ -49,6 +51,7 @@ pms() {
 _pms_diagnostic_dump() {
   echo "-=[ PMS ]=-"
   echo "PMS:         $PMS"
+  echo "PMS_LOCAL:   $PMS_LOCAL"
   echo "PMS_DEBUG:   $PMS_DEBUG"
   echo "PMS_REPO:    $PMS_REPO"
   echo "PMS_REMOTE:  $PMS_REMOTE"
@@ -102,20 +105,66 @@ _pms_diagnostic_dump() {
 }
 
 ####
-# "loads" the theme file
+# Loads the theme files
 #
-# Usage: _pms_load_theme
-#
-# @todo this is more like "config"
+# Usage: _pms_load_theme default
 _pms_load_theme() {
-  if [ -f ~/.pms.theme ]; then
-    source ~/.pms.theme
+  if [ -f $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL ]; then
+    if [ "$PMS_DEBUG" -eq "1" ]; then
+      echo "[DEBUG] Loading theme '$PMS_THEME' via local"
+    fi
+    source $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL
+  elif [ -f $PMS/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL ]; then
+    if [ "$PMS_DEBUG" -eq "1" ]; then
+      echo "[DEBUG] Loading theme '$PMS_THEME'"
+    fi
+    source $PMS/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL
+  else
+    echo "[ERROR] Theme '$PMS_THEME' could not be loaded, loading the 'default' theme"
+    source $PMS/themes/default/default.theme.$PMS_SHELL
   fi
 }
 
-# @todo this is more like "config"
-_pms_load_plugins() {
-  if [ -f ~/.pms.plugins ]; then
-    source ~/.pms.plugins
+####
+# Loads plugin
+#
+# Usage: _pms_load_plugin example
+#
+_pms_load_plugin() {
+  # check local directory first
+  if [ -f $PMS_LOCAL/plugins/$1/$1.plugin.$PMS_SHELL ]; then
+    if [ "$PMS_DEBUG" -eq "1" ]; then
+      echo "[DEBUG] Loading plugin '$1' via local"
+    fi
+    source $PMS_LOCAL/plugins/$1/$1.plugin.$PMS_SHELL
+  # check core plugins
+  elif [ -f $PMS/plugins/$1/$1.plugin.$PMS_SHELL ]; then
+    if [ "$PMS_DEBUG" -eq "1" ]; then
+      echo "[DEBUG] Loading plugin '$1'"
+    fi
+    source $PMS/plugins/$1/$1.plugin.$PMS_SHELL
+  # Let user know plugin could not be found
+  else
+    echo "[ERROR] Plugin '$1' could not be loaded"
+  fi
+}
+
+####
+# This is used to set the $PMS_SHELL environment variable. It will overwrite it
+# if it is currently defined as well
+#
+# Usage: _pms_shell_set
+#
+_pms_shell_set() {
+  case "$SHELL" in
+    "/bin/bash" | "/usr/bin/bash" )
+      PMS_SHELL=bash ;;
+    "/bin/zsh" )
+      PMS_SHELL=zsh ;;
+    * )
+      PMS_SHELL=sh ;;
+  esac
+  if [ "$PMS_DEBUG" -eq "1" ]; then
+    echo "[DEBUG] PMS_SHELL set to '$PMS_SHELL'"
   fi
 }

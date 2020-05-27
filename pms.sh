@@ -1,10 +1,38 @@
+####
 # pms.sh
+####
 #set -xe
 
+# 1) Environment Variable Defaults
+PMS_SHELL=$1
+PMS_DEBUG=$2
+PMS_THEME=default
+
+# 2) environment file loader
+# load the plugins and theme first so that they can be modified later
+if [ -f ~/.pms.plugins ]; then
+  source ~/.pms.plugins
+fi
+if [ -f ~/.pms.theme ]; then
+  source ~/.pms.theme
+fi
+if [ -f ~/.env ]; then
+  source ~/.env
+fi
+if [ -f ~/.env.$1 ]; then
+  source ~/.env.$1
+fi
+if [ -f ~/.env.local ]; then
+  source ~/.env.local
+fi
+if [ -f ~/.env.$1.local ]; then
+  source ~/.env.$1.local
+fi
+
 if [ "$PMS_DEBUG" -eq "1" ]; then
-  # @todo just do a _pms_diagnostic_dump?
-  echo "-=[ PMS Debug ]=-"
+  echo "-=[ PMS ]=-"
   echo "PMS:         $PMS"
+  echo "PMS_LOCAL:   $PMS_LOCAL"
   echo "PMS_DEBUG:   $PMS_DEBUG"
   echo "PMS_REPO:    $PMS_REPO"
   echo "PMS_REMOTE:  $PMS_REMOTE"
@@ -12,19 +40,10 @@ if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "PMS_THEME:   $PMS_THEME"
   echo "PMS_PLUGINS: $PMS_PLUGINS"
   echo "PMS_SHELL:   $PMS_SHELL"
-  if [ -d $PMS ]; then
-    echo "Hash:        $(cd $PMS; git rev-parse --short HEAD)"
-  else
-    echo "Hash:        PMS not installed"
-  fi
   echo
-  # testing, thinking of loading based on "pms.sh bash" or "pms.sh zsh", of
-  # course we could do "pms.sh auto", could also pass in other stuff like debug
-  # options, etc. "pms.sh SHELL DEBUG"
   echo "-=[ Args ]=-"
-  echo "0: $0"
-  echo "1: $1"
-  echo "2: $2"
+  echo "1: $1" # PMS_SHELL
+  echo "2: $2" # PMS_DEBUG
   echo
 fi
 
@@ -32,46 +51,25 @@ if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "[DEBUG] PMS Loading Starting"
 fi
 
-# Load general libs
+# 3) Load libraries (sh and PMS_SHELL)
 # @todo local overwrites
-for lib in $PMS/lib/*.sh; do
+for lib in $PMS/lib/*.{sh,$PMS_SHELL}; do
   if [ "$PMS_DEBUG" -eq "1" ]; then
-    echo "[DEBUG] Library '$lib' Loading..."
+    echo "[DEBUG] Loading Library '$(basename $lib)'"
   fi
   source $lib
-  if [ "$PMS_DEBUG" -eq "1" ]; then
-    echo "[DEBUG] Library '$lib' Loaded"
-  fi
 done
 
-# We need to figure out what shell the user is in and load files based on that
-# shell, this should be improved at some point
-case "$SHELL" in
-  "/bin/bash" | "/usr/bin/bash" )
-    PMS_SHELL=bash ;;
-  "/bin/zsh" )
-    PMS_SHELL=zsh ;;
-  * )
-    PMS_SHELL=sh ;;
-esac
-if [ "$PMS_DEBUG" -eq "1" ]; then
-  echo "[DEBUG] PMS_SHELL set to '$PMS_SHELL'"
-fi
+# 4) Load plugins
+# make sure the pms and "PMS_SHELL" plugins are loaded up
+#_pms_load_plugin pms
+_pms_load_plugin $PMS_SHELL
+for plugin in "${PMS_PLUGINS[@]}"; do
+  _pms_load_plugin $plugin
+done
 
-# theme
-# @see lib/pms.sh
-_pms_load_theme
-
-# plugins
-# @see lib/pms.sh
-_pms_load_plugins
-
-# We want to make sure that each shell has it's on "rc" script here
-if [ -f $PMS/plugins/pms/pms.plugin.$PMS_SHELL ]; then
-  source $PMS/plugins/pms/pms.plugin.$PMS_SHELL
-else
-  echo "[PMS] Could not find: $PMS/plugins/pms/pms.plugin.$PMS_SHELL"
-fi
+# 5) load theme
+_pms_load_theme $PMS_THEME
 
 if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "[DEBUG] PMS Loading Complete"
