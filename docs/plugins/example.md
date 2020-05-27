@@ -9,14 +9,10 @@ The example plugin will be documented here. Top part gives a few details.
 
 # Requirements
 Requirements are listed here
-
-# Enable
-This should always be the same?
-```
-pms plugin enable example
-```
+* example >= 1.2.3
 
 # Options
+These options are set in your environment variables file.
 <table>
   <thead>
     <tr>
@@ -40,6 +36,7 @@ pms plugin enable example
 </table>
 
 # Aliases
+By enabling this plugin, you will gain access to these alias that you can use.
 <table>
   <thead>
     <tr>
@@ -58,6 +55,7 @@ pms plugin enable example
 </table>
 
 # Functions
+These are some function that are now available since this plugin has been enabled.
 <table>
   <thead>
     <tr>
@@ -77,9 +75,13 @@ pms plugin enable example
   </tbody>
 </table>
 
-# Auto Completion
-Should this be here?
+# Suggested Plugins
+This plugin will pair well with these plugins
+* [Plugin 1](/pms)
+* [Plugin 2](/pms)
 
 # See Also
+Links to other documentation for this plugin, for example, if this was the
+"git" plugin, we could link to the git manual
 * [Link 1](/pms)
 * [Link 2](/pms)
