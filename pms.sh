@@ -476,8 +476,6 @@ if [ -f ~/.env ]; then
     _pms_message_info "loading env file '~/.env'"
   fi
   source ~/.env
-else
-  _pms_message_warn "~/.env could not be found"
 fi
 # .env.$PMS_SHELL
 if [ -f ~/.env.$PMS_SHELL ]; then
@@ -485,8 +483,6 @@ if [ -f ~/.env.$PMS_SHELL ]; then
     _pms_message_info "loading env file '~/.env.$PMS_SHELL'"
   fi
   source ~/.env.$PMS_SHELL
-else
-  _pms_message_warn "~/.env.$PMS_SHELL could not be found"
 fi
 # .env.local
 if [ -f ~/.env.local ]; then
@@ -494,8 +490,6 @@ if [ -f ~/.env.local ]; then
     _pms_message_info "loading env file '~/.env.local'"
   fi
   source ~/.env.local
-else
-  _pms_message_warn "~/.env.local could not be found"
 fi
 # .env.$PMS_SHELL.local
 if [ -f ~/.env.$PMS_SHELL.local ]; then
@@ -503,8 +497,6 @@ if [ -f ~/.env.$PMS_SHELL.local ]; then
     _pms_message_info "loading env file '~/.env.$PMS_SHELL.local'"
   fi
   source ~/.env.$PMS_SHELL.local
-else
-  _pms_message_warn "~/.env.$PMS_SHELL.local could not be found"
 fi
 
 # Dump some environment variables not that settings are loaded

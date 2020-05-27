@@ -1,1 +1,1 @@
-PMS_PLUGINS=(example git)
+PMS_PLUGINS=(git)
