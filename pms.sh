@@ -1,5 +1,5 @@
 # pms.sh
-set -xe
+#set -xe
 
 if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "-=[ PMS ]=-"
@@ -35,6 +35,11 @@ for lib in $PMS/lib/*.sh; do
   fi
 done
 
+# Load Environment Variables
+# @depends _env_load
+# @see lib/env.sh
+_env_load ~/.env ~/.env.$PMS_SHELL ~/.env.local ~/.env.$PMS_SHELL.local
+
 # We need to figure out what shell the user is in and load files based on that
 # shell, this should be improved at some point
 case "$SHELL" in
@@ -48,11 +53,6 @@ esac
 if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "[DEBUG] PMS_SHELL set to '$PMS_SHELL'"
 fi
-
-# Load Environment Variables
-# @depends _env_load
-# @see lib/env.sh
-_env_load ~/.env ~/.env.$PMS_SHELL ~/.env.local ~/.env.$PMS_SHELL.local
 
 # theme
 # @see lib/pms.sh

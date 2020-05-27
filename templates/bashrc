@@ -1,5 +1,5 @@
 # ~/.bashrc
-set -xe
+#set -xe
 ####
 #
 # .bashrc
