@@ -121,7 +121,6 @@ _pms_load_plugin() {
   # check core plugins
   elif [ -f $PMS/plugins/$1/$1.plugin.$PMS_SHELL ]; then
     if [ "$PMS_DEBUG" -eq "1" ]; then
-      echo "[DEBUG] Loading plugin '$1'"
       echo "[DEBUG] Loading plugin '$1' ($PMS_SHELL)"
     fi
     source $PMS/plugins/$1/$1.plugin.$PMS_SHELL
