@@ -5,8 +5,8 @@
 
 # Defaults variables
 # @todo remove these defaults
-PMS=${PMS:-~/.pms}
-PMS_DEBUG=${PMS_DEBUG:-1}
+#PMS=${PMS:-~/.pms}
+#PMS_DEBUG=${PMS_DEBUG:-1}
 #PMS_REPO=${PMS_REPO:-JoshuaEstes/pms}
 #PMS_REOMTE=${PMS_REMOTE:-https://github.com/${PMS_REPO}.git}
 #PMS_BRANCH=${PMS_BRANCH:-master}

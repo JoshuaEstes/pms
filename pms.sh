@@ -2,33 +2,76 @@
 # pms.sh
 ####
 #set -xe
-
 # 1) Environment Variable Defaults
 PMS_SHELL=$1
 PMS_DEBUG=$2
 PMS_THEME=default
 
-# 2) environment file loader
-# load the plugins and theme first so that they can be modified later
-if [ -f ~/.pms.plugins ]; then
-  source ~/.pms.plugins
-fi
-if [ -f ~/.pms.theme ]; then
-  source ~/.pms.theme
-fi
-if [ -f ~/.env ]; then
-  source ~/.env
-fi
-if [ -f ~/.env.$1 ]; then
-  source ~/.env.$1
-fi
-if [ -f ~/.env.local ]; then
-  source ~/.env.local
-fi
-if [ -f ~/.env.$1.local ]; then
-  source ~/.env.$1.local
+if [ "$PMS_DEBUG" -eq "1" ]; then
+  echo "[DEBUG] Initializing PMS"
 fi
 
+# 2) environment file loader
+# load the plugins and theme first so that they can be modified later
+if [ "$PMS_DEBUG" -eq "1" ]; then
+  echo "[DEBUG] PMS Loading Environment Files"
+fi
+# .pms.plugins
+if [ -f ~/.pms.plugins ]; then
+  if [ "$PMS_DEBUG" -eq "1" ]; then
+    echo "[DEBUG] loading env file '~/.pms.plugins'"
+  fi
+  source ~/.pms.plugins
+else
+  echo "[ERROR] ~/.pms.plugins could not be found"
+fi
+# .pms.theme
+if [ -f ~/.pms.theme ]; then
+  if [ "$PMS_DEBUG" -eq "1" ]; then
+    echo "[DEBUG] loading env file '~/.pms.theme'"
+  fi
+  source ~/.pms.theme
+else
+  echo "[ERROR] ~/.pms.theme could not be found"
+fi
+# .env
+if [ -f ~/.env ]; then
+  if [ "$PMS_DEBUG" -eq "1" ]; then
+    echo "[DEBUG] loading env file '~/.env'"
+  fi
+  source ~/.env
+else
+  echo "[ERROR] ~/.env could not be found"
+fi
+# .env.$PMS_SHELL
+if [ -f ~/.env.$PMS_SHELL ]; then
+  if [ "$PMS_DEBUG" -eq "1" ]; then
+    echo "[DEBUG] loading env file '~/.env.$PMS_SHELL'"
+  fi
+  source ~/.env.$PMS_SHELL
+else
+  echo "[ERROR] ~/.env.$PMS_SHELL could not be found"
+fi
+# .env.local
+if [ -f ~/.env.local ]; then
+  if [ "$PMS_DEBUG" -eq "1" ]; then
+    echo "[DEBUG] loading env file '~/.env.local'"
+  fi
+  source ~/.env.local
+else
+  echo "[ERROR] ~/.env.local could not be found"
+fi
+# .env.$PMS_SHELL.local
+if [ -f ~/.env.$PMS_SHELL.local ]; then
+  if [ "$PMS_DEBUG" -eq "1" ]; then
+    echo "[DEBUG] loading env file '~/.env.$PMS_SHELL.local'"
+  fi
+  source ~/.env.$PMS_SHELL.local
+else
+  echo "[ERROR] ~/.env.$PMS_SHELL.local could not be found"
+fi
+
+# Dump some environment variables not that settings are loaded
 if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "-=[ PMS ]=-"
   echo "PMS:         $PMS"
@@ -45,10 +88,6 @@ if [ "$PMS_DEBUG" -eq "1" ]; then
   echo "1: $1" # PMS_SHELL
   echo "2: $2" # PMS_DEBUG
   echo
-fi
-
-if [ "$PMS_DEBUG" -eq "1" ]; then
-  echo "[DEBUG] PMS Loading Starting"
 fi
 
 # 3) Load libraries (sh and PMS_SHELL)
@@ -72,5 +111,5 @@ done
 _pms_load_theme $PMS_THEME
 
 if [ "$PMS_DEBUG" -eq "1" ]; then
-  echo "[DEBUG] PMS Loading Complete"
+  echo "[DEBUG] PMS Load Completed"
 fi
