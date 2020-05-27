@@ -185,7 +185,7 @@ _pms_shell_set() {
 ####
 # PMS Manager
 # Usage: pms
-_pms() {
+pms() {
   if [ "$PMS_DEBUG" -eq "1" ]; then
       _pms_message_info "PMS:         $PMS"
       _pms_message_info "PMS_LOCAL:   $PMS_LOCAL"
@@ -312,7 +312,7 @@ echo "Created At: $(date)"
 echo
 }
 _pms_command_upgrade() {
-  local checkpoint="$PWD"
+  local checkpoint=$PWD
   cd "$PMS"
   echo "Upgrading to latest PMS version"
   echo
@@ -325,8 +325,9 @@ _pms_command_upgrade() {
   echo
   echo "Upgrade complete, you may need to reload your environment"
   echo
-  cd "$_checkpoint"
-  #_pms "reload"
+  cd "$checkpoint"
+  # @todo ask if user wants to reload environment
+  #pms "reload"
 }
 _pms_command_reload() {
   echo "Reloading PMS..."
