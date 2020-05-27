@@ -317,7 +317,7 @@ echo
 _pms_command_upgrade() {
   local checkpoint=$PWD
   cd "$PMS"
-  _pms_message_section_info "Upgrading to latest PMS version"
+  _pms_message_info "Upgrading to latest PMS version"
   git pull origin master
   _pms_message_info "Copying files"
   cp -v $PMS/templates/bashrc ~/.bashrc
