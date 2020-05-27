@@ -21,7 +21,6 @@ It supports easy install/uninstall and a wide variety of plugins and themes.
   * Focus on using environment varables to modify functionality of PMS
   * Easy Uninstall process that leaves your system in the orginal state before installing PMS
   * [View All PMS Features](/pms/features.html)
-  * {% link features.md %}
 
 # Getting Started
 ## Requirements
