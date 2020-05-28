@@ -209,10 +209,6 @@ _pms_source_file() {
             _pms_message_section_info "loading" "$1"
         fi
         source $1
-    else
-        if [ "$PMS_DEBUG" -eq "1" ]; then
-            _pms_message_section_error "not found" "$1"
-        fi
     fi
 }
 
@@ -488,57 +484,29 @@ _pms_source_file $PMS/plugins/$PMS_SHELL/env
 _pms_source_file ~/.pms.plugins
 _pms_source_file ~/.pms.theme
 # Load the plugin variables
-_pms_message_section_info "Plugins" "${PMS_PLUGINS[*]}"
+_pms_message_section_info "Enabled Plugins" "${PMS_PLUGINS[*]}"
 for plugin in "${PMS_PLUGINS[@]}"; do
     _pms_source_file $PMS/plugins/$plugin/env
 done
-# .env
-if [ -f ~/.env ]; then
-  if [ "$PMS_DEBUG" -eq "1" ]; then
-    _pms_message_info "loading env file '~/.env'"
-  fi
-  source ~/.env
-fi
-# .env.$PMS_SHELL
-if [ -f ~/.env.$PMS_SHELL ]; then
-  if [ "$PMS_DEBUG" -eq "1" ]; then
-    _pms_message_info "loading env file '~/.env.$PMS_SHELL'"
-  fi
-  source ~/.env.$PMS_SHELL
-fi
-# .env.local
-if [ -f ~/.env.local ]; then
-  if [ "$PMS_DEBUG" -eq "1" ]; then
-    _pms_message_info "loading env file '~/.env.local'"
-  fi
-  source ~/.env.local
-fi
-# .env.$PMS_SHELL.local
-if [ -f ~/.env.$PMS_SHELL.local ]; then
-  if [ "$PMS_DEBUG" -eq "1" ]; then
-    _pms_message_info "loading env file '~/.env.$PMS_SHELL.local'"
-  fi
-  source ~/.env.$PMS_SHELL.local
-fi
+_pms_source_file ~/.env
+_pms_source_file ~/.env.$PMS_SHELL
+_pms_source_file ~/.env.local
+_pms_source_file ~/.env.$PMS_SHELL.local
 
-# Dump some environment variables not that settings are loaded
 if [ "$PMS_DEBUG" -eq "1" ]; then
-  echo
-  _pms_message_info "-=[ PMS ]=-"
-  _pms_message_info "PMS:         $PMS"
-  _pms_message_info "PMS_LOCAL:   $PMS_LOCAL"
-  _pms_message_info "PMS_DEBUG:   $PMS_DEBUG"
-  _pms_message_info "PMS_REPO:    $PMS_REPO"
-  _pms_message_info "PMS_REMOTE:  $PMS_REMOTE"
-  _pms_message_info "PMS_BRANCH:  $PMS_BRANCH"
-  _pms_message_info "PMS_THEME:   $PMS_THEME"
-  _pms_message_info "PMS_PLUGINS: ${PMS_PLUGINS[*]}"
-  _pms_message_info "PMS_SHELL:   $PMS_SHELL"
-  echo
-  _pms_message_info "-=[ Args ]=-"
-  _pms_message_info "1: $1" # PMS_SHELL
-  _pms_message_info "2: $2" # PMS_DEBUG
-  echo
+    _pms_message_block_info "PMS Settings"
+    _pms_message_info "PMS:         $PMS"
+    _pms_message_info "PMS_LOCAL:   $PMS_LOCAL"
+    _pms_message_info "PMS_DEBUG:   $PMS_DEBUG"
+    _pms_message_info "PMS_REPO:    $PMS_REPO"
+    _pms_message_info "PMS_REMOTE:  $PMS_REMOTE"
+    _pms_message_info "PMS_BRANCH:  $PMS_BRANCH"
+    _pms_message_info "PMS_THEME:   $PMS_THEME"
+    _pms_message_info "PMS_PLUGINS: ${PMS_PLUGINS[*]}"
+    _pms_message_info "PMS_SHELL:   $PMS_SHELL"
+    _pms_message_block_info "Passed In"
+    _pms_message_info "1: $1" # PMS_SHELL
+    _pms_message_info "2: $2" # PMS_DEBUG
 fi
 
 # 3) Load libraries (sh and PMS_SHELL)
@@ -547,7 +515,7 @@ for lib in $PMS/lib/*.{sh,$PMS_SHELL}; do
   if [ "$PMS_DEBUG" -eq "1" ]; then
     _pms_message_info "Loading Library '$(basename $lib)'"
   fi
-  source $lib
+  _pms_source_file $lib
 done
 
 # 4) Load plugins
