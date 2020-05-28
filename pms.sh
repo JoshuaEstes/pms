@@ -360,6 +360,16 @@ _pms_command_theme_list() {
   done
   _pms_message_block_success "Current Theme: $PMS_THEME"
 }
+_pms_command_theme_switch() {
+    # Does theme exist?
+    if [ ! -d $PMS_LOCAL/themes/$3 ] && [ ! -d $PMS/themes/$3 ]; then
+        _pms_message_error "The theme '$3' is invalid"
+        return 1
+    fi
+    PMS_THEME=$3
+    echo "PMS_THEME=$PMS_THEME" > ~/.pms.theme
+    _pms_load_theme $3
+}
 _pms_command_plugin_list() {
   echo
   echo "Core Plugins:"
