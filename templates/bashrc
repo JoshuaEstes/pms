@@ -1,18 +1,9 @@
 # ~/.bashrc
-#set -xe
 ####
 # This file may get updated when running an install or pms update, please use
 # the config files and PMS_LOCAL directory to modify PMS
-#
+
+# @todo
 PMS=~/.pms
 PMS_DEBUG=1
-if [ "$PMS_DEBUG" -eq "1" ]; then
-  echo "[DEBUG] PMS Loading ~/.bashrc"
-fi
 source $PMS/pms.sh bash $PMS_DEBUG
-# Specific "bash" stuff goes here
-
-# end bash specific
-if [ "$PMS_DEBUG" -eq "1" ]; then
-  echo "[DEBUG] PMS Completed Loading ~/.bashrc"
-fi
