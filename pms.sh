@@ -368,8 +368,14 @@ _pms_command_theme_switch() {
         _pms_message_error "The theme '$3' is invalid"
         return 1
     fi
+    if [ -f $PMS/themes/$3/uninstall.sh ]; then
+        _pms_source_file $PMS/themes/$3/uninstall.sh
+    fi
+    echo "PMS_THEME=$3" > ~/.pms.theme
     PMS_THEME=$3
-    echo "PMS_THEME=$PMS_THEME" > ~/.pms.theme
+    if [ -f $PMS/themes/$3/install.sh ]; then
+        _pms_source_file $PMS/themes/$3/install.sh
+    fi
     _pms_load_theme $3
 }
 _pms_command_plugin_list() {
