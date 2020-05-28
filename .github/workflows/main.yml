@@ -15,4 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: PMS_DEBUG=1 sh ./scripts/install.sh
+      - run: cat /etc/shells
+      - run: exec bash && pms
+      - run: exec zsh && pms
       - run: PMS_DEBUG=1 sh ~/.pms/scripts/uninstall.sh -n
