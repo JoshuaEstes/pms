@@ -40,12 +40,12 @@ with the latest releases.
     <tr>
       <td>c</td>
       <td>composer</td>
-      <td></td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>cup</td>
       <td>composer update</td>
-      <td></td>
+      <td>&nbsp;</td>
     </tr>
   </tbody>
 </table>
