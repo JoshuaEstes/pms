@@ -19,4 +19,5 @@ jobs:
       - run: sh ./scripts/install.sh
       - run: cat /etc/shells
       - run: source ~/.pms/pms.sh bash 1 && pms help
+      - run: pms help
       - run: sh ~/.pms/scripts/uninstall.sh -n
