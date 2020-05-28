@@ -89,31 +89,19 @@ _pms_load_theme() {
   theme_loaded=0
   # Generic sh theme files
   if [ -f $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.sh ]; then
-    if [ "$PMS_DEBUG" -eq "1" ]; then
-      _pms_message_info "Loading theme '$PMS_THEME' (sh) via local"
-    fi
-    source $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.sh
+    _pms_source_file $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.sh
     theme_loaded=1
   elif [ -f $PMS/themes/$PMS_THEME/$PMS_THEME.theme.sh ]; then
-    if [ "$PMS_DEBUG" -eq "1" ]; then
-      _pms_message_info "Loading theme '$PMS_THEME' (sh)"
-    fi
-    source $PMS/themes/$PMS_THEME/$PMS_THEME.theme.sh
+    _pms_source_file $PMS/themes/$PMS_THEME/$PMS_THEME.theme.sh
     theme_loaded=1
   fi
 
   # Shell specific theme file
   if [ -f $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL ]; then
-    if [ "$PMS_DEBUG" -eq "1" ]; then
-      _pms_message_info "Loading theme '$PMS_THEME' ($PMS_SHELL) via local"
-    fi
-    source $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL
+    _pms_source_file $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL
     theme_loaded=1
   elif [ -f $PMS/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL ]; then
-    if [ "$PMS_DEBUG" -eq "1" ]; then
-      _pms_message_info "Loading theme '$PMS_THEME' ($PMS_SHELL)"
-    fi
-    source $PMS/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL
+    _pms_source_file $PMS/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL
     theme_loaded=1
   fi
 
@@ -132,38 +120,25 @@ _pms_load_theme() {
 #
 _pms_load_plugin() {
   # @todo Check directory exists in either PMS_LOCAL or PMS
-
   plugin_loaded=0
   # sh may or may not be found, we don't need to notify user if this is not
   # found because shell specific files are more important
   if [ -f $PMS_LOCAL/plugins/$1/$1.plugin.sh ]; then
-    if [ "$PMS_DEBUG" -eq "1" ]; then
-      _pms_message_info "Loading plugin '$1' (sh) via local"
-    fi
-    source $PMS_LOCAL/plugins/$1/$1.plugin.sh
+    _pms_source_file $PMS_LOCAL/plugins/$1/$1.plugin.sh
     plugin_loaded=1
   # check core plugins
   elif [ -f $PMS/plugins/$1/$1.plugin.sh ]; then
-    if [ "$PMS_DEBUG" -eq "1" ]; then
-      _pms_message_info "Loading plugin '$1' (sh)"
-    fi
-    source $PMS/plugins/$1/$1.plugin.sh
+    _pms_source_file $PMS/plugins/$1/$1.plugin.sh
     plugin_loaded=1
   fi
 
   # check local directory first
   if [ -f $PMS_LOCAL/plugins/$1/$1.plugin.$PMS_SHELL ]; then
-    if [ "$PMS_DEBUG" -eq "1" ]; then
-      _pms_message_info "Loading plugin '$1' ($PMS_SHELL) via local"
-    fi
-    source $PMS_LOCAL/plugins/$1/$1.plugin.$PMS_SHELL
+    _pms_source_file $PMS_LOCAL/plugins/$1/$1.plugin.$PMS_SHELL
     plugin_loaded=1
   # check core plugins
   elif [ -f $PMS/plugins/$1/$1.plugin.$PMS_SHELL ]; then
-    if [ "$PMS_DEBUG" -eq "1" ]; then
-      _pms_message_info "Loading plugin '$1' ($PMS_SHELL)"
-    fi
-    source $PMS/plugins/$1/$1.plugin.$PMS_SHELL
+    _pms_source_file $PMS/plugins/$1/$1.plugin.$PMS_SHELL
     plugin_loaded=1
   fi
 
@@ -494,7 +469,7 @@ _pms_source_file ~/.env.local
 _pms_source_file ~/.env.$PMS_SHELL.local
 
 if [ "$PMS_DEBUG" -eq "1" ]; then
-    _pms_message_block_info "PMS Settings"
+    _pms_message_block_info "Current PMS Settings"
     _pms_message_info "PMS:         $PMS"
     _pms_message_info "PMS_LOCAL:   $PMS_LOCAL"
     _pms_message_info "PMS_DEBUG:   $PMS_DEBUG"
@@ -503,18 +478,12 @@ if [ "$PMS_DEBUG" -eq "1" ]; then
     _pms_message_info "PMS_BRANCH:  $PMS_BRANCH"
     _pms_message_info "PMS_THEME:   $PMS_THEME"
     _pms_message_info "PMS_PLUGINS: ${PMS_PLUGINS[*]}"
-    _pms_message_info "PMS_SHELL:   $PMS_SHELL"
-    _pms_message_block_info "Passed In"
-    _pms_message_info "1: $1" # PMS_SHELL
-    _pms_message_info "2: $2" # PMS_DEBUG
+    _pms_message_info "PMS_SHELL:   $PMS_SHELL\n"
 fi
 
 # 3) Load libraries (sh and PMS_SHELL)
 # @todo local overwrites
 for lib in $PMS/lib/*.{sh,$PMS_SHELL}; do
-  if [ "$PMS_DEBUG" -eq "1" ]; then
-    _pms_message_info "Loading Library '$(basename $lib)'"
-  fi
   _pms_source_file $lib
 done
 
