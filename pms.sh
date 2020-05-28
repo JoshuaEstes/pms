@@ -338,10 +338,10 @@ _pms_command_upgrade() {
   _pms_message_block_info "Running update scripts for enabled plugins..."
   for plugin in "${PMS_PLUGINS[@]}"; do
     if [ -f $PMS_LOCAL/plugins/$plugin/update.sh ]; then
-        _pms_message_section_info "$plugin (local)" "updating..."
+        _pms_message_section_info "$plugin (local)" "plugin updating..."
         source $PMS_LOCAL/plugins/$plugin/update.sh
     elif [ -f $PMS/plugins/$plugin/update.sh ]; then
-        _pms_message_section_info $plugin "updating..."
+        _pms_message_section_info $plugin "plugin updating..."
         source $PMS/plugins/$plugin/update.sh
     fi
   done
