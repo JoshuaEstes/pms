@@ -368,11 +368,13 @@ _pms_command_theme_switch() {
         _pms_message_error "The theme '$3' is invalid"
         return 1
     fi
-    if [ -f $PMS/themes/$3/uninstall.sh ]; then
-        _pms_source_file $PMS/themes/$3/uninstall.sh
+    # @todo make all this better and support PMS_LOCAL
+    if [ -f $PMS/themes/$PMS_THEME/uninstall.sh ]; then
+        _pms_source_file $PMS/themes/$PMS_THEME/uninstall.sh
     fi
     echo "PMS_THEME=$3" > ~/.pms.theme
     PMS_THEME=$3
+    # @todo make all this better and support PMS_LOCAL
     if [ -f $PMS/themes/$3/install.sh ]; then
         _pms_source_file $PMS/themes/$3/install.sh
     fi
@@ -455,7 +457,7 @@ _pms_command_plugin_disable() {
         source $PMS/plugins/$3/uninstall.sh
     fi
 
-    _pms_message_success "Plugin has been disabled, you may need to reload environment"
+    _pms_message_section_success "$3" "Plugin has been disabled, you may need to reload environment"
     # @todo Ask user to reload environment
 }
 ### PMS Manager
