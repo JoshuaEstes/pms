@@ -4,15 +4,20 @@ title: PMS "__PLUGIN__" Plugin
 ---
 {% include plugin_header.md %}
 
-# __PLUGIN__
+# PMS "__PLUGIN__" Plugin
 Description of plugin and what it does.
 
 # Requirements
+<!-- Can Remove Section if no requirements -->
+<!--
+    Requirements are other plugins, system binaries, etc.
+-->
 * example >= 1.2.3
 * [pms plugin cd](/pms/plugins/cd.html)
 
 # Environment Variables
-These options are set in your environment variables file.
+<!-- Can remove section if no requirements -->
+<!-- set in plugin "env" file -->
 <table>
   <thead>
     <tr>
@@ -36,7 +41,7 @@ These options are set in your environment variables file.
 </table>
 
 # Aliases
-By enabling this plugin, you will gain access to these alias that you can use.
+<!-- Can remove section if no aliases -->
 <table>
   <thead>
     <tr>
@@ -55,7 +60,7 @@ By enabling this plugin, you will gain access to these alias that you can use.
 </table>
 
 # Functions
-These are some function that are now available since this plugin has been enabled.
+<!-- Can remove section if no aliases -->
 <table>
   <thead>
     <tr>
@@ -76,7 +81,7 @@ These are some function that are now available since this plugin has been enable
 </table>
 
 # Commands
-These are scripts and binaries found in the plugin's `bin/` directory.
+<!-- Can remove section if no commands -->
 <table>
   <thead>
     <tr>
@@ -93,12 +98,20 @@ These are scripts and binaries found in the plugin's `bin/` directory.
 </table>
 
 # Suggested Plugins
-This plugin will pair well with these plugins
+<!-- Can remove section -->
+<!--
+    If this plugin pairs well with another plugin, let users know
+-->
 * [example](/pms/plugins/example.html)
 
 # Conflicts with Plugins
-When these plugins are enabled, it will cause issues
+<!-- Can remove section -->
 * [example](/pms/plugins/example.html)
+
+# Known Issues
+<!-- Can remove section -->
+* Unable to work correctly under DOS
+* Alias a will not be available under DOS
 
 # See Also
 * [Plugin Source Code](https://github.com/JoshuaEstes/pms/tree/master/plugins/__PLUGIN__)
