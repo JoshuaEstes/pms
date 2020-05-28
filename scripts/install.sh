@@ -9,7 +9,7 @@
 #
 set -e
 PMS=${PMS:-~/.pms}
-PMS_DEBUG=${PMS_DEBUG:-1}
+PMS_DEBUG=${PMS_DEBUG:-0}
 PMS_REPO=${PMS_REPO:-JoshuaEstes/pms}
 PMS_REMOTE=${PMS_REMOTE:-https://github.com/${PMS_REPO}.git}
 PMS_BRANCH=${PMS_BRANCH:-master}
@@ -88,6 +88,7 @@ main() {
   fi
 
   if [ "$PMS_DEBUG" -eq "1" ]; then
+    printf "${YELLOW}"
     echo "-=[ Debug ]=-"
     echo "PMS:         $PMS"
     echo "PMS_DEBUG:   $PMS_DEBUG"
@@ -95,17 +96,20 @@ main() {
     echo "PMS_REMOTE:  $PMS_REMOTE"
     echo "PMS_BRANCH:  $PMS_BRANCH"
     echo "-=[ Debug ]=-"
+    printf "${RESET}"
   fi
 
   # @todo validate that git is installed
   # @todo validate that bash, zsh, or other supported shell is installed
 
-  #setup_pms
-  #setup_rcfiles
-  #setup_shell
+  setup_pms
+  setup_rcfiles
+  setup_shell
 
   printf "${GREEN}"
 cat <<-'EOF'
+
+Thanks for installing...
 
  _______   __                                __       __                   ______   __                  __  __
 /       \ /  |                              /  \     /  |                 /      \ /  |                /  |/  |
@@ -119,13 +123,16 @@ $$/       $$/ $$/  $$/  $$/ $$$$$$$/        $$/      $$/  $$$$$$$ |       $$$$$$
                             $$ |                         /  \__$$ |
                             $$ |                         $$    $$/
                             $$/                           $$$$$$/
----
-Congrats on installing PMS!
 
-You can find User Guides at https://joshuaestes.github.io/pms/ which will help you get the most out of using PMS and
-if you are looking to contribute and hack some stuff together, check out the Developer Docs at https://github.com/JoshuaEstes/pms/wiki
 
-Enjoy!
+User Guides - https://joshuaestes.github.io/pms/
+  Learn how to get the most of out PMS and become a master
+
+Developer Guides - https://github.com/JoshuaEstes/pms/wiki
+  Looking to contribute or just create your our themes, plugins, and dotfiles?
+
+
+*** To get started using PMS you will need to open up a new terminal, or log out and log back in ***
 
 EOF
   printf "${RESET}"
