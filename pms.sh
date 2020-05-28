@@ -333,44 +333,40 @@ _pms_command_upgrade() {
   _pms_message_info "Copying files"
   cp -v $PMS/templates/bashrc ~/.bashrc
   cp -v $PMS/templates/zshrc ~/.zshrc
-  _pms_message_block_info "Running update scripts for enabled plugins"
+  _pms_message_block_info "Running update scripts for enabled plugins..."
   for plugin in "${PMS_PLUGINS[@]}"; do
     if [ -f $PMS_LOCAL/plugins/$plugin/update.sh ]; then
-        _pms_message_section_info "$plugin (local)" "Running update.sh..."
+        _pms_message_section_info "$plugin (local)" "updating..."
         source $PMS_LOCAL/plugins/$plugin/update.sh
     elif [ -f $PMS/plugins/$plugin/update.sh ]; then
-        _pms_message_section_info $plugin "Running update.sh..."
+        _pms_message_section_info $plugin "updating..."
         source $PMS/plugins/$plugin/update.sh
     fi
   done
+  _pms_message_block_info "Completed update scripts"
   _pms_message_block_success "Upgrade complete, you may need to reload your environment"
   cd "$checkpoint"
   # @todo ask if user wants to run pms reload
 }
 _pms_command_reload() {
-  echo "Reloading PMS..."
+  _pms_message_block_info "Reloading PMS..."
   # @todo which is best?
   #source ~/.${PMS_SHELL}rc
   exec $PMS_SHELL
   #sh $PMS/pms.sh $PMS_SHELL $PMS_DEBUG
-  echo "PMS Reloaded"
 }
 _pms_command_theme_list() {
-  echo
-  echo "Core Themes:"
+  _pms_message_block_info "Core Themes"
   for theme in $PMS/themes/*; do
     theme=${theme%*/}
-    echo "  ${theme##*/}"
+    _pms_message_info "${theme##*/}"
   done
-  echo
-  echo "Local Themes:"
+  _pms_message_block_info "Local Themes"
   for theme in $PMS_LOCAL/themes/*; do
     theme=${theme%*/}
-    echo "  ${theme##*/}"
+    _pms_message_info "${theme##*/}"
   done
-  echo
-  echo "Current Theme: $PMS_THEME"
-  echo
+  _pms_message_block_success "Current Theme: $PMS_THEME"
 }
 _pms_command_plugin_list() {
   echo
