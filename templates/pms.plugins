@@ -1,1 +1,1 @@
-PMS_PLUGINS=(cd history jobs ls mkdir git)
+PMS_PLUGINS=(cd history jobs ls mkdir git getting-started)
