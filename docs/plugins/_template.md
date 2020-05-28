@@ -1,14 +1,15 @@
 ---
 layout: default
-title: PMS "example" Plugin
+title: PMS "__PLUGIN__" Plugin
 ---
 {% include plugin_header.md %}
-# example
-The example plugin will be documented here. Top part gives a few details.
+
+# __PLUGIN__
+Description of plugin and what it does.
 
 # Requirements
-Requirements are listed here
 * example >= 1.2.3
+* [pms plugin cd](/pms/plugins/cd.html)
 
 # Environment Variables
 These options are set in your environment variables file.
@@ -93,17 +94,13 @@ These are scripts and binaries found in the plugin's `bin/` directory.
 
 # Suggested Plugins
 This plugin will pair well with these plugins
-* [Plugin 1](/pms)
-* [Plugin 2](/pms)
+* [example](/pms/plugins/example.html)
 
 # Conflicts with Plugins
 When these plugins are enabled, it will cause issues
-* [Plugin 1](/pms)
-* [Plugin 2](/pms)
+* [example](/pms/plugins/example.html)
 
 # See Also
-Links to other documentation for this plugin, for example, if this was the
-"git" plugin, we could link to the git manual
-* [Plugin Source Code](https://github.com/JoshuaEstes/pms/tree/master/plugins/example)
+* [Plugin Source Code](https://github.com/JoshuaEstes/pms/tree/master/plugins/__PLUGIN__)
 * [Link 1](/pms)
 * [Link 2](/pms)

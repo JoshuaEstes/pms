@@ -122,6 +122,7 @@ _pms_load_theme() {
 #
 _pms_load_plugin() {
   # @todo Check directory exists in either PMS_LOCAL or PMS
+  # @todo add blacklist for "pms", "bash", "zsh", etc.
   plugin_loaded=0
   # sh may or may not be found, we don't need to notify user if this is not
   # found because shell specific files are more important
