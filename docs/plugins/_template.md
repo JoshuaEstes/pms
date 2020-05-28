@@ -1,10 +1,11 @@
 ---
 layout: default
 title: PMS "__PLUGIN__" Plugin
+pms_plugin: __PLUGIN__
 ---
 {% include plugin_header.md %}
 
-# PMS "__PLUGIN__" Plugin
+# PMS "{{ page.pms_plugin }}" Plugin
 Description of plugin and what it does.
 
 # Requirements
@@ -35,7 +36,7 @@ Description of plugin and what it does.
     <tr>
       <td>EXAMPLE</td>
       <td></td>
-      <td>This doesn't do nothing either</td>
+      <td></td>
     </tr>
   </tbody>
 </table>
@@ -54,13 +55,18 @@ Description of plugin and what it does.
     <tr>
       <td>example</td>
       <td>example -als</td>
-      <td>This is not a real alias</td>
+      <td></td>
     </tr>
   </tbody>
 </table>
 
 # Functions
 <!-- Can remove section if no aliases -->
+<!--
+    If your plugin provides "private" use functions that are used in other
+    plugins, they can be excluded here. HOWEVER they need to be documented in
+    the developer docs
+-->
 <table>
   <thead>
     <tr>
@@ -114,6 +120,6 @@ Description of plugin and what it does.
 * Alias a will not be available under DOS
 
 # See Also
-* [Plugin Source Code](https://github.com/JoshuaEstes/pms/tree/master/plugins/__PLUGIN__)
+* [Plugin Source Code](https://github.com/JoshuaEstes/pms/tree/master/plugins/{{ page.pms_plugin }})
 * [Link 1](/pms)
 * [Link 2](/pms)

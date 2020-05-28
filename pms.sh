@@ -9,7 +9,7 @@ PMS_SHELL=$1
 PMS_DEBUG=$2
 PMS_THEME=default
 
-if [ -z $PMS_SHELL ] || [ -s $PMS_DEBUG ]; then
+if [ -z $PMS_SHELL ] || [ -z $PMS_DEBUG ]; then
     echo
     echo "Usage: pms.sh PMS_SHELL PMS_DEBUG"
     echo
