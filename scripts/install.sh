@@ -7,6 +7,8 @@
 #   PMS_REMOTE  = default: https://github.com/$PMS_REPO.git
 #   PMS_BRANCH  = master
 #
+# @todo limit install to just one shell using PMS_SHELL?
+#
 set -e
 PMS=${PMS:-~/.pms}
 PMS_DEBUG=${PMS_DEBUG:-0}
@@ -15,60 +17,46 @@ PMS_REMOTE=${PMS_REMOTE:-https://github.com/${PMS_REPO}.git}
 PMS_BRANCH=${PMS_BRANCH:-master}
 
 setup_pms() {
-  echo "Setting up PMS..."
+    echo "\r\n\t${BLUE}Cloning PMS...${RESET}\n\n"
 
-  if [ -d $PMS ]; then
-    echo "$PMS already exists, should we update instead of install? Or should we blow it away and re-install?"
-    exit 1
-  else
-    git clone --branch "$PMS_BRANCH" "$PMS_REMOTE" "$PMS"
-  fi
+    git clone --depth=1 --branch "$PMS_BRANCH" "$PMS_REMOTE" "$PMS" || {
+        echo "${RED}ERROR: git clone command failed${RESET}"
+        exit 1
+    }
 
-  # Copy over config files if they do not currently exist
-  if [ ! -f ~/.env ]; then
-    cp $PMS/templates/env ~/.env
-  fi
-  if [ ! -f ~/.pms.theme ]; then
-    cp $PMS/templates/pms.theme ~/.pms.theme
-  fi
-  if [ ! -f ~/.pms.plugins ]; then
-    cp $PMS/templates/pms.plugins ~/.pms.plugins
-  fi
+    # Copy over config files if they do not currently exist
+    echo "${BLUE}Copying PMS Environment Variables file over, this file stores various PMS settings that can be modified${RESET}"
+    cp -vfi $PMS/templates/env ~/.env
 
-  echo
+    echo "${BLUE}Copying PMS Theme Config File, this file is used to store your currently selected theme${RESET}"
+    cp -vfi $PMS/templates/pms.theme ~/.pms.theme
+
+    echo "${BLUE}Copying PMS Plugins Config File, this file contains all your enabled plugins${RESET}"
+    cp -vfi $PMS/templates/pms.plugins ~/.pms.plugins
 }
 
 _setup_shell_rc() {
- if [ -f ~/.$1 ] || [ -h ~/.$1 ]; then
-   echo "Found existing .$1 file, backing up"
-   if [ ! -f ~/.$1.pms.bak ]; then
-     echo "Moving ~/.$1 -> ~/.$1.pms.bak"
-     mv -f ~/.$1 ~/.$1.pms.bak
-   fi
- fi
- echo "Copy $PMS/templates/$1 -> ~/.$1"
- cp -f $PMS/templates/$1 ~/.$1
- echo
+    # @todo better support
+    if [ -f ~/.$1 ] || [ -h ~/.$1 ]; then
+        echo "${YELLOW}Found existing .$1 file, backing up${RESET}"
+        if [ ! -f ~/.$1.pms.bak ]; then
+            echo "${YELLOW}Moving ~/.$1 -> ~/.$1.pms.bak${RESET}"
+            mv -vfi ~/.$1 ~/.$1.pms.bak
+        fi
+    fi
+    echo "${BLUE}Copy $PMS/templates/$1 -> ~/.$1 ${RESET}"
+    cp -vf $PMS/templates/$1 ~/.$1
 }
 
-# Setup dotfiles
-#   Setup various dotfiles and config files that PMS will use. Some dotfiles
-#   may get modified later by plugins. Any dotfile that we find, needs to be
-#   backed up so that the uninstall script can put everything back the way
-#   we found it
 setup_rcfiles() {
-  echo "Setting up dotfiles"
-  _setup_shell_rc bashrc
-  _setup_shell_rc zshrc
+    echo "\r\n\t${BLUE}Setting up rc files...${RESET}\n\n"
+    _setup_shell_rc bashrc
+    _setup_shell_rc zshrc
 }
 
-# Setup shell
-#   The user should be allowed to keep their current shell, or have the option
-#   to change that shell to another.
 setup_shell() {
-  echo "Setting up shell"
-  # @todo
-  echo
+    echo "\r\n\t${BLUE}Setting up shell...${RESET}\n\n"
+    # @todo
 }
 
 # Main function, this will be called to install everything
@@ -79,28 +67,40 @@ main() {
     RED=$(printf '\033[31m')
     GREEN=$(printf '\033[32m')
     YELLOW=$(printf '\033[33m')
+    BLUE=$(printf '\033[34m')
     RESET=$(printf '\033[m')
   else
     RED=""
     GREEN=""
     YELLOW=""
+    BLUE=""
     RESET=""
   fi
 
   if [ "$PMS_DEBUG" -eq "1" ]; then
     printf "${YELLOW}"
-    echo "-=[ Debug ]=-"
     echo "PMS:         $PMS"
     echo "PMS_DEBUG:   $PMS_DEBUG"
     echo "PMS_REPO:    $PMS_REPO"
     echo "PMS_REMOTE:  $PMS_REMOTE"
     echo "PMS_BRANCH:  $PMS_BRANCH"
-    echo "-=[ Debug ]=-"
     printf "${RESET}"
   fi
 
-  # @todo validate that git is installed
-  # @todo validate that bash, zsh, or other supported shell is installed
+  if [ ! -x "$(command -v git)" ]; then
+      echo "${RED}ERROR: You must have 'git' installed${RESET}"
+      exit 1
+  fi
+
+  if [ ! -x "$(command -v bash)" ] && [ ! -x "$(command -v zsh)" ]; then
+      echo "${RED}ERROR: It appears the you do not have one of the supported shells installed${RESET}"
+      exit 1
+  fi
+
+  if [ -d "$PMS" ]; then
+      echo "${YELLOW}Looks like PMS is already installed on your system. Please remove it and run this script again.${RESET}"
+      exit 1
+  fi
 
   setup_pms
   setup_rcfiles
@@ -133,6 +133,8 @@ Developer Guides - https://github.com/JoshuaEstes/pms/wiki
 
 
 *** To get started using PMS you will need to open up a new terminal, or log out and log back in ***
+*** Once you start a new session you can get started by running the "pms" command                ***
+
 
 EOF
   printf "${RESET}"
