@@ -483,14 +483,15 @@ fi
 _pms_source_file $PMS/plugins/pms/env
 # Load some default shell variables
 _pms_source_file $PMS/plugins/$PMS_SHELL/env
-# Load the plugin variables
-for plugin in "${PMS_PLUGINS[@]}"; do
-  _pms_source_file $PMS/plugins/$plugin/env
-done
 # load the plugins and theme next so that they can be modified later. They should never be modified
 # by hand and should never really be overwritten.
 _pms_source_file ~/.pms.plugins
 _pms_source_file ~/.pms.theme
+# Load the plugin variables
+_pms_message_section_info "Plugins" "${PMS_PLUGINS[*]}"
+for plugin in "${PMS_PLUGINS[@]}"; do
+    _pms_source_file $PMS/plugins/$plugin/env
+done
 # .env
 if [ -f ~/.env ]; then
   if [ "$PMS_DEBUG" -eq "1" ]; then
