@@ -61,16 +61,16 @@ _pms_message_section_error() {
     printf "\r[${RED}$1${RESET}] $2${RESET}\n"
 }
 _pms_message_block_info() {
-    printf "\r\n${BLUE}$1${RESET}\n\n"
+    printf "\r\n\t${BLUE}$1${RESET}\n\n"
 }
 _pms_message_block_success() {
-    printf "\r\n${GREEN}$1${RESET}\n\n"
+    printf "\r\n\t${GREEN}$1${RESET}\n\n"
 }
 _pms_message_block_warn() {
-    printf "\r\n${YELLOW}$1${RESET}\n\n"
+    printf "\r\n\t${YELLOW}$1${RESET}\n\n"
 }
 _pms_message_block_error() {
-    printf "\r\n${RED}$1${RESET}\n\n"
+    printf "\r\n\t${RED}$1${RESET}\n\n"
 }
 
 ####
