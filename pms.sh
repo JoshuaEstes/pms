@@ -328,7 +328,10 @@ _pms_command_upgrade() {
   local checkpoint=$PWD
   cd "$PMS"
   _pms_message_block_info "Upgrading to latest PMS version"
-  git pull origin master
+  git pull origin master || {
+      _pms_message_error "Error pulling down updates..."
+      return 1
+  }
   _pms_message_block_info "Copying files"
   cp -v $PMS/templates/bashrc ~/.bashrc
   cp -v $PMS/templates/zshrc ~/.zshrc
