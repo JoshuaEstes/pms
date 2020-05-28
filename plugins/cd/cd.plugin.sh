@@ -1,1 +1,1 @@
-alias -- -="cd -"
+alias -- -='cd -'

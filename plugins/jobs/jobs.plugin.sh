@@ -1,1 +1,1 @@
-alias j="jobs"
+alias j='jobs'

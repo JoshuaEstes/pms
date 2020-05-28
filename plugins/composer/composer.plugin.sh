@@ -1,2 +1,2 @@
-alias c="composer"
-alias cup="composer update"
+alias c='composer'
+alias cup='composer update'

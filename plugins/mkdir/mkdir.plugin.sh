@@ -1,1 +1,1 @@
-alias mkdir="mkdir -vp"
+alias mkdir='mkdir -vp'

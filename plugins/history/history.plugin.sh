@@ -1,1 +1,1 @@
-alias h="history"
+alias h='history'

@@ -1,2 +1,2 @@
-alias v="vim"
-alias vi="vim"
+alias v='vim'
+alias vi='vim'
