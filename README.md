@@ -1,8 +1,14 @@
 PMS
 ===
-PMS allows users to manage their shell in a way to increase productivity. It has
-support for themes (change the way your shell looks), plugins (adds
-functionality to your shell), and dotfile management.
+PMS allows you to manage your shell in a way to that helps decrease setup time
+and increases your productivity. It has support for themes (change the way your
+shell looks), plugins (adds functionality to your shell), and dotfile
+management.
+
+One of the best parts is, the PMS framework allows you to use the same
+framework in different shells. Use zsh on your personal laptop, and use bash on
+remote servers. Wanna try fish? Go ahead, try out different shells and see the
+power of PMS ;)
 
 ![CI](https://github.com/JoshuaEstes/pms/workflows/CI/badge.svg?branch=master)
 
@@ -14,12 +20,12 @@ functionality to your shell), and dotfile management.
   * Bash
   * Zsh
   * And others!
-* PMS Manager - Easy to use and up modify tool to help you manage PMS
-  * Easy upgrade PMS
+* PMS Manager - Easy to use tool to help you manage PMS
+  * Easy upgrades for PMS
   * Preview and switch themes
-  * Easy Plugin enabled and disable
-* Focus on using environment varables to modify functionality of PMS
-* Easy Uninstall process that leaves your system in the orginal state before installing PMS
+  * Easy to enabled and disable various plugins
+* Focus on using environment variables to modify functionality of PMS
+* Easy Uninstall process that leaves your system in the original state before installing PMS
 * Documentation for both Users and Developers
   * [User Guides](https://joshuaestes.github.io/pms/)
   * [Developer Guides](https://github.com/JoshuaEstes/pms/wiki)
