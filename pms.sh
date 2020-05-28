@@ -60,6 +60,18 @@ _pms_message_section_warn() {
 _pms_message_section_error() {
     printf "\r[${RED}$1${RESET}] $2${RESET}\n"
 }
+_pms_message_block_info() {
+    printf "\r\n${BLUE}$1${RESET}\n\n"
+}
+_pms_message_block_success() {
+    printf "\r\n${GREEN}$1${RESET}\n\n"
+}
+_pms_message_block_warn() {
+    printf "\r\n${YELLOW}$1${RESET}\n\n"
+}
+_pms_message_block_error() {
+    printf "\r\n${RED}$1${RESET}\n\n"
+}
 
 ####
 # @todo Interactive Helpers
@@ -107,7 +119,6 @@ _pms_load_theme() {
 
   if [ "$theme_loaded" -eq "0" ]; then
     _pms_message_error "Theme '$PMS_THEME' could not be loaded, loading the 'default' theme"
-    #source $PMS/themes/default/default.theme.$PMS_SHELL
     _pms_load_theme default
   fi
 }
@@ -259,81 +270,82 @@ _pms_command_help() {
 }
 _pms_command_diagnostic() {
     # @todo Alert user to any known issues with configurations
-echo
-echo "-=[ PMS ]=-"
-echo "PMS:         $PMS"
-echo "PMS_LOCAL:   $PMS_LOCAL"
-echo "PMS_DEBUG:   $PMS_DEBUG"
-echo "PMS_REPO:    $PMS_REPO"
-echo "PMS_REMOTE:  $PMS_REMOTE"
-echo "PMS_BRANCH:  $PMS_BRANCH"
-echo "PMS_THEME:   $PMS_THEME"
-echo "PMS_PLUGINS: ${PMS_PLUGINS[*]}"
-echo "PMS_SHELL:   $PMS_SHELL"
-if [ -d $PMS ]; then
-  echo "Hash:        $(cd $PMS; git rev-parse --short HEAD)"
-else
-  echo "Hash:        PMS not installed"
-fi
-echo
-echo "-=[ Shell ]=-"
-echo "SHELL: $SHELL"
-echo
-echo "-=[ Terminal ]=-"
-echo "TERM: $TERM"
-echo
-echo "-=[ OS ]=-"
-echo "OSTYPE: $OSTYPE"
-echo "USER:   $USER"
-echo "umask:  $(umask)"
-case "$OSTYPE" in
-  darwin*)
-    echo "Product Name:     $(sw_vers -productName)"
-    echo "Product Version:  $(sw_vers -productVersion)"
-    echo "Build Version:    $(sw_vers -buildVersion)"
-    ;;
-  linux*)
-    echo "Release: $(lsb_release -s -d)"
-    ;;
-esac
-echo
-echo "-=[ Programs ]=-"
-echo "git: $(git --version)"
-if [ -x "$(command -v bash)" ]; then
-  echo "bash: $(bash --version | grep bash)"
-else
-  echo "bash: Not Installed"
-fi
-if [ -x "$(command -v zsh)" ]; then
-  echo "zsh: $(zsh --version)"
-else
-  echo "zsh: Not Installed"
-fi
-echo
-echo "-=[ Metadata ]=-"
-echo "Created At: $(date)"
-echo
+    echo
+    echo "-=[ PMS ]=-"
+    echo "PMS:         $PMS"
+    echo "PMS_LOCAL:   $PMS_LOCAL"
+    echo "PMS_DEBUG:   $PMS_DEBUG"
+    echo "PMS_REPO:    $PMS_REPO"
+    echo "PMS_REMOTE:  $PMS_REMOTE"
+    echo "PMS_BRANCH:  $PMS_BRANCH"
+    echo "PMS_THEME:   $PMS_THEME"
+    echo "PMS_PLUGINS: ${PMS_PLUGINS[*]}"
+    echo "PMS_SHELL:   $PMS_SHELL"
+    if [ -d $PMS ]; then
+      echo "Hash:        $(cd $PMS; git rev-parse --short HEAD)"
+    else
+      echo "Hash:        PMS not installed"
+    fi
+    echo
+    echo "-=[ Shell ]=-"
+    echo "SHELL: $SHELL"
+    echo
+    echo "-=[ Terminal ]=-"
+    echo "TERM: $TERM"
+    echo
+    echo "-=[ OS ]=-"
+    echo "OSTYPE: $OSTYPE"
+    echo "USER:   $USER"
+    echo "umask:  $(umask)"
+    case "$OSTYPE" in
+      darwin*)
+        echo "Product Name:     $(sw_vers -productName)"
+        echo "Product Version:  $(sw_vers -productVersion)"
+        echo "Build Version:    $(sw_vers -buildVersion)"
+        ;;
+      linux*)
+        echo "Release: $(lsb_release -s -d)"
+        ;;
+    esac
+    echo
+    echo "-=[ Programs ]=-"
+    echo "git: $(git --version)"
+    if [ -x "$(command -v bash)" ]; then
+      echo "bash: $(bash --version | grep bash)"
+    else
+      echo "bash: Not Installed"
+    fi
+    if [ -x "$(command -v zsh)" ]; then
+      echo "zsh: $(zsh --version)"
+    else
+      echo "zsh: Not Installed"
+    fi
+    echo
+    echo "-=[ Metadata ]=-"
+    echo "Created At: $(date)"
+    echo
 }
 _pms_command_upgrade() {
   local checkpoint=$PWD
   cd "$PMS"
-  _pms_message_info "Upgrading to latest PMS version"
+  _pms_message_block_info "Upgrading to latest PMS version"
   git pull origin master
   _pms_message_info "Copying files"
   cp -v $PMS/templates/bashrc ~/.bashrc
   cp -v $PMS/templates/zshrc ~/.zshrc
-  _pms_message_info "Running update scripts for enabled plugins"
+  _pms_message_block_info "Running update scripts for enabled plugins"
   for plugin in "${PMS_PLUGINS[@]}"; do
     if [ -f $PMS_LOCAL/plugins/$plugin/update.sh ]; then
+        _pms_message_section_info "$plugin (local)" "Running update.sh..."
         source $PMS_LOCAL/plugins/$plugin/update.sh
     elif [ -f $PMS/plugins/$plugin/update.sh ]; then
+        _pms_message_section_info $plugin "Running update.sh..."
         source $PMS/plugins/$plugin/update.sh
     fi
   done
-  _pms_message_success "Upgrade complete, you may need to reload your environment"
+  _pms_message_block_success "Upgrade complete, you may need to reload your environment"
   cd "$checkpoint"
-  # @todo ask if user wants to reload environment
-  #pms "reload"
+  # @todo ask if user wants to run pms reload
 }
 _pms_command_reload() {
   echo "Reloading PMS..."
