@@ -1,5 +1,4 @@
 ---
-layout: default
 title: PMS Features
 ---
 # PMS Features

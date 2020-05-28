@@ -1,5 +1,4 @@
 ---
-layout: default
 title: PMS Plugins
 ---
 Plugins will contain things such as Commands, Functions, Aliases, Auto

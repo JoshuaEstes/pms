@@ -1,5 +1,4 @@
 ---
-layout: default
 title: PMS Themes
 ---
 Themes will change how your shell looks. This will mostly just modify the
