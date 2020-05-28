@@ -437,6 +437,7 @@ _pms_command_plugin_disable() {
     done
     if [ "$_is_enabled" -eq "0" ]; then
         _pms_message_error "The plugin '$3' is not enabled"
+        return 1
     fi
 
     # Remove from plugins
