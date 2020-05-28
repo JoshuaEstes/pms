@@ -5,5 +5,5 @@
 
 # @todo
 PMS=~/.pms
-PMS_DEBUG=1
+PMS_DEBUG=0
 source $PMS/pms.sh zsh $PMS_DEBUG
