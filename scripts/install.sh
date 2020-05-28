@@ -7,7 +7,7 @@
 #   PMS_REMOTE  = default: https://github.com/$PMS_REPO.git
 #   PMS_BRANCH  = master
 #
-set -ex
+set -e
 PMS=${PMS:-~/.pms}
 PMS_DEBUG=${PMS_DEBUG:-1}
 PMS_REPO=${PMS_REPO:-JoshuaEstes/pms}
@@ -100,14 +100,35 @@ main() {
   # @todo validate that git is installed
   # @todo validate that bash, zsh, or other supported shell is installed
 
-  setup_pms
-  setup_rcfiles
-  setup_shell
+  #setup_pms
+  #setup_rcfiles
+  #setup_shell
 
-  # @todo make this better and more informative for users
-  echo "PMS has been installed, please view documentation"
+  printf "${GREEN}"
+cat <<-'EOF'
 
-  echo
+ _______   __                                __       __                   ______   __                  __  __
+/       \ /  |                              /  \     /  |                 /      \ /  |                /  |/  |
+$$$$$$$  |$$/  _____  ____    ______        $$  \   /$$ | __    __       /$$$$$$  |$$ |____    ______  $$ |$$ |
+$$ |__$$ |/  |/     \/    \  /      \       $$$  \ /$$$ |/  |  /  |      $$ \__$$/ $$      \  /      \ $$ |$$ |
+$$    $$/ $$ |$$$$$$ $$$$  |/$$$$$$  |      $$$$  /$$$$ |$$ |  $$ |      $$      \ $$$$$$$  |/$$$$$$  |$$ |$$ |
+$$$$$$$/  $$ |$$ | $$ | $$ |$$ |  $$ |      $$ $$ $$/$$ |$$ |  $$ |       $$$$$$  |$$ |  $$ |$$    $$ |$$ |$$ |
+$$ |      $$ |$$ | $$ | $$ |$$ |__$$ |      $$ |$$$/ $$ |$$ \__$$ |      /  \__$$ |$$ |  $$ |$$$$$$$$/ $$ |$$ |
+$$ |      $$ |$$ | $$ | $$ |$$    $$/       $$ | $/  $$ |$$    $$ |      $$    $$/ $$ |  $$ |$$       |$$ |$$ |
+$$/       $$/ $$/  $$/  $$/ $$$$$$$/        $$/      $$/  $$$$$$$ |       $$$$$$/  $$/   $$/  $$$$$$$/ $$/ $$/
+                            $$ |                         /  \__$$ |
+                            $$ |                         $$    $$/
+                            $$/                           $$$$$$/
+---
+Congrats on installing PMS!
+
+You can find User Guides at https://joshuaestes.github.io/pms/ which will help you get the most out of using PMS and
+if you are looking to contribute and hack some stuff together, check out the Developer Docs at https://github.com/JoshuaEstes/pms/wiki
+
+Enjoy!
+
+EOF
+  printf "${RESET}"
 }
 
 main "$@"
