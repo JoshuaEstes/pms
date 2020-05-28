@@ -1,4 +1,6 @@
 name: CI
+env:
+    PMS_DEBUG: 1
 on:
   push:
     branches:
@@ -14,8 +16,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v2
-      - run: PMS_DEBUG=1 sh ./scripts/install.sh
+      - run: sh ./scripts/install.sh
       - run: cat /etc/shells
-      - run: PMS_DEBUG=1 source ~/.pms/pms.sh bash 1 && PMS_DEBUG=1 pms
-      - run: PMS_DEBUG=1 pms diagnostic
-      - run: PMS_DEBUG=1 sh ~/.pms/scripts/uninstall.sh -n
+      - run: source ~/.pms/pms.sh bash 1 && pms help
+      - run: sh ~/.pms/scripts/uninstall.sh -n
