@@ -191,19 +191,6 @@ _pms_source_file() {
 # PMS Manager
 # Usage: pms
 pms() {
-  if [ "$PMS_DEBUG" -eq "1" ]; then
-      _pms_message_info "PMS:         $PMS"
-      _pms_message_info "PMS_LOCAL:   $PMS_LOCAL"
-      _pms_message_info "PMS_SHELL:   $PMS_SHELL"
-      _pms_message_info "PMS_PLUGINS: ${PMS_PLUGINS[*]}"
-      _pms_message_info "#:           $#"
-      _pms_message_info "@:           $@"
-      _pms_message_info "0:           $0"
-      _pms_message_info "1:           $1"
-      _pms_message_info "2:           $2"
-      _pms_message_info "3:           $3"
-  fi
-
   if [ ! -z "$1" ] && [ ! -z "$2" ]; then
       type _pms_command_${1}_${2} &>/dev/null && {
           _pms_command_${1}_${2} "$@"
