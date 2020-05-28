@@ -34,6 +34,5 @@ _pms_message_section_info "pms plugin list" "Displays a list of available plugin
 _pms_message_section_info "pms plugin enable [PLUGIN]" "Enables a plugin"
 _pms_message_section_info "pms plugin disable [PLUGIN]" "Disables a plugin"
 echo
-echo
 echo "${YELLOW}Tired of seeing this? Run 'pms plugin disable getting-started' to disable${RESET}"
 echo
