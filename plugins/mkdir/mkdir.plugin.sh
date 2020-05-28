@@ -1,0 +1,1 @@
+alias mkdir="mkdir -vp"
