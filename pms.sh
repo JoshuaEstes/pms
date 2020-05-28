@@ -196,6 +196,27 @@ _pms_shell_set() {
 }
 
 ####
+# Source a given file and provide feedback based on configuration
+#
+# Usage: _pms_load_file [FILE]
+#
+# Examples:
+#   _pms_load_file $PMS/plugins/pms/env
+#
+_pms_source_file() {
+    if [ -f $1 ]; then
+        if [ "$PMS_DEBUG" -eq "1" ]; then
+            _pms_message_section_info "loading" "$1"
+        fi
+        source $1
+    else
+        if [ "$PMS_DEBUG" -eq "1" ]; then
+            _pms_message_section_error "not found" "$1"
+        fi
+    fi
+}
+
+####
 # PMS Manager
 # Usage: pms
 pms() {
@@ -455,46 +476,21 @@ _pms_command_plugin_disable() {
 ### PMS Manager
 
 # 2) environment file loader
-# Load these first so other files can overwrite them
-# @todo Load from "pms" and "$PMS_SHELL" plugins
-source $PMS/plugins/pms/env
-if [ -f $PMS/plugins/$PMS_SHELL/env ]; then
-    if [ "$PMS_DEBUG" -eq "1" ]; then
-        _pms_message_info "loading shell '$PMS_SHELL' env file"
-    fi
-    source $PMS/plugins/$PMS_SHELL/env
-fi
-for plugin in "${PMS_PLUGINS[@]}"; do
-  if [ -f $PMS/plugins/$plugin/env ]; then
-    if [ "$PMS_DEBUG" -eq "1" ]; then
-      _pms_message_info "loading plugin '$plugin' env file"
-    fi
-    source $PMS/plugins/$plugin/env
-  fi
-done
-
-# load the plugins and theme second so that they can be modified later
 if [ "$PMS_DEBUG" -eq "1" ]; then
-  _pms_message_info "PMS Loading Environment Files"
+  _pms_message_block_info "Loading Environment Files"
 fi
-# .pms.plugins
-if [ -f ~/.pms.plugins ]; then
-  if [ "$PMS_DEBUG" -eq "1" ]; then
-    _pms_message_info "loading env file '~/.pms.plugins'"
-  fi
-  source ~/.pms.plugins
-else
-  _pms_message_error "~/.pms.plugins could not be found"
-fi
-# .pms.theme
-if [ -f ~/.pms.theme ]; then
-  if [ "$PMS_DEBUG" -eq "1" ]; then
-    _pms_message_info "loading env file '~/.pms.theme'"
-  fi
-  source ~/.pms.theme
-else
-  _pms_message_error "~/.pms.theme could not be found"
-fi
+# Load pms first so everything can overwrite them if need be
+_pms_source_file $PMS/plugins/pms/env
+# Load some default shell variables
+_pms_source_file $PMS/plugins/$PMS_SHELL/env
+# Load the plugin variables
+for plugin in "${PMS_PLUGINS[@]}"; do
+  _pms_source_file $PMS/plugins/$plugin/env
+done
+# load the plugins and theme next so that they can be modified later. They should never be modified
+# by hand and should never really be overwritten.
+_pms_source_file ~/.pms.plugins
+_pms_source_file ~/.pms.theme
 # .env
 if [ -f ~/.env ]; then
   if [ "$PMS_DEBUG" -eq "1" ]; then
