@@ -330,7 +330,7 @@ _pms_command_upgrade() {
   cd "$PMS"
   _pms_message_block_info "Upgrading to latest PMS version"
   git pull origin master
-  _pms_message_info "Copying files"
+  _pms_message_block_info "Copying files"
   cp -v $PMS/templates/bashrc ~/.bashrc
   cp -v $PMS/templates/zshrc ~/.zshrc
   _pms_message_block_info "Running update scripts for enabled plugins..."
