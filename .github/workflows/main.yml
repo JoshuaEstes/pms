@@ -16,6 +16,6 @@ jobs:
       - uses: actions/checkout@v2
       - run: PMS_DEBUG=1 sh ./scripts/install.sh
       - run: cat /etc/shells
-      - run: PMS_DEBUG=1 source ~/.pms/pms.sh bash 1
+      - run: PMS_DEBUG=1 source ~/.pms/pms.sh bash 1 && PMS_DEBUG=1 pms
       - run: PMS_DEBUG=1 pms diagnostic
       - run: PMS_DEBUG=1 sh ~/.pms/scripts/uninstall.sh -n
