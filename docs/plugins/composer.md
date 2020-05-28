@@ -1,5 +1,6 @@
 ---
 title: PMS "composer" Plugin
+classes: wide
 pms_plugin: composer
 ---
 {% include plugin_header.md %}

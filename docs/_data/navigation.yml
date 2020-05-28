@@ -1,3 +1,5 @@
+# Top Navigation
+# @see https://mmistakes.github.io/minimal-mistakes/docs/navigation/
 main:
     - title: "Features"
       url: /features.html
