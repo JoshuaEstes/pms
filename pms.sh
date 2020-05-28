@@ -265,6 +265,11 @@ _pms_command_diagnostic() {
     else
       echo "Hash:        PMS not installed"
     fi
+    echo "~/.pms.theme"
+    cat ~/.pms.theme
+    echo
+    echo "~/.pms.plugins"
+    cat ~/.pms.plugins
     echo
     echo "-=[ Shell ]=-"
     echo "SHELL: $SHELL"
@@ -398,6 +403,7 @@ _pms_command_plugin_list() {
   echo
 }
 _pms_command_plugin_enable() {
+    # @todo support for multiple plugins at a time
     # Does directory exist?
     if [ ! -d $PMS_LOCAL/plugins/$3 ] && [ ! -d $PMS/plugins/$3 ]; then
         _pms_message_error "The plugin '$3' is invalid and cannot be enabled"
@@ -427,10 +433,11 @@ _pms_command_plugin_enable() {
     _pms_load_plugin $3
 }
 _pms_command_plugin_disable() {
+    # @todo support for multiple plugins at a time
     # is enabled?
     local _is_enabled=0
     for p in "${PMS_PLUGINS[@]}"; do
-        if [ "$p" = "$3" ]; then
+        if [ "$p" = "${3}" ]; then
             _is_enabled=1
             break
         fi
