@@ -1,0 +1,7 @@
+main:
+    - title: "Features"
+      url: /features.html
+    - title: "Plugins"
+      url: /plugins.html
+    - title: "Themes"
+      url: /themes.html
