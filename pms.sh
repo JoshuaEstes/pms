@@ -471,7 +471,9 @@ _pms_source_file $PMS/plugins/$PMS_SHELL/env
 _pms_source_file ~/.pms.plugins
 _pms_source_file ~/.pms.theme
 # Load the plugin variables
-_pms_message_section_info "Enabled Plugins" "${PMS_PLUGINS[*]}"
+if [ "$PMS_DEBUG" -eq "1" ]; then
+    _pms_message_section_info "Enabled Plugins" "${PMS_PLUGINS[*]}"
+fi
 for plugin in "${PMS_PLUGINS[@]}"; do
     _pms_source_file $PMS/plugins/$plugin/env
 done
