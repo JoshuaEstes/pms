@@ -281,9 +281,19 @@ _pms_command_diagnostic() {
     echo
     echo "-=[ Shell ]=-"
     echo "SHELL: $SHELL"
+    case "$PMS_SHELL" in
+      bash)
+        echo "BASHOPTS: $BASHOPTS"
+        ;;
+      zsh)
+        echo "ZSH_PATHCLEVEL: $ZSH_PATCHLEVEL"
+        ;;
+    esac
     echo
     echo "-=[ Terminal ]=-"
-    echo "TERM: $TERM"
+    echo "TERM:                 $TERM"
+    echo "TERM_PROGRAM:         $TERM_PROGRAM"
+    echo "TERM_PROGRAM_VERSION: $TERM_PROGRAM_VERSION"
     echo
     echo "-=[ OS ]=-"
     echo "OSTYPE: $OSTYPE"
@@ -311,6 +321,11 @@ _pms_command_diagnostic() {
       echo "zsh: $(zsh --version)"
     else
       echo "zsh: Not Installed"
+    fi
+    if [ -x "$(command -v fish)" ]; then
+      echo "fish: $(fish --version)"
+    else
+      echo "fish: Not Installed"
     fi
     echo
     echo "-=[ Metadata ]=-"
