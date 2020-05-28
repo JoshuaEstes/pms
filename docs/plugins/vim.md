@@ -1,5 +1,4 @@
 ---
-layout: default
 title: PMS "vim" Plugin
 ---
 {% include plugin_header.md %}

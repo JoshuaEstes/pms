@@ -1,5 +1,4 @@
 ---
-layout: default
 title: PMS "composer" Plugin
 pms_plugin: composer
 ---

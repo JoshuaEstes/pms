@@ -1,5 +1,4 @@
 ---
-layout: default
 title: PMS "git" Plugin
 ---
 {% include plugin_header.md %}

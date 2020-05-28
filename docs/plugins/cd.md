@@ -1,5 +1,4 @@
 ---
-layout: default
 title: PMS "cd" Plugin
 ---
 {% include plugin_header.md %}

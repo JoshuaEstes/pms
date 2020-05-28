@@ -1,5 +1,4 @@
 ---
-layout: default
 title: PMS "pms" Plugin
 ---
 {% include plugin_header.md %}

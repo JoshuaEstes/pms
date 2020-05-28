@@ -1,5 +1,4 @@
 ---
-layout: default
 title: PMS "__PLUGIN__" Plugin
 pms_plugin: __PLUGIN__
 ---

@@ -1,5 +1,4 @@
 ---
-layout: default
 title: PMS "default" Theme
 ---
 {% include theme_header.md %}
