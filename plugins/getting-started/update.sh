@@ -19,5 +19,7 @@ $$/       $$/ $$/  $$/  $$/ $$$$$$$/        $$/      $$/  $$$$$$$ |       $$$$$$
 
 Plugin has been updated!
 
+Did you know that User and Developer Guides can be found at https://github.com/JoshuaEstes/dotfiles
+
 EOF
 printf "${RESET}"
