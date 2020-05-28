@@ -1,0 +1,3 @@
+# vim env varables
+export EDITOR=vim
+export FCEDITOR=vim

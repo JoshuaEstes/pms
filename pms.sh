@@ -447,7 +447,24 @@ _pms_command_plugin_disable() {
 ### PMS Manager
 
 # 2) environment file loader
-# @todo Load plugin environment variable files first so user can override them
+# Load these first so other files can overwrite them
+# @todo Load from "pms" and "$PMS_SHELL" plugins
+source $PMS/plugins/pms/env
+if [ -f $PMS/plugins/$PMS_SHELL/env ]; then
+    if [ "$PMS_DEBUG" -eq "1" ]; then
+        _pms_message_info "loading shell '$PMS_SHELL' env file"
+    fi
+    source $PMS/plugins/$PMS_SHELL/env
+fi
+for plugin in "${PMS_PLUGINS[@]}"; do
+  if [ -f $PMS/plugins/$plugin/env ]; then
+    if [ "$PMS_DEBUG" -eq "1" ]; then
+      _pms_message_info "loading plugin '$plugin' env file"
+    fi
+    source $PMS/plugins/$plugin/env
+  fi
+done
+
 # load the plugins and theme second so that they can be modified later
 if [ "$PMS_DEBUG" -eq "1" ]; then
   _pms_message_info "PMS Loading Environment Files"
