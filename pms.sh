@@ -36,6 +36,8 @@ _pms_initialize_colors
 # Example: _pms_message_section_* "DEBUG" "This will be the message"
 # Example: _pms_message_block_* "DEBUG" "This will be the message"
 #
+# @todo Make better and include documentation
+#
 _pms_message_info() {
     printf "\r${BLUE}$1${RESET}\n"
 }
