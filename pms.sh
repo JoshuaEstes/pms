@@ -232,7 +232,7 @@ _pms_command_help() {
   echo "  reload             Reloads all of PMS"
   echo "  theme              Helps to manage themes"
   echo "    list             Displays available themes"
-  #echo "    switch           Switch to a specific theme"
+  echo "    switch           Switch to a specific theme"
   #echo "    preview          Preview theme"
   #echo "    validate         Validate theme"
   #echo "    reload           Reloads theme"
@@ -386,11 +386,7 @@ _pms_command_plugin_list() {
     echo "  ${plugin##*/}"
   done
   echo
-  echo "Enabled Plugins:"
-  for plugin in "${PMS_PLUGINS[@]}"; do
-    plugin=${plugin%*/}
-    echo "  ${plugin##*/}"
-  done
+  echo "Enabled Plugins: ${PMS_PLUGINS[*]}"
   echo
 }
 _pms_command_plugin_enable() {
