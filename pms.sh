@@ -437,18 +437,12 @@ _pms_command_plugin_enable() {
 }
 _pms_command_plugin_disable() {
     # @todo support for multiple plugins at a time
-    # is enabled?
-    local _is_enabled=0
     for p in "${PMS_PLUGINS[@]}"; do
         if [ "$p" = "${3}" ]; then
-            _is_enabled=1
-            break
+            _pms_message_section_error "$3" "The plugin is not enabled"
+            return 1
         fi
     done
-    if [ "$_is_enabled" -eq "0" ]; then
-        _pms_message_error "The plugin '$3' is not enabled"
-        return 1
-    fi
 
     # Remove from plugins
     local _plugins=()
