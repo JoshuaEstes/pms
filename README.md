@@ -1,4 +1,3 @@
-```
  _______   __                           __       __              ______   __                  __  __
 /       \ /  |                         /  \     /  |            /      \ /  |                /  |/  |
 $$$$$$$  |$$/  _____  ____    ______   $$  \   /$$ | __    __  /$$$$$$  |$$ |____    ______  $$ |$$ |
@@ -11,7 +10,6 @@ $$/       $$/ $$/  $$/  $$/ $$$$$$$/   $$/      $$/  $$$$$$$ |  $$$$$$/  $$/   $
                             $$ |                    /  \__$$ |
                             $$ |                    $$    $$/
                             $$/                      $$$$$$/
-```
 
 PMS allows you to manage your shell in a way to that helps decrease setup time
 and increases your productivity. It has support for themes (change the way your
@@ -23,9 +21,7 @@ framework in different shells. Use zsh on your personal laptop, and use bash on
 remote servers. Wanna try fish? Go ahead, try out different shells and see the
 power of PMS ;)
 
-<p style="align:center;">
 ![CI](https://github.com/JoshuaEstes/pms/workflows/CI/badge.svg?branch=master)
-</p>
 
 ---
 
