@@ -1,9 +1,24 @@
 # Top Navigation
 # @see https://mmistakes.github.io/minimal-mistakes/docs/navigation/
 main:
-    - title: "Features"
-      url: /features.html
-    - title: "Plugins"
+    - title: "Plugins List"
       url: /plugins.html
-    - title: "Themes"
+    - title: "Themes List"
       url: /themes.html
+
+# default sidebar
+sidebar_default:
+    - title: Getting Started
+      children:
+        - title: "Features"
+          url: /features.html
+        - title: "Requirements"
+          url: /requirements.html
+        - title: "Installation"
+          url: /installation.html
+        - title: "PMS Manager"
+          url: /pms-manager.html
+    - title: Customizing
+      children:
+        - title: "Environment Variables"
+          url: /environment-variables.html
