@@ -5,7 +5,6 @@ toc: true
 toc_label: __PLUGIN__
 toc_sticky: true
 ---
-{% include plugin_header.md %}
 
 Description of plugin and what it does.
 
