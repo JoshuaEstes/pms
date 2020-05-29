@@ -5,8 +5,8 @@ classes: wide
 
 * [Themes](/pms/themes.html)
 * [Plugins](/pms/plugins.html)
-* Dotfiles - Change the way programs work in your environment
-* [Multiple Shell Support](/pms/shells.html)
+* Dotfiles
+* Multiple Shell Support
   * No matter the shell, you can easily swap between them and maintain similar functionality
 * [PMS Manager](/pms/pms-manager.html)
   * Easy upgrade PMS

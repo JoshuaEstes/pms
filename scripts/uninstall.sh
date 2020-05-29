@@ -20,7 +20,7 @@ main() {
       exit
     fi
   fi
-  
+
   # Revert rc files (user confirmation)
   if [ -f ~/.bashrc.pms.bak ] && [ -f ~/.bashrc ]; then
     if [ "$NO_INTERACTION" -eq "0" ]; then
@@ -42,13 +42,13 @@ main() {
       mv ~/.zshrc.pms.bak ~/.zshrc
     fi
   fi
-  
+
   # Delete PMS Config files
   echo "Removing ~/.pms.theme file"
   rm -fv ~/.pms.theme
   echo "Removing ~/.pms.plugins file"
   rm -fv ~/.pms.plugins
-  
+
   # Delete .env (user confirmation)
   if [ -f ~/.env ]; then
     if [ "$NO_INTERACTION" -eq "0" ]; then
@@ -60,11 +60,11 @@ main() {
       rm -fv ~/.env
     fi
   fi
-  
+
   # Delete $PMS directory
   echo "Removing ~/.pms directory"
   rm -rf ~/.pms
-  
+
   echo "PMS has been uninstalled. You should restart your terminal"
 }
 

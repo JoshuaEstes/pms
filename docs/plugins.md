@@ -23,5 +23,5 @@ in the shell.
 Looking to create your own PMS Plugin? [Click Here](https://github.com/JoshuaEstes/pms/wiki) to learn more.
 
 ***Looking for information on how to enable/disable plugins?*** [Click Here](/pms/pms-manager.html)
-to learn how
+to learn how.
 {: .notice--success}
