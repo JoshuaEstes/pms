@@ -5,6 +5,8 @@ main:
       url: /plugins.html
     - title: "Themes List"
       url: /themes.html
+    - title: "View Source"
+      url: https://github.com/JoshuaEstes/pms
 
 # default sidebar
 sidebar_default:
