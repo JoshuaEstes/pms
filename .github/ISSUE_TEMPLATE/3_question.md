@@ -1,7 +1,7 @@
 ---
 name: 😕 Questions
 about: Questions about PMS, Confused about a feature, or just want some extra information or context.
-label: Question
+label: question
 
 ---
 

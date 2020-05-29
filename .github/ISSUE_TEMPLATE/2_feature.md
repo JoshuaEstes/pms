@@ -1,6 +1,6 @@
 ---
 name: 🚀 Feature Request
-about: RFC, Ideas for Improvements, New Feature Requests
+about: RFCs, Ideas for Improvements, New Features, Plugin Requests
 
 ---
 

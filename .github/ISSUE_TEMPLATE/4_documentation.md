@@ -1,7 +1,7 @@
 ---
 name: 📚 Documentation Issue
 about: Are there issues with documentation
-label: Documentation
+label: documentation
 
 ---
 

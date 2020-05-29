@@ -1,7 +1,7 @@
 ---
 name: 🐛 Bug Report
 about: Report errors and problems you are having
-label: Bug
+label: bug
 
 ---
 
