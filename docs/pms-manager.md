@@ -40,7 +40,7 @@ pms plugin disable [PLUGIN]
 Themes will modify how you shell looks. These are things such as colors and
 usually includes a kick ass command prompt.
 
-*Note* Some themes may enable or disable PMS plugins for functionality. An
+***Note*** Some themes may enable or disable PMS plugins for functionality. An
 example of this would be a theme that would require the "git-prompt" plugin so
 it has access to that functionality. This is done for you so you don't need to
 do this by hand
