@@ -1,5 +1,6 @@
 ---
 title: Installation
+classes: wide
 ---
 
 Installing is can be done quick and easy by using curl. The installation process

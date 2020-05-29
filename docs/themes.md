@@ -1,5 +1,6 @@
 ---
 title: PMS Themes
+classes: wide
 ---
 Themes will change how your shell looks. This will mostly just modify the
 command prompt to look pretty. Some themes may make modifications to things such

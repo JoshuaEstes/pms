@@ -1,5 +1,6 @@
 ---
 title: PMS Features
+classes: wide
 ---
 
 * [Themes](/pms/themes.html)

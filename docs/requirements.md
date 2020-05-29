@@ -1,5 +1,6 @@
 ---
 title: Requirements
+classes: wide
 ---
 
 * macOS, Linux, BSD
