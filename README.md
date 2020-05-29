@@ -1,5 +1,18 @@
-PMS
-===
+```
+ _______   __                                __       __                   ______   __                  __  __
+/       \ /  |                              /  \     /  |                 /      \ /  |                /  |/  |
+$$$$$$$  |$$/  _____  ____    ______        $$  \   /$$ | __    __       /$$$$$$  |$$ |____    ______  $$ |$$ |
+$$ |__$$ |/  |/     \/    \  /      \       $$$  \ /$$$ |/  |  /  |      $$ \__$$/ $$      \  /      \ $$ |$$ |
+$$    $$/ $$ |$$$$$$ $$$$  |/$$$$$$  |      $$$$  /$$$$ |$$ |  $$ |      $$      \ $$$$$$$  |/$$$$$$  |$$ |$$ |
+$$$$$$$/  $$ |$$ | $$ | $$ |$$ |  $$ |      $$ $$ $$/$$ |$$ |  $$ |       $$$$$$  |$$ |  $$ |$$    $$ |$$ |$$ |
+$$ |      $$ |$$ | $$ | $$ |$$ |__$$ |      $$ |$$$/ $$ |$$ \__$$ |      /  \__$$ |$$ |  $$ |$$$$$$$$/ $$ |$$ |
+$$ |      $$ |$$ | $$ | $$ |$$    $$/       $$ | $/  $$ |$$    $$ |      $$    $$/ $$ |  $$ |$$       |$$ |$$ |
+$$/       $$/ $$/  $$/  $$/ $$$$$$$/        $$/      $$/  $$$$$$$ |       $$$$$$/  $$/   $$/  $$$$$$$/ $$/ $$/
+                            $$ |                         /  \__$$ |
+                            $$ |                         $$    $$/
+                            $$/                           $$$$$$/
+```
+
 PMS allows you to manage your shell in a way to that helps decrease setup time
 and increases your productivity. It has support for themes (change the way your
 shell looks), plugins (adds functionality to your shell), and dotfile
@@ -10,79 +23,51 @@ framework in different shells. Use zsh on your personal laptop, and use bash on
 remote servers. Wanna try fish? Go ahead, try out different shells and see the
 power of PMS ;)
 
+<p style="align:center;">
 ![CI](https://github.com/JoshuaEstes/pms/workflows/CI/badge.svg?branch=master)
+</p>
+
+---
 
 # Features
-* [Themes](https://joshuaestes.github.io/pms/themes.html) - Change the way your environment looks
-* [Plugins](https://joshuaestes.github.io/pms/plugins.html) - Change the way your environment functions
-* Dotfiles - Change the way programs work in your environment
+
+* [Themes](https://joshuaestes.github.io/pms/themes.html)
+* [Plugins](https://joshuaestes.github.io/pms/plugins.html)
+* Dotfiles
 * Multiple Shell Support
   * Bash
   * Zsh
   * And others!
-* PMS Manager - Easy to use tool to help you manage PMS
+* [PMS Manager](https://joshuaestes.github.io/pms/pms-manager.html)
   * Easy upgrades for PMS
   * Preview and switch themes
   * Easy to enabled and disable various plugins
-* Focus on using environment variables to modify functionality of PMS
-* Easy Uninstall process that leaves your system in the original state before installing PMS
 * Documentation for both Users and Developers
   * [User Guides](https://joshuaestes.github.io/pms/)
   * [Developer Guides](https://github.com/JoshuaEstes/pms/wiki)
-* [View All Features](https://joshuaestes.github.io/pms/features.html)
 
-# Getting Started
-## Requirements
+[Click Here](https://joshuaestes.github.io/pms/features.html) to view all
+features.
+
+# Requirements
+
 * MacOS or Linux (could work on windows, but I don't use windows)
 * curl or wget
 * git
 * A shell such as bash, zsh, etc.
 
-## Installation
+[Click Here](https://joshuaestes.github.io/pms/requirements.html) to see
+detailed list of requirements.
+
+# Installation
+
 Installation can be done manually or by using curl or wget.
 
-### Using curl
 ```
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/JoshuaEstes/pms/master/scripts/install.sh)"
 ```
 
-### Using wget
-```
-sh -c "$(wget -O- https://raw.githubusercontent.com/JoshuaEstes/pms/master/scripts/install.sh)"
-```
-
-### Manual install
-```
-curl -Lo install.sh https://raw.githubusercontent.com/JoshuaEstes/pms/master/scripts/install.sh
-sh install.sh
-```
-
-### Manual install (git)
-```
-git clone https://github.com/JoshuaEstes/pms.git ~/.pms
-# Backup your dotfiles
-# mv ~/.zshrc ~/.zshrc.bak
-# mv ~/.bashrc ~/.bashrc.bak
-# ...
-# Copy over the new files
-# cp ~/.pms/templates/zshrc ~/.zshrc
-# cp ~/.pms/templates/bashrc ~/.bashrc
-# ...
-```
-
 # Documentation
-* [User Guides](https://joshuaestes.github.io/pms/) - Guides on using PMS
-* [Developer Guides](https://github.com/JoshuaEstes/pms/wiki) - Feel like contributing?
 
-
-# Uninstall
-By default, PMS in installed in `~/.pms` directory. You will just need to run
-the "uninstall" script and this will revert you system back to how it was before
-you installed PMS.
-
-```
-cd $PMS && ./scripts/uninstall.sh
-```
-
-# License
-See [LICENSE.md](https://github.com/JoshuaEstes/pms/blob/master/LICENSE.md)
+* [User Guides](https://joshuaestes.github.io/pms/)
+* [Developer Guides](https://github.com/JoshuaEstes/pms/wiki)
