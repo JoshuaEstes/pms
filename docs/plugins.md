@@ -6,7 +6,7 @@ Completion Scripts, and more. Plugins are focused on enhancing your experience
 in the shell.
 
 # PMS Plugins
-<!-- Keep this list in ABC order, do not include Core Plugins (pms, zsh, bash, etc.) -->
+
 * [cd](/pms/plugins/cd.html)
 * [composer](/pms/plugins/composer.html)
 * [getting-started](/pms/plugins/getting-started.html)
@@ -21,8 +21,6 @@ in the shell.
 * [vim](/pms/plugins/vim.html)
 
 Looking to create your own PMS Plugin? [Click Here](https://github.com/JoshuaEstes/pms/wiki) to learn more.
-
-<hr/>
 
 # Enable Plugin
 ```

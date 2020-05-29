@@ -15,10 +15,10 @@ sidebar_default:
         - title: "Requirements"
           url: /requirements.html
         - title: "Installation"
-          url: /installation.html
+          url: /install.html
         - title: "PMS Manager"
           url: /pms-manager.html
     - title: Customizing
       children:
         - title: "Environment Variables"
-          url: /environment-variables.html
+          url: /env-vars.html

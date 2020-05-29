@@ -1,7 +1,7 @@
 ---
 title: PMS Features
 ---
-# PMS Features
+
 * [Themes](/pms/themes.html)
 * [Plugins](/pms/plugins.html)
 * Dotfiles - Change the way programs work in your environment
