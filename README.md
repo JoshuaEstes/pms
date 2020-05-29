@@ -50,6 +50,39 @@ Installation can be done manually or by using curl or wget.
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/JoshuaEstes/pms/master/scripts/install.sh)"
 ```
 
+# FAQs
+
+## Why use PMS?
+
+PMS allows you to work within a framework designed to be used with any shell
+(zsh, bash, etc.). Because everything is "standardized" you gain the benefit of
+having the ability to use PMS on your macOS laptop running zsh and also the
+linux server running bash. Co-workers can use this while using different
+plugins, themes, shells, etc.
+
+PMS ships with the PMS Manager, which is a tool that will allow you to make easy
+modifications to PMS such as switching themes, enabling/disabling plugins, and
+helping you keep PMS updated with the latest release.
+
+PMS also helps you manage your dotfiles.
+
+PMS is easy to install and is as non-destructive as possible backing up existing
+rc files and reverted them when uninstalled.
+
+## What is a plugin?
+
+A plugin changes the behaviour of the shell. This is done by setting or
+unsetting shell specific features. Plugins may also include aliases for you to
+use or contain functionality that will be ran when you do things within PMS like
+upgrading PMS, enable/disable plugins. Plugins may also have settings that can
+be modified by editing your ~/.env file.
+
+## What is a theme?
+
+Themes change the look of your shell by modifying your command prompt. They may
+also do things like change or load colors. If a theme does make changes, it will
+revert those changes when you switch to another theme.
+
 # Documentation
 
 * [User Guides](https://joshuaestes.github.io/pms/)
