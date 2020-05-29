@@ -18,6 +18,9 @@ Description of plugin and what it does.
 | --- | --- | --- |
 | `PMS_EXAMPLE` | `1` | |
 
+Please reference documentation on [Environment Variables](/pms/env-vars.html) to
+learn how to use these.
+
 # Aliases
 
 | Alias | Command | Description |

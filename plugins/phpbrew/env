@@ -4,3 +4,9 @@ export PHPBREW_SET_PROMPT=1
 
 # To enable .phpbrewrc file searching, please export the following variable:
 export PHPBREW_RC_ENABLE=1
+
+# Set to 1 to allow phpbrew to update when pms is upgraded
+PMS_PHPBREW_SELFUPDATE=0
+
+# Set to 1 to allow phpbrew to update know versions of php
+PMS_PHPBREW_UPDATE=0

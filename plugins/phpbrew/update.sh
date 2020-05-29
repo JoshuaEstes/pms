@@ -1,5 +1,9 @@
 # Self-update, default to master version
-phpbrew self-update
+if [ "$PMS_PHPBREW_SELFUPDATE" -eq "1" ]; then
+    phpbrew self-update
+fi
 
 # Update PHP release source file
-phpbrew update
+if [ "$PMS_PHPBREW_UPDATE" -eq "1" ]; then
+    phpbrew update
+fi
