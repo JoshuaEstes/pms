@@ -189,21 +189,25 @@ _pms_source_file() {
 # @internal
 ####
 _pms_load_env_files() {
-    if [ "$PMS_DEBUG" -eq "1" ]; then
-      _pms_message_block_info "Loading Environment Files"
-    fi
     # Load pms first so everything can overwrite them if need be
     _pms_source_file $PMS/plugins/pms/env
+
     # Load some default shell variables
     _pms_source_file $PMS/plugins/$PMS_SHELL/env
+
     # load the plugins and theme next so that they can be modified later. They should never be modified
     # by hand and should never really be overwritten.
     _pms_source_file ~/.pms.plugins
     _pms_source_file ~/.pms.theme
+
     # Load the plugin variables
     for plugin in "${PMS_PLUGINS[@]}"; do
         _pms_source_file $PMS/plugins/$plugin/env
     done
+
+    # These files should have already been sourced from the rc files, this
+    # reload them to make sure that settings the users want are overwritten
+    # when we load the about env files
     _pms_source_file ~/.env
     _pms_source_file ~/.env.$PMS_SHELL
     _pms_source_file ~/.env.local
@@ -211,7 +215,11 @@ _pms_load_env_files() {
 }
 
 ####
+# This will load up libraries from the code base. It will load sh and then load
+# specific shell libraries
+#
 # @todo local overwrites
+# @internal
 ####
 _pms_load_libraries() {
   for lib in $PMS/lib/*.{sh,$PMS_SHELL}; do
@@ -236,7 +244,6 @@ _pms_load_plugins() {
 
 # 2) environment file loader
 _pms_load_env_files
-
 if [ "$PMS_DEBUG" -eq "1" ]; then
     _pms_message_block_info "Current PMS Settings"
     _pms_message_info "PMS:         $PMS"
