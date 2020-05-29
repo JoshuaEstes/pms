@@ -3,7 +3,9 @@
 # This file may get updated when running an install or pms update, please use
 # the config files and PMS_LOCAL directory to modify PMS
 
-# @todo
-PMS=~/.pms
-PMS_DEBUG=0
+[[ -f ~/.env ]] && source ~/.env
+[[ -f ~/.env.bash ]] && source ~/.env.bash
+[[ -f ~/.env.local ]] && source ~/.env.local
+[[ -f ~/.env.bash.local ]] && source ~/.env.bash.local
+
 source $PMS/pms.sh bash $PMS_DEBUG
