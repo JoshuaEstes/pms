@@ -83,14 +83,3 @@ cd $PMS && ./scripts/uninstall.sh
 
 # License
 See [LICENSE.md](https://github.com/JoshuaEstes/pms/blob/master/LICENSE.md)
-
----
-
-Pages that need to be created
-* [Install](/pms/install.html)
-* [Uninstall](/pms/uninstall.html)
-* [Requirements](/pms/requirements.html)
-* [Shells](/pms/shells.html)
-  * Document supported shells along with any specific features for that shell
-  * Each shell should have it's on page
-* [PMS Manager](/pms/pms-manager.html)
