@@ -56,9 +56,19 @@ Code tagging @internal, @api, @deprecated
 
 Main focus of this section will be on plugins and themes
 
-Documentation
+Code Style Guide
+
+Documentation Style Guide
 
 License
+
+References
+* https://www.kernel.org/doc/html/v4.10/process/coding-style.html
+* https://google.github.io/styleguide/shellguide.html
+
+# Documentation Standards
+
+Style Guide
 
 # Conventions
 
