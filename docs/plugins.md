@@ -2,11 +2,10 @@
 title: PMS Plugins
 classes: wide
 ---
+
 Plugins will contain things such as Commands, Functions, Aliases, Auto
 Completion Scripts, and more. Plugins are focused on enhancing your experience
 in the shell.
-
-# PMS Plugins
 
 * [cd](/pms/plugins/cd.html)
 * [composer](/pms/plugins/composer.html)
@@ -23,12 +22,6 @@ in the shell.
 
 Looking to create your own PMS Plugin? [Click Here](https://github.com/JoshuaEstes/pms/wiki) to learn more.
 
-# Enable Plugin
-```
-pms plugin enable [PLUGIN]
-```
-
-# Disable Plugin
-```
-pms plugin disable [PLUGIN]
-```
+***Looking for information on how to enable/disable plugins?*** [Click Here](/pms/pms-manager.html)
+to learn how
+{: .notice--success}

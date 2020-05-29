@@ -18,5 +18,5 @@ you are using.
 {: .notice--info}
 
 PMS Loads .env files in this order to allow you different configuration options.
-These files are where you will overwrite environment variables defined by [plugins](pms/plugins.html)
+These files are where you will overwrite environment variables defined by [plugins](/pms/plugins.html)
 to modify behavior.
