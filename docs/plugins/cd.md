@@ -1,8 +1,7 @@
 ---
 title: PMS "cd" Plugin
+toc: true
 ---
-
-{% include plugin_header.md %}
 
 Adds a lot of nifty aliases for changing directories
 
