@@ -1,6 +1,7 @@
 ---
 title: PMS "cd" Plugin
 toc: true
+toc_sticky: true
 ---
 
 Adds a lot of nifty aliases for changing directories

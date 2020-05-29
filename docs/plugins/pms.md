@@ -1,8 +1,8 @@
 ---
 title: PMS "pms" Plugin
+toc: true
+toc_sticky: true
 ---
-{% include plugin_header.md %}
-# pms
 The "pms" plugin will always load first. It provides the PMS Manager along with
 a few extra goodies to help manage PMS.
 

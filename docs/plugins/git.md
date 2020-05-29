@@ -1,8 +1,8 @@
 ---
 title: PMS "git" Plugin
+toc: true
+pms_plugin: git
 ---
-{% include plugin_header.md %}
-# git
 
 # Requirements
 * git

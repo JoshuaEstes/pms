@@ -1,10 +1,11 @@
 ---
 title: PMS "vim" Plugin
+toc: true
+toc_sticky: true
 ---
-{% include plugin_header.md %}
-# vim
 
 # Requirements
+
 * vim
 
 # Aliases

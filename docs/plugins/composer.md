@@ -1,16 +1,14 @@
 ---
 title: PMS "composer" Plugin
-classes: wide
 toc: true
 pms_plugin: composer
 ---
-{% include plugin_header.md %}
 
-# PMS "{{ page.pms_plugin }}" Plugin
 Adds a few aliases for working with composer and will keep composer up-to-date
 with the latest releases.
 
 # Environment Variables
+
 <table>
   <thead>
     <tr>
@@ -29,6 +27,7 @@ with the latest releases.
 </table>
 
 # Aliases
+
 <table>
   <thead>
     <tr>
