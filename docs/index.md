@@ -47,19 +47,6 @@ curl -Lo install.sh https://raw.githubusercontent.com/JoshuaEstes/pms/master/scr
 sh install.sh
 ```
 
-### Manual install (git)
-```
-git clone https://github.com/JoshuaEstes/pms.git ~/.pms
-# Backup your dotfiles
-# mv ~/.zshrc ~/.zshrc.bak
-# mv ~/.bashrc ~/.bashrc.bak
-# ...
-# Copy over the new files
-# cp ~/.pms/templates/zshrc ~/.zshrc
-# cp ~/.pms/templates/bashrc ~/.bashrc
-# ...
-```
-
 ## Updating PMS using the PMS Manager
 ### auto
 ```
