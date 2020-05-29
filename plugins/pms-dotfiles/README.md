@@ -3,6 +3,10 @@ PMS Dotfiles Plugin
 
 This is just me testing some different methods on doing this.
 
+References:
+* https://news.ycombinator.com/item?id=11071754
+* https://www.atlassian.com/git/tutorials/dotfiles
+
 # env vars
 
 PMS_DOTFILES_REPO=git@github.com:JoshuaEstes/dotfiles.git
