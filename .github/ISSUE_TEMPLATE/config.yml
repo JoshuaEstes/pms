@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+    - name: PMS User Docs
+      url: https://joshuaestes.github.io/pms/
+      about: Please review our User Documentation to see if it can answer your question
