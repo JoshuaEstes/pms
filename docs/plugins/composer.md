@@ -20,7 +20,7 @@ with the latest releases.
   <tbody>
     <tr>
       <td>PMS_COMPOSER_AUTOUPDATE</td>
-      <td>1</td>
+      <td>0</td>
       <td>Setting this to 1 upgrade composer to the lastest when PMS is upgraded. To disable this feature, set this to 0</td>
     </tr>
   </tbody>
