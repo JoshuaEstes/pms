@@ -20,6 +20,8 @@ sidebar_default:
           url: /install.html
         - title: "PMS Manager"
           url: /pms-manager.html
+        - title: "Upgrading"
+          url: /upgrade.html
     - title: Customizing
       children:
         - title: "Environment Variables"
