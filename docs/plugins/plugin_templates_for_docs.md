@@ -1,10 +1,9 @@
 ---
-
 title: PMS "__PLUGIN__" Plugin
 pms_plugin: __PLUGIN__
 toc: true
+toc_label: __PLUGIN__
 toc_sticky: true
-
 ---
 {% include plugin_header.md %}
 
