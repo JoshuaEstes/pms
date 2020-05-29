@@ -1,3 +1,3 @@
-[Back to Plugin List](/plugins.md)
+[Back to Plugin List](/pms/plugins.md)
 
 ---
