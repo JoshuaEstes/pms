@@ -157,7 +157,7 @@ _pms_load_plugin() {
 
       # Let user know plugin could not be found
       if [ "$plugin_loaded" -eq "0" ]; then
-        _pms_message_error "Plugin '$1' could not be loaded"
+          _pms_message_error "Plugin '$1' could not be loaded"
       fi
   done
 }

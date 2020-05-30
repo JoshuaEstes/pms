@@ -244,6 +244,7 @@ _pms_command_plugin_enable() {
         fi
     done
 
+    # @todo if plugin cannot be loaded, do not do this
     _pms_message_info "Adding '$3' to ~/.pms.plugins"
     PMS_PLUGINS+=($3)
     echo "PMS_PLUGINS=(${PMS_PLUGINS[*]})" > ~/.pms.plugins
