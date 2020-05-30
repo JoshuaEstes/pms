@@ -16,16 +16,19 @@ power of PMS ;)
 
 * [Themes](https://joshuaestes.github.io/pms/themes.html)
 * [Plugins](https://joshuaestes.github.io/pms/plugins.html)
+  * Plugins do more than just add a bunch of aliases that you will never use
+  * Shell Options, Auto Completions, Commands, and more are just some of the
+    things plugins can provide.
 * Dotfiles
-* Multiple Shell Support
-  * Bash
-  * Zsh
-  * And others!
+  * Get help managing those dotfiles! No more custom install or update scripts
+  * Your dotfiles are backed up to your own git repository
+* Multiple Shell Support (Bash, Zsh, etc.)
+  * Works to load sane defaults for you (with the help of various plugins)
 * [PMS Manager](https://joshuaestes.github.io/pms/pms-manager.html)
   * Easy upgrades for PMS
-  * Preview and switch themes
+  * Preview and switch themes with ease
   * Easy to enabled and disable various plugins
-* Documentation for both Users and Developers
+* Great Documentation for both Users and Developers
   * [User Guides](https://joshuaestes.github.io/pms/)
   * [Developer Guides](https://github.com/JoshuaEstes/pms/wiki)
 
@@ -82,6 +85,16 @@ be modified by editing your ~/.env file.
 Themes change the look of your shell by modifying your command prompt. They may
 also do things like change or load colors. If a theme does make changes, it will
 revert those changes when you switch to another theme.
+
+## How are my dotfiles managed?
+
+There is a [great article](https://www.atlassian.com/git/tutorials/dotfiles) on
+using a bare git repo to store your dotfiles. This is how PMS works to manage
+your dotfiles but provides some extra functionality to make it easier to manage.
+
+By managing your files like this, it will not require any of your files to be
+symlinked. Another benefit of managing your dotfiles like this is we can do some
+really cool shit with git.
 
 # Documentation
 
