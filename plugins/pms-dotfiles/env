@@ -1,6 +1,9 @@
 # This is the repository that updates will be pushed to
 PMS_DOTFILES_REPO=
 
+# What is the branch that we will be using for dotfiles
+PMS_DOTFILES_BRANCH=master
+
 # This will be the location where the git repo maintain your dotfiles. Your
 # dotfiles will not be stored here. You will be able to view and edit your
 # dotfiles in your $HOME directory
