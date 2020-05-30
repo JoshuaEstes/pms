@@ -14,22 +14,35 @@
 #
 #################################################################################################################
 pms() {
-  if [ ! -z "$1" ] && [ ! -z "$2" ]; then
-      type _pms_command_${1}_${2} &>/dev/null && {
-          _pms_command_${1}_${2} "$@"
-          return $?
-      }
-  fi
+    if [ "dotfiles" = "$1" ]; then
+        local cmd=$2
+        type _pms_command_dotfiles_${cmd} &>/dev/null && {
+            shift 2
+            _pms_command_dotfiles_${cmd} "$@"
+            return $?
+        }
 
-  if [ ! -z "$1" ]; then
-      type _pms_command_${1} &>/dev/null && {
-          _pms_command_${1} "$@"
-          return $?
-      }
-  fi
+        shift
+        /usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME -C $HOME "$@"
+        return $?
+    fi
 
-  _pms_command_help
-  return 1
+    if [ ! -z "$1" ] && [ ! -z "$2" ]; then
+        type _pms_command_${1}_${2} &>/dev/null && {
+            _pms_command_${1}_${2} "$@"
+            return $?
+        }
+    fi
+
+    if [ ! -z "$1" ]; then
+        type _pms_command_${1} &>/dev/null && {
+            _pms_command_${1} "$@"
+            return $?
+        }
+    fi
+
+    _pms_command_help
+    return 1
 }
 _pms_command_about() {
   echo
@@ -66,6 +79,10 @@ _pms_command_help() {
   #echo "    update           Updates a plugin"
   #echo "    validate         Validate plugin"
   #echo "    reload           Reloads enabled plugins"
+  echo "  dotfiles           Manage your dotfiles"
+  #echo "    init             Initialize your dotfiles repository"
+  echo "    add              Add dotfiles to your repository"
+  #echo "    scan             Scans your home directory for known dotfiles"
   echo
 
   return 0
@@ -88,10 +105,10 @@ _pms_command_diagnostic() {
     else
       echo "Hash:        PMS not installed"
     fi
-    echo "~/.pms.theme"
+    echo "Contents of ~/.pms.theme"
     cat ~/.pms.theme
     echo
-    echo "~/.pms.plugins"
+    echo "Contents of ~/.pms.plugins"
     cat ~/.pms.plugins
     echo
     echo "-=[ Shell ]=-"
@@ -297,4 +314,31 @@ _pms_command_plugin_disable() {
 
     _pms_message_section_success "$3" "Plugin has been disabled, you will need to reload pms"
     # @todo Ask user to reload environment
+}
+_pms_command_dotfiles_init() {
+    echo "Initializing your dotfiles stuff"
+    echo "@todo"
+    # ---
+    # Use existing or create new?
+    # Existing
+    #   git clone --bare REPO_URL $HOME/.dotfiles
+    #   git checkout
+    #   git config --local status.showUntrackedFiles no
+    # Create New
+    #   git init --bare $HOME/.dotfiles
+    #   git config --local status.showUntrackedFiles no
+    #   git remote add origin REPO_URL
+    # ---
+}
+_pms_command_dotfiles_add() {
+    for f in "$@"; do
+        # --verbose
+        # --force = Allow adding otherwise ignored files
+        /usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME -C $HOME add --verbose --force $f
+        # @todo better commit messages
+        /usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME -C $HOME commit -m "$f"
+    done
+    # @todo support for different remote
+    # @todo support for different branch
+    /usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME -C $HOME push origin master
 }

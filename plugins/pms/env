@@ -1,1 +1,51 @@
 # PMS Environment Variables
+
+####
+# Setting this to 1 will enable the PMS debug mode
+#PMS_DEBUG=0
+
+####
+#PMS_REPO=JoshuaEstes/pms
+
+####
+#PMS_REMOTE=https://github.com/$PMS_REPO.git
+
+####
+#PMS_BRANCH=master
+
+####
+# This is the directory where you can find PMS
+#PMS=$HOME/.pms
+
+####
+# This is the directory where you can find custom PMS stuff like libraries,
+# plugins, and themes that the user has created
+#PMS_LOCAL=$PMS/local
+
+####
+# This contains the current shell that is being used.
+#PMS_SHELL=
+
+####
+# This is the PMS Theme that is currently being used
+#
+# NOTE: This is stored in $HOME/.pms.theme and should not be set by hand
+#PMS_THEME=default
+
+####
+# These are the plugins that will be loaded
+#PMS_PLUGINS=(getting-started)
+
+###
+# This is the repository that updates will be pushed to
+#PMS_DOTFILES_REPO=
+
+###
+# What is the branch that we will be using for dotfiles
+#PMS_DOTFILES_BRANCH=master
+
+###
+# This will be the location where the git repo maintain your dotfiles. Your
+# dotfiles will not be stored here. You will be able to view and edit your
+# dotfiles in your $HOME directory
+#PMS_DOTFILES_GIT_DIR=$HOME/.dotfiles
