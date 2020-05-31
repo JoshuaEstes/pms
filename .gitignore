@@ -1,3 +1,4 @@
+cache/
 local/
 .env.bash.local
 .env.zsh.local
