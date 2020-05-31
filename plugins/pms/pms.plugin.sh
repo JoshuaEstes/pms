@@ -279,19 +279,19 @@ _pms_command_plugin_enable() {
 _pms_command_plugin_disable() {
     # @todo support for multiple plugins at a time
     local _plugin_enabled=0
+
+    # Check to see if the plugin is already enabled and if so, notify user and
+    # exit
     for p in "${PMS_PLUGINS[@]}"; do
-        if [ "$PMS_DEBUG" -eq "1" ]; then
-            _pms_message_info "'$p' = '$3'"
-        fi
         if [ "$p" = "${3}" ]; then
             _plugin_enabled=1
         fi
     done
-
     if [ "$_plugin_enabled" -eq "0" ]; then
         _pms_message_section_error "$3" "The plugin is not enabled"
         return 1
     fi
+    # ---
 
     # Remove from plugins
     local _plugins=()
@@ -312,7 +312,7 @@ _pms_command_plugin_disable() {
         source $PMS/plugins/$3/uninstall.sh
     fi
 
-    _pms_message_section_success "$3" "Plugin has been disabled, you will need to reload pms"
+    _pms_message_section_success "$3" "Plugin has been disabled, you will need to reload pms by running 'pms reload'"
     # @todo Ask user to reload environment
 }
 _pms_command_dotfiles_init() {

@@ -8,3 +8,6 @@ setopt auto_cd
 
 # Make cd push the old directory onto the directory stack
 setopt auto_pushd
+
+setopt pushd_ignore_dups
+setopt pushdminus

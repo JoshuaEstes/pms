@@ -49,3 +49,11 @@
 # dotfiles will not be stored here. You will be able to view and edit your
 # dotfiles in your $HOME directory
 #PMS_DOTFILES_GIT_DIR=$HOME/.dotfiles
+
+###
+# PMS Cache dir
+#PMS_CACHE_DIR=$PMS/cache
+
+###
+# Log directory
+#PMS_LOG_DIR=$PMS/log

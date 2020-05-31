@@ -1,6 +1,6 @@
 # @todo document what this stuff does
+
+
 DIRSTACKSIZE=10
-HISTFILE=$HOME/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
+
 KEYTIMEOUT=1 # 0.1 second delay
