@@ -1,7 +1,21 @@
-# ~/.zshrc
 ####
-# This file may get updated when running an install or pms update, please use
-# the config files and PMS_LOCAL directory to modify PMS
+# ~/.zshrc
+#
+# |               | Interactive | Interactive | Script |
+# |               | login       | non-login   |        |
+# | ------------- | ----------- | ----------- | ------ |
+# | /etc/zshenv   | A           | A           | A      |
+# | ~/.zshenv     | B           | B           | B      |
+# | /etc/zprofile | C           |             |        |
+# | ~/.zprofile   | D           |             |        |
+# | /etc/zshrc    | E           | C           |        |
+# | ~/.zshrc      | F           | D           |        |
+# | /etc/zlogin   | G           |             |        |
+# | ~/.zlogin     | H           |             |        |
+# | ------------- | ----------- | ----------- | ------ |
+# | ~/.zlogout    | I           |             |        |
+# | /etc/zlogout  | J           |             |        |
+####
 
 # Default PMS Options
 PMS=~/.pms

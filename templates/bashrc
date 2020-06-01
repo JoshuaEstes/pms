@@ -1,7 +1,19 @@
-# ~/.bashrc
 ####
-# This file may get updated when running an install or pms update, please use
-# the config files and PMS_LOCAL directory to modify PMS
+# ~/.bashrc
+#
+# |                  | Interactive | Interactive | Script |
+# |                  | login       | non-login   |        |
+# | ---------------- | ----------- | ----------- | ------ |
+# | /etc/profile     | A           |             |        |
+# | /etc/bash.bashrc |             | A           |        |
+# | ~/.bashrc        |             | B           |        |
+# | ~/.bash_profile  | B1          |             |        |
+# | ~/.bash_login    | B2          |             |        |
+# | ~/.profile       | B3          |             |        |
+# | BASH_ENV         |             |             | B      |
+# | ---------------- | ----------- | ----------- | ------ |
+# | ~/.bash_logout   | C           |             |        |
+####
 
 # Defaults
 PMS=~/.pms
