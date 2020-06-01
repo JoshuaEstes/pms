@@ -38,9 +38,12 @@ features.
 # Requirements
 
 * MacOS or Linux (could work on windows, but I don't use windows)
+* Shell such as bash, zsh, etc.
 * curl or wget
+  * Used to install PMS
 * git
-* A shell such as bash, zsh, etc.
+  * Used for installing and upgrading PMS
+  * Dotfiles Manager uses git to store your dotfiles
 
 [Click Here](https://joshuaestes.github.io/pms/requirements.html) to see
 detailed list of requirements.
