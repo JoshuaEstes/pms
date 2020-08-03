@@ -193,8 +193,8 @@ _pms_command_upgrade() {
 _pms_command_reload() {
   _pms_message_block_info "Reloading PMS..."
   # @todo which is best?
-  #source ~/.${PMS_SHELL}rc
-  exec $PMS_SHELL --login
+  source ~/.${PMS_SHELL}rc
+  #exec $PMS_SHELL --login
   #sh $PMS/pms.sh $PMS_SHELL $PMS_DEBUG
 }
 _pms_command_theme_list() {
