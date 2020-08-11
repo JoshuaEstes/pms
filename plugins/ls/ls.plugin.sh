@@ -3,7 +3,7 @@
 ###
 
 # @todo make this more flexible
-alias ls='ls -G'
+alias ls='ls --color'
 
 alias l='ls'
 alias ll='ls -alh'
