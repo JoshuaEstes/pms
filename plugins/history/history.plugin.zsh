@@ -14,4 +14,7 @@ setopt hist_ignore_space
 setopt hist_verify
 
 # Share history data
-setopt share_history
+# Fuck this, causes more issues because I have an absurd amount of terms open
+#setopt share_history
+
+bindkey '^R' history-incremental-search-backward
