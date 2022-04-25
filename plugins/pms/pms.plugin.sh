@@ -58,7 +58,7 @@ _pms_command_about() {
 }
 _pms_command_help() {
   echo
-  echo "Usage: pms [OPTIONS] COMMAND"
+  echo "Usage: pms [OPTIONS] COMMAND [SUBCOMMAND]"
   echo
   echo "Commands:"
   echo "  about              Show PMS information"
