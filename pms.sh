@@ -96,6 +96,7 @@ _pms_message_block_error() {
 # @internal
 ####
 _pms_load_theme() {
+  _pms_message_section_info "theme" "Loading theme"
   local theme_loaded=0
   # Generic sh theme files
   if [ -f $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.sh ]; then
@@ -133,31 +134,32 @@ _pms_load_theme() {
 _pms_load_plugin() {
   # @todo Check directory exists in either PMS_LOCAL or PMS
   for plugin in "$@"; do
+      _pms_message_section_info "plugin" "Loading '$plugin'"
       local plugin_loaded=0
       # sh may or may not be found, we don't need to notify user if this is not
       # found because shell specific files are more important
-      if [ -f $PMS_LOCAL/plugins/$1/$1.plugin.sh ]; then
-        _pms_source_file $PMS_LOCAL/plugins/$1/$1.plugin.sh
+      if [ -f $PMS_LOCAL/plugins/$plugin/$plugin.plugin.sh ]; then
+        _pms_source_file $PMS_LOCAL/plugins/$plugin/$plugin.plugin.sh
         plugin_loaded=1
       # check core plugins
-      elif [ -f $PMS/plugins/$1/$1.plugin.sh ]; then
-        _pms_source_file $PMS/plugins/$1/$1.plugin.sh
+      elif [ -f $PMS/plugins/$plugin/$plugin.plugin.sh ]; then
+        _pms_source_file $PMS/plugins/$plugin/$plugin.plugin.sh
         plugin_loaded=1
       fi
 
       # check local directory first
-      if [ -f $PMS_LOCAL/plugins/$1/$1.plugin.$PMS_SHELL ]; then
-        _pms_source_file $PMS_LOCAL/plugins/$1/$1.plugin.$PMS_SHELL
+      if [ -f $PMS_LOCAL/plugins/$plugin/$plugin.plugin.$PMS_SHELL ]; then
+        _pms_source_file $PMS_LOCAL/plugins/$plugin/$plugin.plugin.$PMS_SHELL
         plugin_loaded=1
       # check core plugins
-      elif [ -f $PMS/plugins/$1/$1.plugin.$PMS_SHELL ]; then
-        _pms_source_file $PMS/plugins/$1/$1.plugin.$PMS_SHELL
+      elif [ -f $PMS/plugins/$plugin/$plugin.plugin.$PMS_SHELL ]; then
+        _pms_source_file $PMS/plugins/$plugin/$plugin.plugin.$PMS_SHELL
         plugin_loaded=1
       fi
 
       # Let user know plugin could not be found
       if [ "$plugin_loaded" -eq "0" ]; then
-          _pms_message_error "Plugin '$1' could not be loaded"
+          _pms_message_section_error "plugin" "Plugin '$plugin' could not be loaded"
       fi
   done
 }
@@ -174,10 +176,10 @@ _pms_load_plugin() {
 ####
 _pms_source_file() {
     if [ -f $1 ]; then
-        if [ "$PMS_DEBUG" -eq "1" ]; then
-            _pms_message_section_info "loading" "$1"
-        fi
         source $1
+        if [ "$PMS_DEBUG" -eq "1" ]; then
+            _pms_message_section_info "loaded" "$1"
+        fi
     #else
     #    _pms_message_error "File '$1' could not be found"
     fi
@@ -189,6 +191,7 @@ _pms_source_file() {
 # @internal
 ####
 _pms_load_env_files() {
+    _pms_message_section_info "env" "Loading env files"
     # Load pms first so everything can overwrite them if need be
     _pms_source_file $PMS/plugins/pms/env
 
@@ -202,7 +205,9 @@ _pms_load_env_files() {
 
     # Load the plugin variables
     for plugin in "${PMS_PLUGINS[@]}"; do
+      if [ "$plugin" != "$PMS_SHELL" ]; then
         _pms_source_file $PMS/plugins/$plugin/env
+      fi
     done
 
     # These files should have already been sourced from the rc files, this
@@ -222,6 +227,7 @@ _pms_load_env_files() {
 # @internal
 ####
 _pms_load_libraries() {
+  _pms_message_section_info "library" "Loading libraries"
   for lib in $PMS/lib/*.{sh,$PMS_SHELL}; do
     _pms_source_file $lib
   done
@@ -235,10 +241,13 @@ _pms_load_libraries() {
 # @internal
 ####
 _pms_load_plugins() {
+    _pms_message_section_info "plugin" "Loading plugins"
     # make sure the pms and "PMS_SHELL" plugins are loaded up first
     _pms_load_plugin pms $PMS_SHELL
     for plugin in "${PMS_PLUGINS[@]}"; do
-      _pms_load_plugin $plugin
+      if [ "$plugin" != "$PMS_SHELL" ]; then
+        _pms_load_plugin $plugin
+      fi
     done
 }
 
