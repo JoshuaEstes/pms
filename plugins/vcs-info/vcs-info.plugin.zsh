@@ -1,3 +1,4 @@
+# vim: set ft=zsh:
 autoload -Uz vcs_info
 precmd() { vcs_info }
 zstyle ':vcs_info:*' enable git

@@ -1,5 +1,5 @@
+# vim: set ft=sh:
 # @todo document what this stuff does
-
 
 DIRSTACKSIZE=10
 

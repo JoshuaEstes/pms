@@ -1,3 +1,4 @@
+# vim: set ft=zsh:
 # Perform implicit tees or cats when multiple redirections are attempted
 setopt multios
 
