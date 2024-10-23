@@ -1,3 +1,5 @@
 # Setting this to 1 will update composer to the latest release when we upgrade
 # PMS
 PMS_COMPOSER_AUTOUPDATE=0
+
+export PATH="$HOME/.composer/vendor/bin:$PATH"
