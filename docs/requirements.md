@@ -3,6 +3,8 @@ title: Requirements
 classes: wide
 ---
 
+# Requirements
+
 * macOS, Linux, BSD
 * Shell
   * Bash
@@ -12,6 +14,6 @@ classes: wide
   * Used to install PMS updates
   * Used to store dotfiles
 * curl or wget
-  * Used for running the [installer](/pms/install.html)
+  * Used for running the [installer](https://github.com/JoshuaEstes/pms/blob/master/pms/install.html)
 
-[Click Here](/pms/install.html) to install PMS.
+[Click Here](https://github.com/JoshuaEstes/pms/blob/master/pms/install.html) to install PMS.

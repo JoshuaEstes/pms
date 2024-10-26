@@ -5,55 +5,56 @@ toc: true
 toc_sticky: true
 ---
 
+# PMS "\_\_PLUGIN\_\_" Plugin
+
 Description of plugin and what it does.
 
-# Requirements
+## Requirements
 
 * example >= 1.2.3
-* [pms plugin cd](/pms/plugins/cd.html)
+* [pms plugin cd](https://github.com/JoshuaEstes/pms/blob/master/pms/plugins/cd.html)
 
-# Environment Variables
+## Environment Variables
 
-| Variable | Default | Description |
-| --- | --- | --- |
-| `PMS_EXAMPLE` | `1` | |
+| Variable      | Default | Description |
+| ------------- | ------- | ----------- |
+| `PMS_EXAMPLE` | `1`     |             |
 
-Please reference documentation on [Environment Variables](/pms/env-vars.html) to
-learn how to use these.
+Please reference documentation on [Environment Variables](https://github.com/JoshuaEstes/pms/blob/master/pms/env-vars.html) to learn how to use these.
 
-# Aliases
+## Aliases
 
-| Alias | Command | Description |
-| --- | --- | --- |
-| `example` | `example --verbose` | |
+| Alias     | Command             | Description |
+| --------- | ------------------- | ----------- |
+| `example` | `example --verbose` |             |
 
-# Functions
+## Functions
 
-| Function | Description |
-| --- | --- |
-| `example_function_user_can_run` | |
+| Function                        | Description |
+| ------------------------------- | ----------- |
+| `example_function_user_can_run` |             |
 
-# Commands
+## Commands
 
-| Command | Description |
-| --- | --- |
-| `example_function_user_can_run` | |
+| Command                         | Description |
+| ------------------------------- | ----------- |
+| `example_function_user_can_run` |             |
 
-# Suggested Plugins
+## Suggested Plugins
 
-* [example](/pms/plugins/example.html)
+* [example](https://github.com/JoshuaEstes/pms/blob/master/pms/plugins/example.html)
 
-# Conflicts with Plugins
+## Conflicts with Plugins
 
-* [example](/pms/plugins/example.html)
+* [example](https://github.com/JoshuaEstes/pms/blob/master/pms/plugins/example.html)
 
-# Known Issues
+## Known Issues
 
 * Unable to work correctly under DOS
 * Alias a will not be available under DOS
 
-# See Also
+## See Also
 
-* [Plugin Source Code](https://github.com/JoshuaEstes/pms/tree/master/plugins/{{ page.pms_plugin }})
-* [Link 1](/pms)
-* [Link 2](/pms)
+* \[Plugin Source Code]\(https://github.com/JoshuaEstes/pms/tree/master/plugins/\{{ page.pms\_plugin \}})
+* [Link 1](https://github.com/JoshuaEstes/pms/blob/master/pms/README.md)
+* [Link 2](https://github.com/JoshuaEstes/pms/blob/master/pms/README.md)

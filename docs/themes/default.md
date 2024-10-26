@@ -1,18 +1,23 @@
 ---
 title: PMS "default" Theme
 ---
-{% include theme_header.md %}
 
-# default
+# PMS "default" Theme
+
+## default
+
 Very basic theme, no bells or whistles
 
-# Suggested Plugins
-This plugin will pair well with these plugins
-* [Plugin 1](/pms)
-* [Plugin 2](/pms)
+## Suggested Plugins
 
-# See Also
-Links to other documentation for this plugin, for example, if this was the
-"git" plugin, we could link to the git manual
-* [Link 1](/pms)
-* [Link 2](/pms)
+This plugin will pair well with these plugins
+
+* [Plugin 1](https://github.com/JoshuaEstes/pms/blob/master/pms/README.md)
+* [Plugin 2](https://github.com/JoshuaEstes/pms/blob/master/pms/README.md)
+
+## See Also
+
+Links to other documentation for this plugin, for example, if this was the "git" plugin, we could link to the git manual
+
+* [Link 1](https://github.com/JoshuaEstes/pms/blob/master/pms/README.md)
+* [Link 2](https://github.com/JoshuaEstes/pms/blob/master/pms/README.md)
