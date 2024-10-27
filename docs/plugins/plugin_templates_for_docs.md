@@ -3,9 +3,10 @@ title: PMS "__PLUGIN__" Plugin
 pms_plugin: __PLUGIN__
 toc: true
 toc_sticky: true
+hidden: true
 ---
 
-# PMS "\_\_PLUGIN\_\_" Plugin
+# \_\_PLUGIN\_\_ Template
 
 Description of plugin and what it does.
 

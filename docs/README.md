@@ -7,21 +7,21 @@ classes: wide
 
 PMS is a framework for using different shells along with various "dotfiles". It supports easy install/uninstall and a wide variety of plugins and themes.
 
-## Features
+## [Features](features.md)
 
-* Themes - Change the way your environment looks
-* Plugins - Change the way your environment functions
+* [Themes](themes/) - Change the way your environment looks
+* [Plugins](plugins/) - Change the way your environment functions
 * Dotfiles - Change the way programs work in your environment
 * Multiple Shell Support
   * No matter the shell, you can easily swap between them and maintain similar functionality
-* PMS Manager - Easy to use and up modify tool to help you manage PMS
-  * Easy upgrade PMS
+* [PMS Manager](pms-manager.md) - Easy to use and up modify tool to help you manage PMS
+  * Easy [upgrade](upgrade.md) PMS
   * Preview and switch themes
   * Easy Plugin enabled and disable
-* Focus on using environment variables to modify functionality of PMS
-* Easy Uninstall process that leaves your system in the ordinal state before installing PMS
+* Focus on using [environment variables](environment-variables.md) to modify functionality of PMS
+* Easy [Uninstall](installation/uninstall.md) process that leaves your system in the ordinal state before installing PMS
 * Easy to extend and overwrite any file, even the PMS core
-* View All Features
+* [View All Features](features.md)
 
 ## Getting Started
 
@@ -39,19 +39,19 @@ Installation can be done manually or by using curl or wget.
 #### Using curl
 
 ```
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/JoshuaEstes/pms/master/scripts/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/JoshuaEstes/pms/main/scripts/install.sh)"
 ```
 
 #### Using wget
 
 ```
-sh -c "$(wget -O- https://raw.githubusercontent.com/JoshuaEstes/pms/master/scripts/install.sh)"
+sh -c "$(wget -O- https://raw.githubusercontent.com/JoshuaEstes/pms/main/scripts/install.sh)"
 ```
 
 #### Manual install
 
 ```
-curl -Lo install.sh https://raw.githubusercontent.com/JoshuaEstes/pms/master/scripts/install.sh
+curl -Lo install.sh https://raw.githubusercontent.com/JoshuaEstes/pms/main/scripts/install.sh
 sh install.sh
 ```
 

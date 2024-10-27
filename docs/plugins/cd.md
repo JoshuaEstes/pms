@@ -4,14 +4,16 @@ toc: true
 toc_sticky: true
 ---
 
+# cd
+
 Adds a lot of nifty aliases for changing directories
 
-# Aliases
+## Aliases
 
-| Alias | Command | Notes |
-| --- | --- | --- |
-| `-` | `cd -` | Change to previous directory |
+| Alias | Command | Notes                        |
+| ----- | ------- | ---------------------------- |
+| `-`   | `cd -`  | Change to previous directory |
 
-# See Also
+## See Also
 
-* [Plugin Source Code](https://github.com/JoshuaEstes/pms/tree/master/plugins/cd)
+* [Plugin Source Code](https://github.com/JoshuaEstes/pms/tree/main/plugins/cd)
