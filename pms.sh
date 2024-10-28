@@ -22,8 +22,6 @@ PMS_THEME=default
 # Initialize colors so we can use these late
 #
 # @todo add more colors and ability for fg and bg
-#
-# @internal
 ####
 _pms_initialize_colors() {
   RED=$(printf '\033[31m')
@@ -198,8 +196,8 @@ _pms_load_env_files() {
     # Load some default shell variables
     _pms_source_file $PMS/plugins/$PMS_SHELL/env
 
-    # load the plugins and theme next so that they can be modified later. They should never be modified
-    # by hand and should never really be overwritten.
+    # load the plugins and theme next so that they can be modified later. They
+    # should never be modified by hand and should never really be overwritten.
     _pms_source_file ~/.pms.plugins
     _pms_source_file ~/.pms.theme
 
@@ -251,7 +249,7 @@ _pms_load_plugins() {
     done
 }
 
-# 2) environment file loader
+# 2) Load "env" files
 _pms_load_env_files
 if [ "$PMS_DEBUG" -eq "1" ]; then
     _pms_message_block_info "Current PMS Settings"
