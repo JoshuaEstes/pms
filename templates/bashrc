@@ -21,7 +21,7 @@ PMS_LOCAL=$PMS/local
 PMS_DEBUG=1
 PMS_REPO=JoshuaEstes/pms
 PMS_REMOTE=https://github.com/${PMS_REPO}.git
-PMS_BRANCH=master
+PMS_BRANCH=main
 PMS_THEME=default
 PMS_PLUGINS=(getting-started)
 

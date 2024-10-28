@@ -5,7 +5,7 @@
 #   PMS_DEBUG   = 1 = enabled, 0 = disabled
 #   PMS_REPO    = default: JoshuaEstes/pms
 #   PMS_REMOTE  = default: https://github.com/$PMS_REPO.git
-#   PMS_BRANCH  = master
+#   PMS_BRANCH  = main
 #
 # @todo limit install to just one shell using PMS_SHELL?
 #
@@ -14,7 +14,7 @@ PMS=${PMS:-~/.pms}
 PMS_DEBUG=${PMS_DEBUG:-0}
 PMS_REPO=${PMS_REPO:-JoshuaEstes/pms}
 PMS_REMOTE=${PMS_REMOTE:-https://github.com/${PMS_REPO}.git}
-PMS_BRANCH=${PMS_BRANCH:-master}
+PMS_BRANCH=${PMS_BRANCH:-main}
 
 setup_pms() {
     echo "\r\n\t${BLUE}Cloning PMS...${RESET}\n\n"

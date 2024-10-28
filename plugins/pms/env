@@ -12,7 +12,7 @@
 #PMS_REMOTE=https://github.com/$PMS_REPO.git
 
 ####
-#PMS_BRANCH=master
+#PMS_BRANCH=main
 
 ####
 # This is the directory where you can find PMS
@@ -43,7 +43,7 @@
 
 ###
 # What is the branch that we will be using for dotfiles
-#PMS_DOTFILES_BRANCH=master
+#PMS_DOTFILES_BRANCH=main
 
 ###
 # This will be the location where the git repo maintain your dotfiles. Your

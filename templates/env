@@ -11,4 +11,4 @@ PMS_DEBUG=0
 # Setup the git repo that we pull from for updates
 PMS_REPO=JoshuaEstes/pms
 PMS_REMOTE=https://github.com/${PMS_REPO}.git
-PMS_BRANCH=master
+PMS_BRANCH=main

@@ -169,7 +169,7 @@ _pms_command_upgrade() {
   local checkpoint=$PWD
   cd "$PMS"
   _pms_message_block_info "Upgrading to latest PMS version"
-  git pull origin master || {
+  git pull origin main || {
       _pms_message_error "Error pulling down updates..."
       return 1
   }
@@ -341,5 +341,5 @@ _pms_command_dotfiles_add() {
     done
     # @todo support for different remote
     # @todo support for different branch
-    /usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME -C $HOME push origin master
+    /usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME -C $HOME push origin main
 }
