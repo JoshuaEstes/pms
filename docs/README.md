@@ -67,7 +67,7 @@ pms upgrade
 
 ```
 cd $PMS
-git pull origin master
+git pull origin main
 # Copy over new template files
 # cp ~/.pms/templates/bashrc ~/.bashrc
 # ...

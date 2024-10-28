@@ -13,7 +13,7 @@ Description of plugin and what it does.
 ## Requirements
 
 * example >= 1.2.3
-* [pms plugin cd](https://github.com/JoshuaEstes/pms/blob/master/pms/plugins/cd.html)
+* [pms plugin cd](https://github.com/JoshuaEstes/pms/blob/main/pms/plugins/cd.html)
 
 ## Environment Variables
 
@@ -21,7 +21,7 @@ Description of plugin and what it does.
 | ------------- | ------- | ----------- |
 | `PMS_EXAMPLE` | `1`     |             |
 
-Please reference documentation on [Environment Variables](https://github.com/JoshuaEstes/pms/blob/master/pms/env-vars.html) to learn how to use these.
+Please reference documentation on [Environment Variables](https://github.com/JoshuaEstes/pms/blob/main/pms/env-vars.html) to learn how to use these.
 
 ## Aliases
 
@@ -43,11 +43,11 @@ Please reference documentation on [Environment Variables](https://github.com/Jos
 
 ## Suggested Plugins
 
-* [example](https://github.com/JoshuaEstes/pms/blob/master/pms/plugins/example.html)
+* [example](https://github.com/JoshuaEstes/pms/blob/main/pms/plugins/example.html)
 
 ## Conflicts with Plugins
 
-* [example](https://github.com/JoshuaEstes/pms/blob/master/pms/plugins/example.html)
+* [example](https://github.com/JoshuaEstes/pms/blob/main/pms/plugins/example.html)
 
 ## Known Issues
 
@@ -56,6 +56,6 @@ Please reference documentation on [Environment Variables](https://github.com/Jos
 
 ## See Also
 
-* \[Plugin Source Code]\(https://github.com/JoshuaEstes/pms/tree/master/plugins/\{{ page.pms\_plugin \}})
-* [Link 1](https://github.com/JoshuaEstes/pms/blob/master/pms/README.md)
-* [Link 2](https://github.com/JoshuaEstes/pms/blob/master/pms/README.md)
+* \[Plugin Source Code]\(https://github.com/JoshuaEstes/pms/tree/main/plugins/\{{ page.pms\_plugin \}})
+* [Link 1](https://github.com/JoshuaEstes/pms/blob/main/pms/README.md)
+* [Link 2](https://github.com/JoshuaEstes/pms/blob/main/pms/README.md)

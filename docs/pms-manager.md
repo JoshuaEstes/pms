@@ -6,7 +6,7 @@ toc_sticky: true
 
 # PMS Manager
 
-The PMS Manager is what you will use most of the time when you want to interact with the PMS framework. This allows you to do things such as enable/disable [plugins](https://github.com/JoshuaEstes/pms/blob/master/pms/plugins.html) and switch to different [themes](https://github.com/JoshuaEstes/pms/blob/master/pms/themes.html).
+The PMS Manager is what you will use most of the time when you want to interact with the PMS framework. This allows you to do things such as enable/disable [plugins](https://github.com/JoshuaEstes/pms/blob/main/pms/plugins.html) and switch to different [themes](https://github.com/JoshuaEstes/pms/blob/main/pms/themes.html).
 
 You can run `pms help` at any time to get information on all the commands the PMS Manager supports.
 
