@@ -51,8 +51,8 @@ _pms_command_about() {
   echo "Making you more productive in your shell than a turtle"
   echo
   echo "Source:         https://github.com/JoshuaEstes/pms"
-  echo "User Docs:      https://joshuaestes.github.io/pms/"
-  echo "Developer Docs: https://github.com/JoshuaEstes/pms/wiki"
+  echo "User Docs:      https://docs.codewithjoshua.com/pms"
+  echo "Developer Docs: https://docs.codewithjoshua.com/pms"
   echo
 
   return 0
@@ -171,6 +171,7 @@ _pms_command_upgrade() {
   _pms_message_block_info "Upgrading to latest PMS version"
   git pull origin main || {
       _pms_message_error "Error pulling down updates..."
+      cd "$checkpoint"
       return 1
   }
   _pms_message_block_info "Copying files"
