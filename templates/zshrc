@@ -32,4 +32,4 @@ PMS_PLUGINS=(getting-started)
 [[ -f ~/.env.local ]] && source ~/.env.local
 [[ -f ~/.env.zsh.local ]] && source ~/.env.zsh.local
 
-source $PMS/pms.sh zsh $PMS_DEBUG
+source $PMS/pms.sh zsh
