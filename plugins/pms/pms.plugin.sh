@@ -168,54 +168,56 @@ _pms_command_diagnostic() {
 _pms_command_upgrade() {
   local checkpoint=$PWD
   cd "$PMS"
-  _pms_message_block_info "Upgrading to latest PMS version"
+  _pms_message_block "info" "Upgrading to latest PMS version"
   git pull origin main || {
-      _pms_message_error "Error pulling down updates..."
+      _pms_message "error" "Error pulling down updates..."
       cd "$checkpoint"
       return 1
   }
-  _pms_message_block_info "Copying files"
+  _pms_message_block "info" "Copying files"
   cp -v $PMS/templates/bashrc ~/.bashrc
   cp -v $PMS/templates/zshrc ~/.zshrc
-  _pms_message_block_info "Running update scripts for enabled plugins..."
+  _pms_message_block "info" "Running update scripts for enabled plugins..."
+
+  local plugin
   for plugin in "${PMS_PLUGINS[@]}"; do
     if [ -f $PMS_LOCAL/plugins/$plugin/update.sh ]; then
-        _pms_message_section_info "$plugin (local)" "plugin updating..."
+        _pms_message_section "info" "$plugin (local)" "plugin updating..."
         source $PMS_LOCAL/plugins/$plugin/update.sh
     elif [ -f $PMS/plugins/$plugin/update.sh ]; then
-        _pms_message_section_info $plugin "plugin updating..."
+        _pms_message_section "info" $plugin "plugin updating..."
         source $PMS/plugins/$plugin/update.sh
     fi
   done
-  _pms_message_block_info "Completed update scripts"
-  _pms_message_block_success "Upgrade complete, you may need to reload your environment"
+  _pms_message_block "info" "Completed update scripts"
+  _pms_message_block "success" "Upgrade complete, you may need to reload your environment"
   cd "$checkpoint"
   # @todo ask if user wants to run pms reload
 }
 _pms_command_reload() {
-  _pms_message_block_info "Reloading PMS..."
+  _pms_message_block "info" "Reloading PMS..."
   # @todo which is best?
   source ~/.${PMS_SHELL}rc
   #exec $PMS_SHELL --login
   #sh $PMS/pms.sh $PMS_SHELL $PMS_DEBUG
 }
 _pms_command_theme_list() {
-  _pms_message_block_info "Core Themes"
+  _pms_message_block "info" "Core Themes"
   for theme in $PMS/themes/*; do
     theme=${theme%*/}
-    _pms_message_info "${theme##*/}"
+    _pms_message "info" "${theme##*/}"
   done
-  _pms_message_block_info "Local Themes"
+  _pms_message_block "info" "Local Themes"
   for theme in $PMS_LOCAL/themes/*; do
     theme=${theme%*/}
-    _pms_message_info "${theme##*/}"
+    _pms_message "info" "${theme##*/}"
   done
-  _pms_message_block_success "Current Theme: $PMS_THEME"
+  _pms_message_block "success" "Current Theme: $PMS_THEME"
 }
 _pms_command_theme_switch() {
     # Does theme exist?
     if [ ! -d $PMS_LOCAL/themes/$3 ] && [ ! -d $PMS/themes/$3 ]; then
-        _pms_message_error "The theme '$3' is invalid"
+        _pms_message "error" "The theme '$3' is invalid"
         return 1
     fi
     # @todo make all this better and support PMS_LOCAL
@@ -228,7 +230,7 @@ _pms_command_theme_switch() {
     if [ -f $PMS/themes/$3/install.sh ]; then
         _pms_source_file $PMS/themes/$3/install.sh
     fi
-    _pms_load_theme $3
+    _pms_theme_load $3
 }
 _pms_command_plugin_list() {
   echo
@@ -251,32 +253,32 @@ _pms_command_plugin_enable() {
     # @todo support for multiple plugins at a time
     # Does directory exist?
     if [ ! -d $PMS_LOCAL/plugins/$3 ] && [ ! -d $PMS/plugins/$3 ]; then
-        _pms_message_error "The plugin '$3' is invalid and cannot be enabled"
+        _pms_message "error" "The plugin '$3' is invalid and cannot be enabled"
         return 1
     fi
 
     # Check plugin is not already enabled
     for p in "${PMS_PLUGINS[@]}"; do
         if [ "$p" = "$3" ]; then
-            _pms_message_error "The plugin '$3' is already enabled"
+            _pms_message "error" "The plugin '$3' is already enabled"
             return 1
         fi
     done
 
     # @todo if plugin cannot be loaded, do not do this
-    _pms_message_info "Adding '$3' to ~/.pms.plugins"
+    _pms_message "info" "Adding '$3' to ~/.pms.plugins"
     PMS_PLUGINS+=($3)
     echo "PMS_PLUGINS=(${PMS_PLUGINS[*]})" > ~/.pms.plugins
 
-    _pms_message_info "Checking for plugin install script"
+    _pms_message "info" "Checking for plugin install script"
     if [ -f $PMS_LOCAL/plugins/$3/install.sh ]; then
         source $PMS_LOCAL/plugins/$3/install.sh
     elif [ -f $PMS/plugins/$3/install.sh ]; then
         source $PMS/plugins/$3/install.sh
     fi
 
-    _pms_message_info "Loading plugin"
-    _pms_load_plugin $3
+    _pms_message "info" "Loading plugin"
+    _pms_plugin_load $3
 }
 _pms_command_plugin_disable() {
     # @todo support for multiple plugins at a time
@@ -290,7 +292,7 @@ _pms_command_plugin_disable() {
         fi
     done
     if [ "$_plugin_enabled" -eq "0" ]; then
-        _pms_message_section_error "$3" "The plugin is not enabled"
+        _pms_message_section "error" "$3" "The plugin is not enabled"
         return 1
     fi
     # ---
@@ -314,7 +316,7 @@ _pms_command_plugin_disable() {
         source $PMS/plugins/$3/uninstall.sh
     fi
 
-    _pms_message_section_success "$3" "Plugin has been disabled, you will need to reload pms by running 'pms reload'"
+    _pms_message_section "success" "$3" "Plugin has been disabled, you will need to reload pms by running 'pms reload'"
     # @todo Ask user to reload environment
 }
 _pms_command_dotfiles_init() {

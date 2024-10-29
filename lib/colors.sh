@@ -1,3 +1,4 @@
+# vim: set ft=sh:
 ####
 # Colors
 ####

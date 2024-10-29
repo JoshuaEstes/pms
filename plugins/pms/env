@@ -3,7 +3,7 @@
 
 ####
 # Setting this to 1 will enable the PMS debug mode
-#PMS_DEBUG=0
+PMS_DEBUG=${PMS_DEBUG:=0}
 
 ####
 #PMS_REPO=JoshuaEstes/pms
