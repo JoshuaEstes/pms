@@ -1,19 +1,4 @@
 # vim: set ft=sh:
-#################################################################################################################
-#  _______   __                                __       __                   ______   __                  __  __
-# /       \ /  |                              /  \     /  |                 /      \ /  |                /  |/  |
-# $$$$$$$  |$$/  _____  ____    ______        $$  \   /$$ | __    __       /$$$$$$  |$$ |____    ______  $$ |$$ |
-# $$ |__$$ |/  |/     \/    \  /      \       $$$  \ /$$$ |/  |  /  |      $$ \__$$/ $$      \  /      \ $$ |$$ |
-# $$    $$/ $$ |$$$$$$ $$$$  |/$$$$$$  |      $$$$  /$$$$ |$$ |  $$ |      $$      \ $$$$$$$  |/$$$$$$  |$$ |$$ |
-# $$$$$$$/  $$ |$$ | $$ | $$ |$$ |  $$ |      $$ $$ $$/$$ |$$ |  $$ |       $$$$$$  |$$ |  $$ |$$    $$ |$$ |$$ |
-# $$ |      $$ |$$ | $$ | $$ |$$ |__$$ |      $$ |$$$/ $$ |$$ \__$$ |      /  \__$$ |$$ |  $$ |$$$$$$$$/ $$ |$$ |
-# $$ |      $$ |$$ | $$ | $$ |$$    $$/       $$ | $/  $$ |$$    $$ |      $$    $$/ $$ |  $$ |$$       |$$ |$$ |
-# $$/       $$/ $$/  $$/  $$/ $$$$$$$/        $$/      $$/  $$$$$$$ |       $$$$$$/  $$/   $$/  $$$$$$$/ $$/ $$/
-#                             $$ |                         /  \__$$ |
-#                             $$ |                         $$    $$/
-#                             $$/                           $$$$$$/
-#
-#################################################################################################################
 pms() {
     [[ $# -gt 0 ]] || {
         _pms_command_help
@@ -33,15 +18,31 @@ pms() {
 }
 
 _pms_command_about() {
-  echo
-  echo "PMS Manager"
-  echo "Making you more productive in your shell than a turtle"
-  echo
-  echo "Source: https://github.com/JoshuaEstes/pms"
-  echo "Docs:   https://docs.codewithjoshua.com/pms"
-  echo
+    echo "${color_green}"
+cat <<-'EOF'
 
-  return 0
+ _______   __                                __       __                   ______   __                  __  __
+/       \ /  |                              /  \     /  |                 /      \ /  |                /  |/  |
+$$$$$$$  |$$/  _____  ____    ______        $$  \   /$$ | __    __       /$$$$$$  |$$ |____    ______  $$ |$$ |
+$$ |__$$ |/  |/     \/    \  /      \       $$$  \ /$$$ |/  |  /  |      $$ \__$$/ $$      \  /      \ $$ |$$ |
+$$    $$/ $$ |$$$$$$ $$$$  |/$$$$$$  |      $$$$  /$$$$ |$$ |  $$ |      $$      \ $$$$$$$  |/$$$$$$  |$$ |$$ |
+$$$$$$$/  $$ |$$ | $$ | $$ |$$ |  $$ |      $$ $$ $$/$$ |$$ |  $$ |       $$$$$$  |$$ |  $$ |$$    $$ |$$ |$$ |
+$$ |      $$ |$$ | $$ | $$ |$$ |__$$ |      $$ |$$$/ $$ |$$ \__$$ |      /  \__$$ |$$ |  $$ |$$$$$$$$/ $$ |$$ |
+$$ |      $$ |$$ | $$ | $$ |$$    $$/       $$ | $/  $$ |$$    $$ |      $$    $$/ $$ |  $$ |$$       |$$ |$$ |
+$$/       $$/ $$/  $$/  $$/ $$$$$$$/        $$/      $$/  $$$$$$$ |       $$$$$$/  $$/   $$/  $$$$$$$/ $$/ $$/
+                            $$ |                         /  \__$$ |
+                            $$ |                         $$    $$/
+                            $$/                           $$$$$$/
+
+EOF
+    echo "${color_reset}"
+    echo "Making you more productive in your shell than a turtle"
+    echo
+    echo "Source: https://github.com/JoshuaEstes/pms"
+    echo "Docs:   https://docs.codewithjoshua.com/pms"
+    echo
+
+    return 0
 }
 
 _pms_command_help() {
@@ -220,36 +221,38 @@ _pms_command_theme_help() {
 }
 
 _pms_command_theme_list() {
-  _pms_message_block "info" "Core Themes"
-  for theme in $PMS/themes/*; do
-    theme=${theme%*/}
-    _pms_message "info" "${theme##*/}"
-  done
-  _pms_message_block "info" "Local Themes"
-  for theme in $PMS_LOCAL/themes/*; do
-    theme=${theme%*/}
-    _pms_message "info" "${theme##*/}"
-  done
-  _pms_message_block "success" "Current Theme: $PMS_THEME"
+    _pms_message_block "info" "Core Themes"
+    for theme in $PMS/themes/*; do
+        theme=${theme%*/}
+        _pms_message "info" "${theme##*/}"
+    done
+    _pms_message_block "info" "Local Themes"
+    for theme in $PMS_LOCAL/themes/*; do
+        theme=${theme%*/}
+        _pms_message "info" "${theme##*/}"
+    done
+    _pms_message_block "success" "Current Theme: $PMS_THEME"
 }
 
 _pms_command_theme_switch() {
+    local theme=$1
+
     # Does theme exist?
-    if [ ! -d $PMS_LOCAL/themes/$3 ] && [ ! -d $PMS/themes/$3 ]; then
-        _pms_message "error" "The theme '$3' is invalid"
+    if [ ! -d $PMS_LOCAL/themes/$theme ] && [ ! -d $PMS/themes/$theme ]; then
+        _pms_message "error" "The theme '$theme' is invalid"
         return 1
     fi
     # @todo make all this better and support PMS_LOCAL
     if [ -f $PMS/themes/$PMS_THEME/uninstall.sh ]; then
         _pms_source_file $PMS/themes/$PMS_THEME/uninstall.sh
     fi
-    echo "PMS_THEME=$3" > ~/.pms.theme
-    PMS_THEME=$3
+    echo "PMS_THEME=$theme" > ~/.pms.theme
+    PMS_THEME=$theme
     # @todo make all this better and support PMS_LOCAL
-    if [ -f $PMS/themes/$3/install.sh ]; then
-        _pms_source_file $PMS/themes/$3/install.sh
+    if [ -f $PMS/themes/$theme/install.sh ]; then
+        _pms_source_file $PMS/themes/$theme/install.sh
     fi
-    _pms_theme_load $3
+    _pms_theme_load $theme
 }
 
 _pms_command_plugin() {
@@ -305,50 +308,53 @@ _pms_command_plugin_list() {
 }
 
 _pms_command_plugin_enable() {
+    local plugin=$1
     # @todo support for multiple plugins at a time
     # Does directory exist?
-    if [ ! -d $PMS_LOCAL/plugins/$3 ] && [ ! -d $PMS/plugins/$3 ]; then
-        _pms_message "error" "The plugin '$3' is invalid and cannot be enabled"
+    if [ ! -d $PMS_LOCAL/plugins/$plugin ] && [ ! -d $PMS/plugins/$plugin ]; then
+        _pms_message "error" "The plugin '$plugin' is invalid and cannot be enabled"
         return 1
     fi
 
     # Check plugin is not already enabled
     for p in "${PMS_PLUGINS[@]}"; do
-        if [ "$p" = "$3" ]; then
-            _pms_message "error" "The plugin '$3' is already enabled"
+        if [ "$p" = "$plugin" ]; then
+            _pms_message "error" "The plugin '$plugin' is already enabled"
             return 1
         fi
     done
 
     # @todo if plugin cannot be loaded, do not do this
-    _pms_message "info" "Adding '$3' to ~/.pms.plugins"
-    PMS_PLUGINS+=($3)
+    _pms_message "info" "Adding '$plugin' to ~/.pms.plugins"
+    PMS_PLUGINS+=($plugin)
     echo "PMS_PLUGINS=(${PMS_PLUGINS[*]})" > ~/.pms.plugins
 
     _pms_message "info" "Checking for plugin install script"
-    if [ -f $PMS_LOCAL/plugins/$3/install.sh ]; then
-        source $PMS_LOCAL/plugins/$3/install.sh
-    elif [ -f $PMS/plugins/$3/install.sh ]; then
-        source $PMS/plugins/$3/install.sh
+    if [ -f $PMS_LOCAL/plugins/$plugin/install.sh ]; then
+        source $PMS_LOCAL/plugins/$plugin/install.sh
+    elif [ -f $PMS/plugins/$plugin/install.sh ]; then
+        source $PMS/plugins/$plugin/install.sh
     fi
 
     _pms_message "info" "Loading plugin"
-    _pms_plugin_load $3
+    _pms_plugin_load $plugin
 }
 
 _pms_command_plugin_disable() {
+    local plugin=$1
+
     # @todo support for multiple plugins at a time
     local _plugin_enabled=0
 
     # Check to see if the plugin is already enabled and if so, notify user and
     # exit
     for p in "${PMS_PLUGINS[@]}"; do
-        if [ "$p" = "${3}" ]; then
+        if [ "$p" = "${plugin}" ]; then
             _plugin_enabled=1
         fi
     done
     if [ "$_plugin_enabled" -eq "0" ]; then
-        _pms_message_section "error" "$3" "The plugin is not enabled"
+        _pms_message_section "error" "$plugin" "The plugin is not enabled"
         return 1
     fi
     # ---
@@ -356,7 +362,7 @@ _pms_command_plugin_disable() {
     # Remove from plugins
     local _plugins=()
     for i in "${PMS_PLUGINS[@]}"; do
-        if [ "$i" != "$3" ]; then
+        if [ "$i" != "$plugi" ]; then
             _plugins+=($i)
         fi
     done
@@ -366,13 +372,13 @@ _pms_command_plugin_disable() {
     _pms_source_file ~/.pms.plugins
 
     # Run uninstall script (if available)
-    if [ -f $PMS_LOCAL/plugins/$3/uninstall.sh ]; then
-        source $PMS_LOCAL/plugins/$3/uninstall.sh
-    elif [ -f $PMS/plugins/$3/uninstall.sh ]; then
-        source $PMS/plugins/$3/uninstall.sh
+    if [ -f $PMS_LOCAL/plugins/$plugin/uninstall.sh ]; then
+        source $PMS_LOCAL/plugins/$plugin/uninstall.sh
+    elif [ -f $PMS/plugins/$plugin/uninstall.sh ]; then
+        source $PMS/plugins/$plugin/uninstall.sh
     fi
 
-    _pms_message_section "success" "$3" "Plugin has been disabled, you will need to reload pms by running 'pms reload'"
+    _pms_message_section "success" "$plugin" "Plugin has been disabled, you will need to reload pms by running 'pms reload'"
     # @todo Ask user to reload environment
 }
 
