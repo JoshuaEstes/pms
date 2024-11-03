@@ -47,7 +47,7 @@ EOF
 
 _pms_command_help() {
   echo
-  echo "Usage: pms [OPTIONS] COMMAND"
+  echo "Usage: pms [options] <command>"
   echo
   echo "Commands:"
   echo "  theme              Helps to manage themes"
@@ -79,6 +79,7 @@ _pms_command_help() {
 
 _pms_command_diagnostic() {
     # @todo Alert user to any known issues with configurations
+    # @todo output to log file
     echo
     echo "-=[ PMS ]=-"
     echo "PMS:         $PMS"
@@ -207,11 +208,12 @@ _pms_command_theme() {
 
 _pms_command_theme_help() {
   echo
-  echo "Usage: pms [OPTIONS] theme COMMAND"
+  echo "Usage: pms [options] theme <command>"
   echo
   echo "Commands:"
   echo "  list               Displays available themes"
   echo "  switch             Switch to a specific theme"
+  echo "  info <theme>       Displays information about a theme"
   #echo "  preview            Preview theme"
   #echo "  validate           Validate theme"
   #echo "  reload             Reloads theme"
@@ -255,6 +257,14 @@ _pms_command_theme_switch() {
     _pms_theme_load $theme
 }
 
+_pms_command_theme_info() {
+    if [ -f $PMS/themes/$1/README.md ]; then
+        cat $PMS/themes/$1/README.md
+    else
+        _pms_message_block "error" "Theme $1 has no README.md file"
+    fi
+}
+
 _pms_command_plugin() {
     [[ $# -gt 0 ]] || {
         _pms_command_plugin_help
@@ -275,12 +285,13 @@ _pms_command_plugin() {
 
 _pms_command_plugin_help() {
   echo
-  echo "Usage: pms [OPTIONS] plugin COMMAND"
+  echo "Usage: pms [options] plugin [command]"
   echo
   echo "Commands:"
   echo "  list               Lists all available plugins"
   echo "  enable             Enables and install plugin"
   echo "  disable            Disables a plugin"
+  echo "  info <plugin>      Displays information about a plugin"
   #echo "  update             Updates a plugin"
   #echo "  validate           Validate plugin"
   #echo "  reload             Reloads enabled plugins"
@@ -382,6 +393,15 @@ _pms_command_plugin_disable() {
     # @todo Ask user to reload environment
 }
 
+_pms_command_plugin_info() {
+    if [ -f $PMS/plugins/$1/README.md ]; then
+        cat $PMS/plugins/$1/README.md
+    else
+        _pms_message_block "error" "Plugin $1 has no README.md file"
+    fi
+}
+
+# @todo Make dotfiles a plugin
 _pms_command_dotfiles() {
     [[ $# -gt 0 ]] || {
         _pms_command_dotfiles_help
@@ -402,12 +422,13 @@ _pms_command_dotfiles() {
 
 _pms_command_dotfiles_help() {
   echo
-  echo "Usage: pms [OPTIONS] dotfiles COMMAND"
+  echo "Usage: pms [options] dotfiles <command>"
   echo
   echo "Commands:"
   #echo "    init             Initialize your dotfiles repository"
-  echo "  add                Add dotfiles to your repository"
   #echo "    scan             Scans your home directory for known dotfiles"
+  echo "  add                Add dotfiles to your repository"
+  echo "  git                Runs the git command (example: pms dotfiles git status)"
   echo
 
   return 0
@@ -430,6 +451,10 @@ _pms_command_dotfiles_init() {
 }
 
 _pms_command_dotfiles_add() {
+    local branch=master
+    local dotfiles_path="$HOME/.dotfiles"
+    local work_tree=$HOME
+
     for f in "$@"; do
         # --verbose
         # --force = Allow adding otherwise ignored files
@@ -439,5 +464,9 @@ _pms_command_dotfiles_add() {
     done
     # @todo support for different remote
     # @todo support for different branch
-    /usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME -C $HOME push origin main
+    /usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME -C $HOME push origin master
+}
+
+_pms_command_dotfiles_git() {
+    /usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME -C $HOME $@
 }
