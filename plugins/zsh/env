@@ -1,6 +1,14 @@
 # vim: set ft=sh:
-# @todo document what this stuff does
+####
+# zsh environment variables
+#
+# These MUST only set default values. The user may have already set these in
+# one of the env files
+#
+# @todo document what this shit does
+####
 
-DIRSTACKSIZE=10
+DIRSTACKSIZE=${DIRSTACKSIZE:-10}
 
-KEYTIMEOUT=1 # 0.1 second delay
+# 0.1 second delay
+KEYTIMEOUT=${KEYTIMEOUT:-1}

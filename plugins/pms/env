@@ -1,5 +1,11 @@
 # vim: set ft=sh:
+####
 # PMS Environment Variables
+#
+# This file MUST only set variables if they are NOT already set
+#
+# @see templates/env
+####
 
 ####
 # Setting this to 1 will enable the PMS debug mode

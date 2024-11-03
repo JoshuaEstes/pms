@@ -1,4 +1,12 @@
 # vim: set ft=sh:
+####
+# This file contains the PMS script that manages everything
+#
+# Core PMS commands start with "_pms_command_*"
+# For plugins, the command must start with "_pms_command_{plugin}_*" and
+# MUST include a "_pms_command_{plugin}_help" function
+####
+
 pms() {
     [[ $# -gt 0 ]] || {
         _pms_command_help
@@ -67,12 +75,14 @@ _pms_command_help() {
     #echo "    init             Initialize your dotfiles repository"
     #echo "    add              Add dotfiles to your repository"
     #echo "    scan             Scans your home directory for known dotfiles"
+    echo "  chsh <shell>       Change shell"
     echo "  about              Show PMS information"
     #echo "  help               Show help messages"
     echo "  upgrade            Upgrade PMS to latest version"
     echo "  diagnostic         Outputs diagnostic information"
     echo "  reload             Reloads all of PMS"
 
+    local plugin
     for plugin in "${PMS_PLUGINS[@]}"; do
         type _pms_command_${plugin}_help &>/dev/null && {
             _pms_command_${plugin}_help "$@"
@@ -82,6 +92,25 @@ _pms_command_help() {
 
     echo
     return 0
+}
+
+# @todo make sure it is a supported shell
+_pms_command_chsh() {
+    if [ -z $1 ]; then
+        echo
+        echo "What fucking shell you want to change to?"
+        echo
+        echo "Usage: pms chsh zsh"
+        echo
+        cat /etc/shells
+        return 1
+    fi
+
+    if [ -f /bin/$1 ]; then
+        chsh -s /bin/$1
+    else
+        _pms_message_block "error" "$1 is not fucking shell, try again..."
+    fi
 }
 
 _pms_command_diagnostic() {
@@ -159,6 +188,9 @@ _pms_command_diagnostic() {
       echo "fish: Not Installed"
     fi
     echo
+    echo "-=[ Aliases ]=-"
+    alias
+    echo
     echo "-=[ Metadata ]=-"
     echo "Generated At: $(date)"
 }
@@ -191,15 +223,21 @@ _pms_command_upgrade() {
   _pms_message_block "info" "Completed update scripts"
   _pms_message_block "success" "Upgrade complete, you may need to reload your environment (pms reload)"
   cd "$checkpoint"
-  # @todo ask if user wants to run pms reload
+  _pms_command_reload
 }
 
 _pms_command_reload() {
-  _pms_message_block "info" "Reloading PMS..."
-  # @todo which is best?
-  source ~/.${PMS_SHELL}rc
-  #exec "$SHELL" --login
-  #sh $PMS/pms.sh $PMS_SHELL $PMS_DEBUG
+    #_pms_message_block "info" "Reloading PMS..."
+    if [[ $- == *i* ]]; then
+        # shell is interactive
+        exec -l $SHELL
+    else
+        exec $SHELL
+    fi
+    #source ~/.${PMS_SHELL}rc
+    #exec "$SHELL" --login
+    #sh $PMS/pms.sh $PMS_SHELL $PMS_DEBUG
+    #_pms_message_block "success" "Completed"
 }
 
 _pms_command_theme() {

@@ -1,6 +1,14 @@
 # vim: set ft=sh:
 ####
 # Core functions
+#
+# Public functions do not start with any underscores. These could be overwritten
+# by plugins or be used by plugins. They are considered stable api functions that
+# won't change unless a new major version comes out.
+# Functions that have one underscore (_) are considered "protected" and can be
+# overwritten.
+# Function that have two underscores (__) are considered private/internal and
+# should never be overwritten.
 ####
 
 ####
@@ -20,9 +28,9 @@
 _pms_source_file() {
     if [ -f $1 ]; then
         source $1
-        #if [ "$PMS_DEBUG" -eq "1" ]; then
-        #    _pms_message_section_info "loaded" "$1"
-        #fi
+        if [ "$PMS_DEBUG" -eq "1" ]; then
+            _pms_message "" "source $1"
+        fi
     #else
     #    _pms_message_error "File '$1' could not be found"
     fi
@@ -74,7 +82,6 @@ _pms_theme_load() {
 # @internal
 ####
 _pms_plugin_load() {
-  # @todo Check directory exists in either PMS_LOCAL or PMS
   local plugin
   for plugin in "$@"; do
       _pms_message_section "info" "plugin" "Loading '$plugin'"
