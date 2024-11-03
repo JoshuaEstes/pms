@@ -46,35 +46,42 @@ EOF
 }
 
 _pms_command_help() {
-  echo
-  echo "Usage: pms [options] <command>"
-  echo
-  echo "Commands:"
-  echo "  theme              Helps to manage themes"
-  #echo "    list             Displays available themes"
-  #echo "    switch           Switch to a specific theme"
-  #echo "    preview          Preview theme"
-  #echo "    validate         Validate theme"
-  #echo "    reload           Reloads theme"
-  echo "  plugin             Helps to manage plugins"
-  #echo "    list             Lists all available plugins"
-  #echo "    enable           Enables and install plugin"
-  #echo "    disable          Disables a plugin"
-  #echo "    update           Updates a plugin"
-  #echo "    validate         Validate plugin"
-  #echo "    reload           Reloads enabled plugins"
-  echo "  dotfiles           Manage your dotfiles"
-  #echo "    init             Initialize your dotfiles repository"
-  #echo "    add              Add dotfiles to your repository"
-  #echo "    scan             Scans your home directory for known dotfiles"
-  echo "  about              Show PMS information"
-  #echo "  help               Show help messages"
-  echo "  upgrade            Upgrade PMS to latest version"
-  echo "  diagnostic         Outputs diagnostic information"
-  echo "  reload             Reloads all of PMS"
-  echo
+    echo
+    echo "Usage: pms [options] <command>"
+    echo
+    echo "Commands:"
+    echo "  theme              Helps to manage themes"
+    #echo "    list             Displays available themes"
+    #echo "    switch           Switch to a specific theme"
+    #echo "    preview          Preview theme"
+    #echo "    validate         Validate theme"
+    #echo "    reload           Reloads theme"
+    echo "  plugin             Helps to manage plugins"
+    #echo "    list             Lists all available plugins"
+    #echo "    enable           Enables and install plugin"
+    #echo "    disable          Disables a plugin"
+    #echo "    update           Updates a plugin"
+    #echo "    validate         Validate plugin"
+    #echo "    reload           Reloads enabled plugins"
+    echo "  dotfiles           Manage your dotfiles"
+    #echo "    init             Initialize your dotfiles repository"
+    #echo "    add              Add dotfiles to your repository"
+    #echo "    scan             Scans your home directory for known dotfiles"
+    echo "  about              Show PMS information"
+    #echo "  help               Show help messages"
+    echo "  upgrade            Upgrade PMS to latest version"
+    echo "  diagnostic         Outputs diagnostic information"
+    echo "  reload             Reloads all of PMS"
 
-  return 0
+    for plugin in "${PMS_PLUGINS[@]}"; do
+        type _pms_command_${plugin}_help &>/dev/null && {
+            _pms_command_${plugin}_help "$@"
+            return $?
+        }
+    done
+
+    echo
+    return 0
 }
 
 _pms_command_diagnostic() {
@@ -82,42 +89,49 @@ _pms_command_diagnostic() {
     # @todo output to log file
     echo
     echo "-=[ PMS ]=-"
-    echo "PMS:         $PMS"
-    echo "PMS_LOCAL:   $PMS_LOCAL"
-    echo "PMS_DEBUG:   $PMS_DEBUG"
-    echo "PMS_REPO:    $PMS_REPO"
-    echo "PMS_REMOTE:  $PMS_REMOTE"
-    echo "PMS_BRANCH:  $PMS_BRANCH"
-    echo "PMS_THEME:   $PMS_THEME"
-    echo "PMS_PLUGINS: ${PMS_PLUGINS[*]}"
-    echo "PMS_SHELL:   $PMS_SHELL"
+    echo "PMS                  : $PMS"
+    echo "PMS_CACHE_DIR        : $PMS_CACHE_DIR"
+    echo "PMS_LOG_DIR          : $PMS_LOG_DIR"
+    echo "PMS_LOCAL            : $PMS_LOCAL"
+    echo "PMS_DEBUG            : $PMS_DEBUG"
+    echo "PMS_REPO             : $PMS_REPO"
+    echo "PMS_REMOTE           : $PMS_REMOTE"
+    echo "PMS_BRANCH           : $PMS_BRANCH"
+    echo "PMS_THEME            : $PMS_THEME"
+    echo "PMS_PLUGINS          : ${PMS_PLUGINS[*]}"
+    echo "PMS_SHELL            : $PMS_SHELL"
+    echo "PMS_DOTFILES_REPO    : $PMS_DOTFILES_REPO"
+    echo "PMS_DOTFILES_REMOTE  : $PMS_DOTFILES_REMOTE"
+    echo "PMS_DOTFILES_BRANCH  : $PMS_DOTFILES_BRANCH"
+    echo "PMS_DOTFILES_GIT_DIR : $PMS_DOTFILES_GIT_DIR"
     if [ -d $PMS ]; then
-      echo "Hash:        $(cd $PMS; git rev-parse --short HEAD)"
+        echo "Hash                 : $(cd $PMS; git rev-parse --short HEAD)"
     else
-      echo "Hash:        PMS not installed"
+        echo "Hash                 : PMS not installed"
     fi
-    echo "Contents of ~/.pms.theme"
+    echo
+    echo "-=[ Contents of ~/.pms.theme ]=-"
     cat ~/.pms.theme
     echo
-    echo "Contents of ~/.pms.plugins"
+    echo "-=[ Contents of ~/.pms.plugins ]=-"
     cat ~/.pms.plugins
     echo
     echo "-=[ Shell ]=-"
-    echo "SHELL: $SHELL"
+    echo "SHELL                : $SHELL"
     case "$PMS_SHELL" in
-      bash) echo "BASHOPTS: $BASHOPTS" ;;
-      zsh) echo "ZSH_PATHCLEVEL: $ZSH_PATCHLEVEL" ;;
+      bash) echo "BASHOPTS             : $BASHOPTS" ;;
+      zsh) echo "ZSH_PATHCLEVEL       : $ZSH_PATCHLEVEL" ;;
     esac
     echo
     echo "-=[ Terminal ]=-"
-    echo "TERM:                 $TERM"
-    echo "TERM_PROGRAM:         $TERM_PROGRAM"
-    echo "TERM_PROGRAM_VERSION: $TERM_PROGRAM_VERSION"
+    echo "TERM                 : $TERM"
+    echo "TERM_PROGRAM         : $TERM_PROGRAM"
+    echo "TERM_PROGRAM_VERSION : $TERM_PROGRAM_VERSION"
     echo
     echo "-=[ OS ]=-"
-    echo "OSTYPE: $OSTYPE"
-    echo "USER:   $USER"
-    echo "umask:  $(umask)"
+    echo "OSTYPE               : $OSTYPE"
+    echo "USER                 : $USER"
+    echo "umask                : $(umask)"
     case "$OSTYPE" in
       darwin*)
         echo "Product Name:     $(sw_vers -productName)"
@@ -146,8 +160,7 @@ _pms_command_diagnostic() {
     fi
     echo
     echo "-=[ Metadata ]=-"
-    echo "Created At: $(date)"
-    echo
+    echo "Generated At: $(date)"
 }
 
 _pms_command_upgrade() {
@@ -160,6 +173,7 @@ _pms_command_upgrade() {
       return 1
   }
   _pms_message_block "info" "Copying files"
+  # @todo _pms_file_copy <src> <dest>
   cp -v $PMS/templates/bashrc ~/.bashrc
   cp -v $PMS/templates/zshrc ~/.zshrc
   _pms_message_block "info" "Running update scripts for enabled plugins..."
@@ -175,7 +189,7 @@ _pms_command_upgrade() {
     fi
   done
   _pms_message_block "info" "Completed update scripts"
-  _pms_message_block "success" "Upgrade complete, you may need to reload your environment"
+  _pms_message_block "success" "Upgrade complete, you may need to reload your environment (pms reload)"
   cd "$checkpoint"
   # @todo ask if user wants to run pms reload
 }
@@ -184,7 +198,7 @@ _pms_command_reload() {
   _pms_message_block "info" "Reloading PMS..."
   # @todo which is best?
   source ~/.${PMS_SHELL}rc
-  #exec $PMS_SHELL --login
+  #exec "$SHELL" --login
   #sh $PMS/pms.sh $PMS_SHELL $PMS_DEBUG
 }
 

@@ -3,58 +3,45 @@
 
 ####
 # Setting this to 1 will enable the PMS debug mode
-PMS_DEBUG=${PMS_DEBUG:=0}
+PMS_DEBUG=${PMS_DEBUG:-0}
 
 ####
-#PMS_REPO=JoshuaEstes/pms
+PMS_REPO=${PMS_REPO:-JoshuaEstes/pms}
 
 ####
-#PMS_REMOTE=https://github.com/$PMS_REPO.git
+PMS_REMOTE=${PMS_REMOTE:-https://github.com/${PMS_REPO}.git}
 
 ####
-#PMS_BRANCH=main
+PMS_BRANCH=${PMS_BRANCH:-main}
 
 ####
 # This is the directory where you can find PMS
-#PMS=$HOME/.pms
+PMS=${PMS:-${HOME}/.pms}
 
 ####
 # This is the directory where you can find custom PMS stuff like libraries,
 # plugins, and themes that the user has created
-#PMS_LOCAL=$PMS/local
+PMS_LOCAL=${PMS:-${PMS}/local}
 
-####
-# This contains the current shell that is being used.
-#PMS_SHELL=
+###
+# PMS Cache dir
+PMS_CACHE_DIR=${PMS_CACHE_DIR:-${PMS}/cache}
 
-####
-# This is the PMS Theme that is currently being used
-#
-# NOTE: This is stored in $HOME/.pms.theme and should not be set by hand
-#PMS_THEME=default
-
-####
-# These are the plugins that will be loaded
-#PMS_PLUGINS=(getting-started)
+###
+# Log directory
+PMS_LOG_DIR=${PMS_LOG_DIR:-${PMS}/log}
 
 ###
 # This is the repository that updates will be pushed to
-#PMS_DOTFILES_REPO=
+PMS_DOTFILES_REPO=${PMS_DOTFILES_REPO:-JoshuaEstes/dotfiles}
+PMS_DOTFILES_REMOTE=${PMS_DOTFILES_REMOTE:-git@github.com:${PMS_DOTFILES_REPO}.git}
 
 ###
 # What is the branch that we will be using for dotfiles
-#PMS_DOTFILES_BRANCH=main
+PMS_DOTFILES_BRANCH=${PMS_DOTFILES_BRANCH:-main}
 
 ###
 # This will be the location where the git repo maintain your dotfiles. Your
 # dotfiles will not be stored here. You will be able to view and edit your
 # dotfiles in your $HOME directory
-#PMS_DOTFILES_GIT_DIR=$HOME/.dotfiles
-
-###
-# PMS Cache dir
-#PMS_CACHE_DIR=$PMS/cache
-
-###
-# Log directory
-#PMS_LOG_DIR=$PMS/log
+PMS_DOTFILES_GIT_DIR=${PMS_DOTFILES_GIT_DIR:-${HOME}/.dotfiles}

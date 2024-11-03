@@ -1,14 +1,54 @@
-# ~/.env
-# Various environmental variables that are required
+# vim: set ft=sh:
+####
+#  _______   __                                __       __                   ______   __                  __  __
+# /       \ /  |                              /  \     /  |                 /      \ /  |                /  |/  |
+# $$$$$$$  |$$/  _____  ____    ______        $$  \   /$$ | __    __       /$$$$$$  |$$ |____    ______  $$ |$$ |
+# $$ |__$$ |/  |/     \/    \  /      \       $$$  \ /$$$ |/  |  /  |      $$ \__$$/ $$      \  /      \ $$ |$$ |
+# $$    $$/ $$ |$$$$$$ $$$$  |/$$$$$$  |      $$$$  /$$$$ |$$ |  $$ |      $$      \ $$$$$$$  |/$$$$$$  |$$ |$$ |
+# $$$$$$$/  $$ |$$ | $$ | $$ |$$ |  $$ |      $$ $$ $$/$$ |$$ |  $$ |       $$$$$$  |$$ |  $$ |$$    $$ |$$ |$$ |
+# $$ |      $$ |$$ | $$ | $$ |$$ |__$$ |      $$ |$$$/ $$ |$$ \__$$ |      /  \__$$ |$$ |  $$ |$$$$$$$$/ $$ |$$ |
+# $$ |      $$ |$$ | $$ | $$ |$$    $$/       $$ | $/  $$ |$$    $$ |      $$    $$/ $$ |  $$ |$$       |$$ |$$ |
+# $$/       $$/ $$/  $$/  $$/ $$$$$$$/        $$/      $$/  $$$$$$$ |       $$$$$$/  $$/   $$/  $$$$$$$/ $$/ $$/
+#                             $$ |                         /  \__$$ |
+#                             $$ |                         $$    $$/
+#                             $$/                           $$$$$$/
+####
 
-# Full path to where PMS is installed
-PMS=~/.pms
-PMS_LOCAL=$PMS/local
+# This is the directory where you can find PMS
+PMS=$HOME/.pms
 
-# 0 = disabled, 1 = enabled
+# Setting this to 1 will enable the PMS debug mode
 PMS_DEBUG=0
 
-# Setup the git repo that we pull from for updates
+# github repo
 PMS_REPO=JoshuaEstes/pms
+
+# full github repo
 PMS_REMOTE=https://github.com/${PMS_REPO}.git
+
+# which branch to use
 PMS_BRANCH=main
+
+# This is the directory where you can find custom PMS stuff like libraries,
+# plugins, and themes that the user has created
+PMS_LOCAL=${PMS}/local
+
+# Cache dir
+PMS_CACHE_DIR=${PMS}/cache
+
+# Log directory
+PMS_LOG_DIR=${PMS}/log
+
+# This is the repository that updates will be pushed to
+PMS_DOTFILES_REPO=JoshuaEstes/dotfiles
+
+# Full git remote for dotfiles repo
+PMS_DOTFILES_REMOTE=git@github.com:${PMS_DOTFILES_REPO}.git
+
+# What is the branch that we will be using for dotfiles
+PMS_DOTFILES_BRANCH=main
+
+# This will be the location where the git repo maintain your dotfiles. Your
+# dotfiles will not be stored here. You will be able to view and edit your
+# dotfiles in your $HOME directory
+PMS_DOTFILES_GIT_DIR=${HOME}/.dotfile
