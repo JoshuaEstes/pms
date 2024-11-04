@@ -27,7 +27,7 @@ PMS=${PMS:-${HOME}/.pms}
 ####
 # This is the directory where you can find custom PMS stuff like libraries,
 # plugins, and themes that the user has created
-PMS_LOCAL=${PMS:-${PMS}/local}
+PMS_LOCAL=${PMS_LOCAL:-${PMS}/local}
 
 ###
 # PMS Cache dir

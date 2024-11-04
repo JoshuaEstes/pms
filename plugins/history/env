@@ -1,5 +1,6 @@
-# @todo document
+# vim: set ft=sh:
 
+# @todo document
 HISTFILE=$PMS/cache/zsh_history
 
 HISTSIZE=50000

@@ -1,2 +1,2 @@
 # vim: set ft=sh:
-alias j='jobs'
+alias d='docker'

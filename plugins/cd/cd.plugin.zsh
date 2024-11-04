@@ -9,5 +9,19 @@ setopt auto_cd
 # Make cd push the old directory onto the directory stack
 setopt auto_pushd
 
+# If the argument to a cd command (or an implied cd with the AUTO_CD option
+# set) is not a directory, and does not begin with a slash, try to expand the
+# expression as if it were preceded by a ‘~’ (see Filename Expansion).
+setopt cdable_vars
+
+# Resolve symbolic links to their true values when changing directory. This
+# also has the effect of CHASE_DOTS, i.e. a ‘..’ path segment will be treated
+# as referring to the physical parent, even if the preceding path segment is a
+# symbolic link.
+setopt chase_links
+
+
+# Don’t push multiple copies of the same directory onto the directory stack.
 setopt pushd_ignore_dups
+
 setopt pushdminus
