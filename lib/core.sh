@@ -132,6 +132,7 @@ _pms_message() {
         success) printf "\r${color_green}$message${color_reset}\n" ;;
         warn) printf "\r${color_yellow}$message${color_reset}\n" ;;
         error) printf "\r${color_red}$message${color_reset}\n" ;;
+        debug) printf "\r$message\n" ;;
         *) printf "\r$message\n" ;;
     esac
 }
@@ -149,6 +150,7 @@ _pms_message_section() {
         success) printf "\r[${color_green}$section${color_reset}] $message${color_reset}\n" ;;
         warn) printf "\r[${color_yellow}$section${color_reset}] $message${color_reset}\n" ;;
         error) printf "\r[${color_red}$section${color_reset}] $message${color_reset}\n" ;;
+        debug) printf "\r[$section] $message\n" ;;
         *) printf "\r[$section] $message\n" ;;
     esac
 }
@@ -165,6 +167,7 @@ _pms_message_block() {
         success) printf "\r\n\t${color_green}$message${color_reset}\n\n" ;;
         warn) printf "\r\n\t${color_yellow}$message${color_reset}\n\n" ;;
         error) printf "\r\n\t${color_red}$message${color_reset}\n\n" ;;
+        debug) printf "\r\n\t$message\n\n" ;;
         *) printf "\r\n\t$message\n\n" ;;
     esac
 }

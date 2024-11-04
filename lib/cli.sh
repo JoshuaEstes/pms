@@ -394,9 +394,16 @@ _pms_command_plugin_enable() {
 
     _pms_message "info" "Checking for plugin install script"
     if [ -f $PMS_LOCAL/plugins/$plugin/install.sh ]; then
-        source $PMS_LOCAL/plugins/$plugin/install.sh
+        _pms_source_file $PMS_LOCAL/plugins/$plugin/install.sh
     elif [ -f $PMS/plugins/$plugin/install.sh ]; then
-        source $PMS/plugins/$plugin/install.sh
+        _pms_source_file $PMS/plugins/$plugin/install.sh
+    fi
+
+    # Shell specific install
+    if [ -f $PMS_LOCAL/plugins/$plugin/install.$PMS_SHELL ]; then
+        _pms_source_file $PMS_LOCAL/plugins/$plugin/install.$PMS_SHELL
+    elif [ -f $PMS/plugins/$plugin/install.$PMS_SHELL ]; then
+        _pms_source_file $PMS/plugins/$plugin/install.$PMS_SHELL
     fi
 
     _pms_message "info" "Loading plugin"
@@ -425,7 +432,7 @@ _pms_command_plugin_disable() {
     # Remove from plugins
     local _plugins=()
     for i in "${PMS_PLUGINS[@]}"; do
-        if [ "$i" != "$plugi" ]; then
+        if [ "$i" != "$plugin" ]; then
             _plugins+=($i)
         fi
     done
@@ -436,9 +443,16 @@ _pms_command_plugin_disable() {
 
     # Run uninstall script (if available)
     if [ -f $PMS_LOCAL/plugins/$plugin/uninstall.sh ]; then
-        source $PMS_LOCAL/plugins/$plugin/uninstall.sh
+        _pms_source_file $PMS_LOCAL/plugins/$plugin/uninstall.sh
     elif [ -f $PMS/plugins/$plugin/uninstall.sh ]; then
-        source $PMS/plugins/$plugin/uninstall.sh
+        _pms_source_file $PMS/plugins/$plugin/uninstall.sh
+    fi
+
+    # Shell specific
+    if [ -f $PMS_LOCAL/plugins/$plugin/uninstall.$PMS_SHELL ]; then
+        _pms_source_file $PMS_LOCAL/plugins/$plugin/uninstall.$PMS_SHELL
+    elif [ -f $PMS/plugins/$plugin/uninstall.$PMS_SHELL ]; then
+        _pms_source_file $PMS/plugins/$plugin/uninstall.$PMS_SHELL
     fi
 
     _pms_message_section "success" "$plugin" "Plugin has been disabled, you will need to reload pms by running 'pms reload'"
