@@ -227,6 +227,11 @@ _pms_command_upgrade() {
 }
 
 _pms_command_reload() {
+    #_pms_message "Are you sure you want to reload PMS? (y/n) "
+    #if ! _pms_question_yn; then
+    #    return 1
+    #fi
+
     #_pms_message_block "info" "Reloading PMS..."
     if [[ $- == *i* ]]; then
         # shell is interactive
@@ -493,8 +498,10 @@ _pms_command_dotfiles_help() {
   echo "Commands:"
   #echo "    init             Initialize your dotfiles repository"
   #echo "    scan             Scans your home directory for known dotfiles"
+  #echo "    push             Push changes"
+  #echo "    pull             Pull changes"
   echo "  add                Add dotfiles to your repository"
-  echo "  git                Runs the git command (example: pms dotfiles git status)"
+  echo "  git <command>      Runs the git command (example: pms dotfiles git status)"
   echo
 
   return 0
