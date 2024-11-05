@@ -6,13 +6,19 @@
 # and try to give others seizures or some shit
 ####
 color_reset=$(printf '\033[0m')
+
 # FG
+color_black=$(printf '\033[30m')
 color_red=$(printf '\033[31m')
 color_green=$(printf '\033[32m')
 color_yellow=$(printf '\033[33m')
 color_blue=$(printf '\033[34m')
+color_magenta=$(printf '\033[35m')
+color_cyan=$(printf '\033[36m')
+color_white=$(printf '\033[37m')
+
 # BG
 # @todo
 
-# Options
+# effects
 color_bold=$(printf '\033[1m')
