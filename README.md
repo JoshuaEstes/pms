@@ -1,7 +1,22 @@
-PMS allows you to manage your shell in a way to that helps decrease setup time
-and increases your productivity. It has support for themes (change the way your
-shell looks), plugins (adds functionality to your shell), and dotfile
-management.
+<pre>
+ _______   __                                __       __                   ______   __                  __  __
+/       \ /  |                              /  \     /  |                 /      \ /  |                /  |/  |
+$$$$$$$  |$$/  _____  ____    ______        $$  \   /$$ | __    __       /$$$$$$  |$$ |____    ______  $$ |$$ |
+$$ |__$$ |/  |/     \/    \  /      \       $$$  \ /$$$ |/  |  /  |      $$ \__$$/ $$      \  /      \ $$ |$$ |
+$$    $$/ $$ |$$$$$$ $$$$  |/$$$$$$  |      $$$$  /$$$$ |$$ |  $$ |      $$      \ $$$$$$$  |/$$$$$$  |$$ |$$ |
+$$$$$$$/  $$ |$$ | $$ | $$ |$$ |  $$ |      $$ $$ $$/$$ |$$ |  $$ |       $$$$$$  |$$ |  $$ |$$    $$ |$$ |$$ |
+$$ |      $$ |$$ | $$ | $$ |$$ |__$$ |      $$ |$$$/ $$ |$$ \__$$ |      /  \__$$ |$$ |  $$ |$$$$$$$$/ $$ |$$ |
+$$ |      $$ |$$ | $$ | $$ |$$    $$/       $$ | $/  $$ |$$    $$ |      $$    $$/ $$ |  $$ |$$       |$$ |$$ |
+$$/       $$/ $$/  $$/  $$/ $$$$$$$/        $$/      $$/  $$$$$$$ |       $$$$$$/  $$/   $$/  $$$$$$$/ $$/ $$/
+                            $$ |                         /  \__$$ |
+                            $$ |                         $$    $$/
+                            $$/                           $$$$$$/
+</pre>
+
+Pimp My Shell allows you to manage your shell in a way to that helps decrease
+setup time and increases your productivity. It has support for themes (change
+the way your shell looks), plugins (adds functionality to your shell), and
+dotfile management.
 
 One of the best parts is, the PMS framework allows you to use the same
 framework in different shells. Use zsh on your personal laptop, and use bash on
@@ -14,8 +29,8 @@ power of PMS ;)
 
 # Features
 
-* [Themes](https://joshuaestes.github.io/pms/themes.html)
-* [Plugins](https://joshuaestes.github.io/pms/plugins.html)
+* Themes
+* Plugins
   * Plugins do more than just add a bunch of aliases that you will never use
   * Shell Options, Auto Completions, Commands, and more are just some of the
     things plugins can provide.
@@ -24,16 +39,11 @@ power of PMS ;)
   * Your dotfiles are backed up to your own git repository
 * Multiple Shell Support (Bash, Zsh, etc.)
   * Works to load sane defaults for you (with the help of various plugins)
-* [PMS Manager](https://joshuaestes.github.io/pms/pms-manager.html)
+* PMS Manager
   * Easy upgrades for PMS
   * Preview and switch themes with ease
   * Easy to enabled and disable various plugins
 * Great Documentation for both Users and Developers
-  * [User Guides](https://joshuaestes.github.io/pms/)
-  * [Developer Guides](https://github.com/JoshuaEstes/pms/wiki)
-
-[Click Here](https://joshuaestes.github.io/pms/features.html) to view all
-features.
 
 # Requirements
 
@@ -41,9 +51,6 @@ features.
 * Shell such as bash, zsh, etc.
 * curl or wget
 * git
-
-[Click Here](https://joshuaestes.github.io/pms/requirements.html) to see
-detailed list of requirements.
 
 # Installation
 
@@ -98,5 +105,5 @@ really cool shit with git.
 
 # Documentation
 
-* [User Guides](https://joshuaestes.github.io/pms/)
-* [Developer Guides](https://github.com/JoshuaEstes/pms/wiki)
+* [User Guides](https://docs.codewithjoshua.com/pms)
+* [Developer Guides](https://docs.codewithjoshua.com/pms)
