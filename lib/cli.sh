@@ -263,6 +263,7 @@ _pms_command_theme_help() {
   #echo "  use <theme>        Temporary use theme"
   #echo "  preview <theme>    Preview theme"
   #echo "  validate <theme>   Validate theme"
+  #echo "  make <theme>       Creates a new theme"
   echo
 
   return 0
@@ -341,6 +342,7 @@ _pms_command_plugin_help() {
   #echo "  update <plugin>    Updates a plugin"
   #echo "  validate <plugin>  Validate plugin"
   #echo "  reload             Reloads enabled plugins"
+  #echo "  make <plugin>      Creates a new plugin"
   echo
 
   return 0
