@@ -1,11 +1,11 @@
 ---
-title: PMS
-classes: wide
+title: Pimp My Shell
 ---
 
 # Pimp My Shell
 
-PMS is a framework for using different shells along with various "dotfiles". It supports easy install/uninstall and a wide variety of plugins and themes.
+PMS is a framework for using different shells along with various "dotfiles". It
+supports easy install/uninstall and a wide variety of plugins and themes.
 
 ## [Features](features.md)
 
@@ -27,33 +27,18 @@ PMS is a framework for using different shells along with various "dotfiles". It 
 
 ### Requirements
 
-* MacOS or Linux (could work on windows, but I don't use windows)
+* MacOS or Linux (could work on windows, but I don't use windows so get fucked)
 * curl or wget
 * git
 * A shell such as bash, zsh, etc.
+
+[Detailed Requirements](requirements.md)
 
 ### Installation
 
 Installation can be done manually or by using curl or wget.
 
-#### Using curl
-
-```
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/JoshuaEstes/pms/main/scripts/install.sh)"
-```
-
-#### Using wget
-
-```
-sh -c "$(wget -O- https://raw.githubusercontent.com/JoshuaEstes/pms/main/scripts/install.sh)"
-```
-
-#### Manual install
-
-```
-curl -Lo install.sh https://raw.githubusercontent.com/JoshuaEstes/pms/main/scripts/install.sh
-sh install.sh
-```
+[Detailed Installation Guide](installation/)
 
 ### Updating PMS using the PMS Manager
 
@@ -88,6 +73,7 @@ By default, PMS in installed in `~/.pms` directory. You will just need to run th
 ```
 cd $PMS && ./scripts/uninstall.sh
 ```
+[Detailed Uninstall Guide](installation/uninstall.md)
 
 ## License
 

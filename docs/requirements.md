@@ -1,6 +1,5 @@
 ---
 title: Requirements
-classes: wide
 ---
 
 # Requirements

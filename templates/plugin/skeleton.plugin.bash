@@ -2,3 +2,7 @@
 ####
 # Script will ONLY execute if user is using bash
 ####
+
+## Functions/Commands
+
+## Completions

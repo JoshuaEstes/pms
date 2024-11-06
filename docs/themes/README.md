@@ -1,6 +1,5 @@
 ---
 title: PMS Themes
-classes: wide
 ---
 
 # Themes

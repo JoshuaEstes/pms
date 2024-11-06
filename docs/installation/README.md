@@ -1,11 +1,11 @@
 ---
 title: Installation
-classes: wide
 ---
 
 # Installation
 
-Installing is can be done quick and easy by using curl. The installation process will not overwrite any files and will backup your current rc files.
+Installing can be done quick and easy by using curl. The installation process
+will not overwrite any files and will backup your current rc files.
 
 ## Using curl
 

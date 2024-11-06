@@ -1,11 +1,12 @@
 ---
 title: Uninstall PMS
-classes: wide
 ---
 
 # Uninstall PMS
 
-To uninstal you will need to navigate to the directory where PMS is currently installed. Usually `$HOME/.pms`. The uninstall script is pretty verbose and will ask before it removes or modifies files, other than PMS related.
+To uninstal you will need to navigate to the directory where PMS is currently
+installed. Usually `$HOME/.pms`. The uninstall script is pretty verbose and will
+ask before it removes or modifies files, other than PMS related.
 
 ```sh
 sh scripts/uninstall.sh

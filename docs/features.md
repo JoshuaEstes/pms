@@ -1,13 +1,12 @@
 ---
 title: PMS Features
-classes: wide
 ---
 
 # Features
 
-* Themes
-* Plugins
-* Dotfiles
+* [Themes](themes/)
+* [Plugins](plugins/)
+* Dotfiles Management
 * Multiple Shell Support
   * No matter the shell, you can easily swap between them and maintain similar functionality
 * PMS Manager

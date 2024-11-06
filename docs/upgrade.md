@@ -1,6 +1,5 @@
 ---
 title: Upgrade PMS
-classes: wide
 ---
 
 # Upgrade PMS

@@ -1,7 +1,5 @@
 ---
 title: PMS Manager
-toc: true
-toc_sticky: true
 ---
 
 # PMS Manager
