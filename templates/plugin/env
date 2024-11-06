@@ -1,0 +1,6 @@
+# vim: set ft=sh:
+####
+# Environment Variables
+#
+# These must ONLY set values if they are not already set
+####
