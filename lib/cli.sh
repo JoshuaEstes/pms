@@ -382,6 +382,9 @@ _pms_command_plugin_make() {
 
     mkdir -vp $PMS/plugins/$plugin
     cp -v $PMS/templates/plugin/* $PMS/plugins/$plugin/
+    mv $PMS/plugins/$plugin/skeleton.plugin.bash $PMS/plugins/$plugin/$plugin.plugin.bash
+    mv $PMS/plugins/$plugin/skeleton.plugin.sh $PMS/plugins/$plugin/$plugin.plugin.sh
+    mv $PMS/plugins/$plugin/skeleton.plugin.zsh $PMS/plugins/$plugin/$plugin.plugin.zsh
 
     _pms_message_block "success" "Plugin Created"
 

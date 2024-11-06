@@ -1,0 +1,9 @@
+# vim: set ft=sh:
+####
+# Environment Variables
+#
+# These must ONLY set values if they are not already set
+####
+
+# Document what variable is used for and what values it supports
+#EXAMPLE=${EXAMPLE:-"default value"}
