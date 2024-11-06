@@ -2,30 +2,34 @@
 ####
 # This file contains the PMS script that manages everything
 #
-# Core PMS commands start with "_pms_command_*"
-# For plugins, the command must start with "_pms_command_{plugin}_*" and
-# MUST include a "_pms_command_{plugin}_help" function
+# Core PMS commands start with "__pms_command_*"
+# For plugins, the command must start with "__pms_command_{plugin}_*" and
+# MUST include a "__pms_command_help_{plugin}_*" function
 ####
 
 pms() {
     [[ $# -gt 0 ]] || {
-        _pms_command_help
+        __pms_command_help
         return 1
     }
 
     local command=$1
     shift
 
-    type _pms_command_${command} &>/dev/null && {
-        _pms_command_${command} "$@"
+    type __pms_command_${command} &>/dev/null && {
+        __pms_command_${command} "$@"
         return $?
     }
 
-    _pms_command_help
+    __pms_command_help
     return 1
 }
 
-_pms_command_about() {
+__pms_command() {
+    printf "\r  %-30s %s\n" $1 $2
+}
+
+__pms_command_about() {
     echo "${color_green}"
 cat <<-'EOF'
 
@@ -56,34 +60,48 @@ EOF
 # @todo if there are arguments, check other help functions, example would be
 # pms help theme = _pms_command_help_theme
 # pms help theme list = _pms_command_help_theme_list
-_pms_command_help() {
+__pms_command_help() {
+    if [ $# -gt 0 ]; then
+        local command=$1
+        shift
+
+        type __pms_command_help_${command} &>/dev/null && {
+            __pms_command_help_${command} "$@"
+            return $?
+        }
+    fi
+
     echo
     echo "Usage: pms [options] <command>"
     echo
     echo "Commands:"
-    echo "  theme              Helps to manage themes"
-    echo "  plugin             Helps to manage plugins"
-    echo "  dotfiles           Manage your dotfiles"
-    echo "  chsh <shell>       Change shell"
-    echo "  about              Show PMS information"
-    echo "  upgrade            Upgrade PMS to latest version"
-    echo "  diagnostic         Outputs diagnostic information"
-    echo "  reload             Reloads all of PMS"
+    __pms_command "theme" "Helps to manage themes"
+    __pms_command "plugin" "Helps to manage plugins"
+    __pms_command "dotfiles" "Manage your dotfiles"
+    __pms_command "chsh <shell>" "Change shell"
+    __pms_command "about" "Show PMS information"
+    __pms_command "upgrade" "Upgrade PMS to latest version"
+    __pms_command "diagnostic" "Outputs diagnostic information"
+    __pms_command "reload" "Reloads all of PMS"
 
     local plugin
     for plugin in "${PMS_PLUGINS[@]}"; do
-        type _pms_command_help_${plugin} &>/dev/null && {
-            _pms_command_help_${plugin} "$@"
+        type __pms_command_help_${plugin} &>/dev/null && {
+            __pms_command_help_${plugin} "$@"
             return $?
         }
     done
+
+    echo
+    _pms_message "Some commands provide additional help. You can access that by running:"
+    _pms_message_block "pms help <command> [subcommand]"
 
     echo
     return 0
 }
 
 # @todo make sure it is a supported shell
-_pms_command_chsh() {
+__pms_command_chsh() {
     if [ -z $1 ]; then
         echo
         echo "What fucking shell you want to change to?"
@@ -103,7 +121,7 @@ _pms_command_chsh() {
     return 0
 }
 
-_pms_command_diagnostic() {
+__pms_command_diagnostic() {
     # @todo Alert user to any known issues with configurations
     # @todo output to log file
     echo
@@ -187,7 +205,7 @@ _pms_command_diagnostic() {
     return 0
 }
 
-_pms_command_upgrade() {
+__pms_command_upgrade() {
   local checkpoint=$PWD
   cd "$PMS"
   _pms_message_block "info" "Upgrading to latest PMS version"
@@ -215,12 +233,12 @@ _pms_command_upgrade() {
   _pms_message_block "info" "Completed update scripts"
   _pms_message_block "success" "Upgrade complete, you may need to reload your environment (pms reload)"
   cd "$checkpoint"
-  _pms_command_reload
+  __pms_command_reload
 
     return 0
 }
 
-_pms_command_reload() {
+__pms_command_reload() {
     #_pms_message "Are you sure you want to reload PMS? (y/n) "
     #if ! _pms_question_yn; then
     #    return 1
@@ -239,33 +257,33 @@ _pms_command_reload() {
     #_pms_message_block "success" "Completed"
 }
 
-_pms_command_theme() {
+__pms_command_theme() {
     [[ $# -gt 0 ]] || {
-        _pms_command_help_theme
+        __pms_command_help_theme
         return 1
     }
 
     local command=$1
     shift
 
-    type _pms_command_theme_${command} &>/dev/null && {
-        _pms_command_theme_${command} "$@"
+    type __pms_command_theme_${command} &>/dev/null && {
+        __pms_command_theme_${command} "$@"
         return $?
     }
 
-    _pms_command_help_theme
+    __pms_command_help_theme
 
     return 1
 }
 
-_pms_command_help_theme() {
+__pms_command_help_theme() {
   echo
   echo "Usage: pms [options] theme <command>"
   echo
   echo "Commands:"
-  echo "  list               Displays available themes"
-  echo "  switch <theme>     Switch to a specific theme"
-  echo "  info <theme>       Displays information about a theme"
+  __pms_command "list" "Displays available themes"
+  __pms_command "switch <theme>" "Switch to a specific theme"
+  __pms_command "info <theme>" "Displays information about a theme"
   #echo "  reload             Reloads current theme"
   #echo "  use <theme>        Temporary use theme"
   #echo "  preview <theme>    Preview theme"
@@ -278,7 +296,7 @@ _pms_command_help_theme() {
   return 0
 }
 
-_pms_command_theme_list() {
+__pms_command_theme_list() {
     _pms_message_block "info" "Core Themes"
     for theme in $PMS/themes/*; do
         theme=${theme%*/}
@@ -294,7 +312,7 @@ _pms_command_theme_list() {
     return 0
 }
 
-_pms_command_theme_switch() {
+__pms_command_theme_switch() {
     local theme=$1
 
     # Does theme exist?
@@ -317,7 +335,7 @@ _pms_command_theme_switch() {
     return 0
 }
 
-_pms_command_theme_info() {
+__pms_command_theme_info() {
     if [ -f $PMS/themes/$1/README.md ]; then
         cat $PMS/themes/$1/README.md
     else
@@ -329,34 +347,44 @@ _pms_command_theme_info() {
     return 0
 }
 
-_pms_command_plugin() {
+__pms_command_plugin() {
     [[ $# -gt 0 ]] || {
-        _pms_command_help_plugin
+        __pms_command_help_plugin
         return 1
     }
 
     local command=$1
     shift
 
-    type _pms_command_plugin_${command} &>/dev/null && {
-        _pms_command_plugin_${command} "$@"
+    type __pms_command_plugin_${command} &>/dev/null && {
+        __pms_command_plugin_${command} "$@"
         return $?
     }
 
-    _pms_command_help_plugin
+    __pms_command_help_plugin
     return 1
 }
 
-_pms_command_help_plugin() {
+__pms_command_help_plugin() {
+    if [ $# -gt 0 ]; then
+        local command=$1
+        shift
+
+        type __pms_command_help_plugin_${command} &>/dev/null && {
+            __pms_command_help_plugin_${command} "$@"
+            return $?
+        }
+    fi
+
   echo
   echo "Usage: pms [options] plugin [command]"
   echo
   echo "Commands:"
-  echo "  list               Lists all available plugins"
-  echo "  enable <plugin>    Enables and install plugin"
-  echo "  disable <plugin>   Disables a plugin"
-  echo "  info <plugin>      Displays information about a plugin"
-  echo "  make <plugin>      Creates a new plugin"
+  __pms_command "list" "Lists all available plugins"
+  __pms_command "enable <plugin>" "Enables and install plugin"
+  __pms_command "disable <plugin>" "Disables a plugin"
+  __pms_command "info <plugin>" "Displays information about a plugin"
+  __pms_command "make <plugin>" "Creates a new plugin"
   #echo "  update <plugin>    Updates a plugin"
   #echo "  validate <plugin>  Validate plugin"
   #echo "  reload <plugin>    Reloads enabled plugins"
@@ -368,7 +396,7 @@ _pms_command_help_plugin() {
 }
 
 # @todo Option for making this a local plugin
-_pms_command_plugin_make() {
+__pms_command_plugin_make() {
     if [ -z $1 ]; then
         _pms_message_block "error" "Usage: pms plugin make <plugin>"
         return 1
@@ -391,28 +419,35 @@ _pms_command_plugin_make() {
     return 0
 }
 
-_pms_command_plugin_list() {
-  echo
-  echo "Core Plugins:"
-  for plugin in $PMS/plugins/*; do
-    plugin=${plugin%*/}
-    echo "  ${plugin##*/}"
-  done
-  echo
-  echo "Local Plugins:"
-  for plugin in $PMS_LOCAL/plugins/*; do
-    plugin=${plugin%*/}
-    echo "  ${plugin##*/}"
-  done
-  echo
-  echo "Enabled Plugins: ${PMS_PLUGINS[*]}"
-  echo
+__pms_command_plugin_list() {
+    local plugin
+    echo
+    echo "Core Plugins:"
+    for plugin in $PMS/plugins/*; do
+        plugin=${plugin##*/}
+        if _pms_is_plugin_enabled $plugin; then
+            printf "\r  %-20s [enabled]\n" $plugin
+        else
+            printf "\r  %s\n" $plugin
+        fi
+    done
+    echo
+    echo "Local Plugins:"
+    for plugin in $PMS_LOCAL/plugins/*; do
+        plugin=${plugin##*/}
+        if _pms_is_plugin_enabled $plugin; then
+            printf "\r  %-20s [enabled]\n" $plugin
+        else
+            printf "\r  %s\n" $plugin
+        fi
+    done
+    echo
 
-  return 0
+    return 0
 }
 
 # @todo support for multiple plugins at a time
-_pms_command_plugin_enable() {
+__pms_command_plugin_enable() {
     local plugin=$1
     # Does directory exist?
     if [ ! -d $PMS_LOCAL/plugins/$plugin ] && [ ! -d $PMS/plugins/$plugin ]; then
@@ -451,7 +486,7 @@ _pms_command_plugin_enable() {
   return 0
 }
 
-_pms_command_plugin_disable() {
+__pms_command_plugin_disable() {
     local plugin=$1
 
     # @todo support for multiple plugins at a time
@@ -502,7 +537,7 @@ _pms_command_plugin_disable() {
   return 0
 }
 
-_pms_command_plugin_info() {
+__pms_command_plugin_info() {
     if [ -f $PMS/plugins/$1/README.md ]; then
         cat $PMS/plugins/$1/README.md
     else
@@ -515,32 +550,32 @@ _pms_command_plugin_info() {
 }
 
 # @todo Make dotfiles a plugin
-_pms_command_dotfiles() {
+__pms_command_dotfiles() {
     [[ $# -gt 0 ]] || {
-        _pms_command_help_dotfiles
+        __pms_command_help_dotfiles
         return 1
     }
 
     local command=$1
     shift
 
-    type _pms_command_dotfiles_${command} &>/dev/null && {
-        _pms_command_dotfiles_${command} "$@"
+    type __pms_command_dotfiles_${command} &>/dev/null && {
+        __pms_command_dotfiles_${command} "$@"
         return $?
     }
 
-    _pms_command_help_dotfiles
+    __pms_command_help_dotfiles
     return 1
 }
 
-_pms_command_help_dotfiles() {
+__pms_command_help_dotfiles() {
   echo
   echo "Usage: pms [options] dotfiles <command>"
   echo
   echo "Commands:"
-  echo "  push               Push changes"
-  echo "  add <file> [file]  Add file(s) to your repository (commit and push)"
-  echo "  git <command>      Runs the git command (example: pms dotfiles git status)"
+  __pms_command "push" "Push changes"
+  __pms_command "add <file> [file] ..." "Add file(s) to your repository (commit and push)"
+  __pms_command "git <command>" "Runs the git command (example: pms dotfiles git status)"
   #echo "    init             Initialize your dotfiles repository"
   # scan would just scan $HOME for known dotfiles that are safe to add to
   # a git repo. Store known files in an array
@@ -555,11 +590,11 @@ _pms_command_help_dotfiles() {
   return 0
 }
 
-_pms_command_dotfiles_push() {
+__pms_command_dotfiles_push() {
     /usr/bin/git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME push origin $PMS_DOTFILES_BRANCH
 }
 
-_pms_command_dotfiles_init() {
+__pms_command_dotfiles_init() {
     # @todo
     # 1. Ask if user wants to start a new repo
     # y) git init, git config, git remote add
@@ -578,7 +613,7 @@ _pms_command_dotfiles_init() {
 }
 
 # @todo if no arguments, add all modified files
-_pms_command_dotfiles_add() {
+__pms_command_dotfiles_add() {
     local files=$@
 
     if [ $# -eq 0 ]; then
@@ -600,9 +635,9 @@ _pms_command_dotfiles_add() {
     done
 
     ## @todo use an option for this
-    _pms_command_dotfiles_push
+    __pms_command_dotfiles_push
 }
 
-_pms_command_dotfiles_git() {
+__pms_command_dotfiles_git() {
     /usr/bin/git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME $@
 }

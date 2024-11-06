@@ -147,6 +147,9 @@ _pms_plugin_load() {
 # Usage: _pms_is_plugin_enabled "docker"
 _pms_is_plugin_enabled() {
     local plugin=$1
+    if [ "$plugin" = "pms" ]; then
+        return 0
+    fi
 
     for p in "${PMS_PLUGINS[@]}"; do
         if [ "$p" = "$plugin" ]; then
@@ -205,6 +208,9 @@ _pms_message_section() {
 _pms_message_block() {
     local type=$1
     local message=$2
+    if [ -z $2 ]; then
+        message=$1
+    fi
     case $type in
         info) printf "\r\n\t${color_blue}$message${color_reset}\n\n" ;;
         success) printf "\r\n\t${color_green}$message${color_reset}\n\n" ;;
