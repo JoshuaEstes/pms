@@ -9,4 +9,4 @@
 | Alias     | Command             | Description |
 | --------- | ------------------- | ----------- |
 | `t`       | `task`              |             |
-
+| `tsh`     | `tasksh`            |             |

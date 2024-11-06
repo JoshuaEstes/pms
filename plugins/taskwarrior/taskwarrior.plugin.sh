@@ -5,5 +5,6 @@
 
 ## Aliases
 alias t='task'
+alias tsh='tasksh'
 
 ## Functions/Commands
