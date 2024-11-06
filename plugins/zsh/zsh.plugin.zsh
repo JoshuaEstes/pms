@@ -7,5 +7,5 @@ setopt multios
 # command status.
 setopt prompt_subst
 
-autoload -U colors && colors
+# Completions
 autoload -U compaudit compinit

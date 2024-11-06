@@ -53,31 +53,19 @@ EOF
     return 0
 }
 
+# @todo if there are arguments, check other help functions, example would be
+# pms help theme = _pms_command_help_theme
+# pms help theme list = _pms_command_help_theme_list
 _pms_command_help() {
     echo
     echo "Usage: pms [options] <command>"
     echo
     echo "Commands:"
     echo "  theme              Helps to manage themes"
-    #echo "    list             Displays available themes"
-    #echo "    switch           Switch to a specific theme"
-    #echo "    preview          Preview theme"
-    #echo "    validate         Validate theme"
-    #echo "    reload           Reloads theme"
     echo "  plugin             Helps to manage plugins"
-    #echo "    list             Lists all available plugins"
-    #echo "    enable           Enables and install plugin"
-    #echo "    disable          Disables a plugin"
-    #echo "    update           Updates a plugin"
-    #echo "    validate         Validate plugin"
-    #echo "    reload           Reloads enabled plugins"
     echo "  dotfiles           Manage your dotfiles"
-    #echo "    init             Initialize your dotfiles repository"
-    #echo "    add              Add dotfiles to your repository"
-    #echo "    scan             Scans your home directory for known dotfiles"
     echo "  chsh <shell>       Change shell"
     echo "  about              Show PMS information"
-    #echo "  help               Show help messages"
     echo "  upgrade            Upgrade PMS to latest version"
     echo "  diagnostic         Outputs diagnostic information"
     echo "  reload             Reloads all of PMS"
@@ -269,11 +257,12 @@ _pms_command_theme_help() {
   echo
   echo "Commands:"
   echo "  list               Displays available themes"
-  echo "  switch             Switch to a specific theme"
+  #echo "  reload             Reloads current theme"
+  echo "  switch <theme>     Switch to a specific theme"
   echo "  info <theme>       Displays information about a theme"
-  #echo "  preview            Preview theme"
-  #echo "  validate           Validate theme"
-  #echo "  reload             Reloads theme"
+  #echo "  use <theme>        Temporary use theme"
+  #echo "  preview <theme>    Preview theme"
+  #echo "  validate <theme>   Validate theme"
   echo
 
   return 0
@@ -346,11 +335,11 @@ _pms_command_plugin_help() {
   echo
   echo "Commands:"
   echo "  list               Lists all available plugins"
-  echo "  enable             Enables and install plugin"
-  echo "  disable            Disables a plugin"
+  echo "  enable <plugin>    Enables and install plugin"
+  echo "  disable <plugin>   Disables a plugin"
   echo "  info <plugin>      Displays information about a plugin"
-  #echo "  update             Updates a plugin"
-  #echo "  validate           Validate plugin"
+  #echo "  update <plugin>    Updates a plugin"
+  #echo "  validate <plugin>  Validate plugin"
   #echo "  reload             Reloads enabled plugins"
   echo
 
@@ -385,12 +374,10 @@ _pms_command_plugin_enable() {
     fi
 
     # Check plugin is not already enabled
-    for p in "${PMS_PLUGINS[@]}"; do
-        if [ "$p" = "$plugin" ]; then
-            _pms_message "error" "The plugin '$plugin' is already enabled"
-            return 1
-        fi
-    done
+    if _pms_is_plugin_enabled $plugin; then
+        _pms_message "error" "The plugin '$plugin' is already enabled"
+        return 1
+    fi
 
     # @todo if plugin cannot be loaded, do not do this
     _pms_message "info" "Adding '$plugin' to ~/.pms.plugins"
@@ -497,10 +484,16 @@ _pms_command_dotfiles_help() {
   echo
   echo "Commands:"
   #echo "    init             Initialize your dotfiles repository"
+  # scan would just scan $HOME for known dotfiles that are safe to add to
+  # a git repo. Store known files in an array
   #echo "    scan             Scans your home directory for known dotfiles"
+  #echo "    switch <branch>  Switch to a new branch to work on dotfiles"
   #echo "    push             Push changes"
   #echo "    pull             Pull changes"
-  echo "  add                Add dotfiles to your repository"
+  #echo "    status           Show status of files"
+  #echo "    diff             Display diff"
+  echo "  add <file> [file]  Add file(s) to your repository (commit and push)"
+  #echo "  rm <file>          Removes file from your dotfiles repo"
   echo "  git <command>      Runs the git command (example: pms dotfiles git status)"
   echo
 
@@ -508,8 +501,10 @@ _pms_command_dotfiles_help() {
 }
 
 _pms_command_dotfiles_init() {
-    echo "Initializing your dotfiles stuff"
-    echo "@todo"
+    # @todo
+    # 1. Ask if user wants to start a new repo
+    # y) git init, git config, git remote add
+    # n) git clone, git config
     # ---
     # Use existing or create new?
     # Existing

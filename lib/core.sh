@@ -142,6 +142,23 @@ _pms_plugin_load() {
 }
 
 ####
+# Checks if a plugin is loaded or not
+#
+# Usage: _pms_is_plugin_enabled "docker"
+_pms_is_plugin_enabled() {
+    local plugin=$1
+
+    for p in "${PMS_PLUGINS[@]}"; do
+        if [ "$p" = "$plugin" ]; then
+            return 0
+        fi
+    done
+    unset p
+
+    return 1
+}
+
+####
 # Usage: _pms_message "info" "Message"
 # Usage: _pms_message "Message"
 # Output: Message
