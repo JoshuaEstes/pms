@@ -72,8 +72,8 @@ _pms_command_help() {
 
     local plugin
     for plugin in "${PMS_PLUGINS[@]}"; do
-        type _pms_command_${plugin}_help &>/dev/null && {
-            _pms_command_${plugin}_help "$@"
+        type _pms_command_help_${plugin} &>/dev/null && {
+            _pms_command_help_${plugin} "$@"
             return $?
         }
     done
@@ -99,6 +99,8 @@ _pms_command_chsh() {
     else
         _pms_message_block "error" "$1 is not fucking shell, try again..."
     fi
+
+    return 0
 }
 
 _pms_command_diagnostic() {
@@ -181,6 +183,8 @@ _pms_command_diagnostic() {
     echo
     echo "-=[ Metadata ]=-"
     echo "Generated At: $(date)"
+
+    return 0
 }
 
 _pms_command_upgrade() {
@@ -212,6 +216,8 @@ _pms_command_upgrade() {
   _pms_message_block "success" "Upgrade complete, you may need to reload your environment (pms reload)"
   cd "$checkpoint"
   _pms_command_reload
+
+    return 0
 }
 
 _pms_command_reload() {
@@ -235,7 +241,7 @@ _pms_command_reload() {
 
 _pms_command_theme() {
     [[ $# -gt 0 ]] || {
-        _pms_command_theme_help
+        _pms_command_help_theme
         return 1
     }
 
@@ -247,24 +253,27 @@ _pms_command_theme() {
         return $?
     }
 
-    _pms_command_theme_help
+    _pms_command_help_theme
+
     return 1
 }
 
-_pms_command_theme_help() {
+_pms_command_help_theme() {
   echo
   echo "Usage: pms [options] theme <command>"
   echo
   echo "Commands:"
   echo "  list               Displays available themes"
-  #echo "  reload             Reloads current theme"
   echo "  switch <theme>     Switch to a specific theme"
   echo "  info <theme>       Displays information about a theme"
+  #echo "  reload             Reloads current theme"
   #echo "  use <theme>        Temporary use theme"
   #echo "  preview <theme>    Preview theme"
   #echo "  validate <theme>   Validate theme"
   #echo "  make <theme>       Creates a new theme"
   echo
+
+  # @todo Allow plugins to hook into this
 
   return 0
 }
@@ -281,6 +290,8 @@ _pms_command_theme_list() {
         _pms_message "info" "${theme##*/}"
     done
     _pms_message_block "success" "Current Theme: $PMS_THEME"
+
+    return 0
 }
 
 _pms_command_theme_switch() {
@@ -302,6 +313,8 @@ _pms_command_theme_switch() {
         _pms_source_file $PMS/themes/$theme/install.sh
     fi
     _pms_theme_load $theme
+
+    return 0
 }
 
 _pms_command_theme_info() {
@@ -309,12 +322,16 @@ _pms_command_theme_info() {
         cat $PMS/themes/$1/README.md
     else
         _pms_message_block "error" "Theme $1 has no README.md file"
+
+        return 1
     fi
+
+    return 0
 }
 
 _pms_command_plugin() {
     [[ $# -gt 0 ]] || {
-        _pms_command_plugin_help
+        _pms_command_help_plugin
         return 1
     }
 
@@ -326,11 +343,11 @@ _pms_command_plugin() {
         return $?
     }
 
-    _pms_command_plugin_help
+    _pms_command_help_plugin
     return 1
 }
 
-_pms_command_plugin_help() {
+_pms_command_help_plugin() {
   echo
   echo "Usage: pms [options] plugin [command]"
   echo
@@ -339,13 +356,36 @@ _pms_command_plugin_help() {
   echo "  enable <plugin>    Enables and install plugin"
   echo "  disable <plugin>   Disables a plugin"
   echo "  info <plugin>      Displays information about a plugin"
+  echo "  make <plugin>      Creates a new plugin"
   #echo "  update <plugin>    Updates a plugin"
   #echo "  validate <plugin>  Validate plugin"
-  #echo "  reload             Reloads enabled plugins"
-  #echo "  make <plugin>      Creates a new plugin"
+  #echo "  reload <plugin>    Reloads enabled plugins"
   echo
 
+  # @todo allow plugins to hook into this
+
   return 0
+}
+
+# @todo Option for making this a local plugin
+_pms_command_plugin_make() {
+    if [ -z $1 ]; then
+        _pms_message_block "error" "Usage: pms plugin make <plugin>"
+        return 1
+    fi
+    local plugin=$1
+
+    if [ -d $PMS/plugins/$plugin ]; then
+        _pms_message_block "error" "Plugin $plugin already exists"
+        return 1
+    fi
+
+    mkdir -vp $PMS/plugins/$plugin
+    cp -v $PMS/templates/plugin/* $PMS/plugins/$plugin/
+
+    _pms_message_block "success" "Plugin Created"
+
+    return 0
 }
 
 _pms_command_plugin_list() {
@@ -364,11 +404,13 @@ _pms_command_plugin_list() {
   echo
   echo "Enabled Plugins: ${PMS_PLUGINS[*]}"
   echo
+
+  return 0
 }
 
+# @todo support for multiple plugins at a time
 _pms_command_plugin_enable() {
     local plugin=$1
-    # @todo support for multiple plugins at a time
     # Does directory exist?
     if [ ! -d $PMS_LOCAL/plugins/$plugin ] && [ ! -d $PMS/plugins/$plugin ]; then
         _pms_message "error" "The plugin '$plugin' is invalid and cannot be enabled"
@@ -402,6 +444,8 @@ _pms_command_plugin_enable() {
 
     _pms_message "info" "Loading plugin"
     _pms_plugin_load $plugin
+
+  return 0
 }
 
 _pms_command_plugin_disable() {
@@ -451,6 +495,8 @@ _pms_command_plugin_disable() {
 
     _pms_message_section "success" "$plugin" "Plugin has been disabled, you will need to reload pms by running 'pms reload'"
     # @todo Ask user to reload environment
+
+  return 0
 }
 
 _pms_command_plugin_info() {
@@ -458,13 +504,17 @@ _pms_command_plugin_info() {
         cat $PMS/plugins/$1/README.md
     else
         _pms_message_block "error" "Plugin $1 has no README.md file"
+
+        return 1
     fi
+
+    return 0
 }
 
 # @todo Make dotfiles a plugin
 _pms_command_dotfiles() {
     [[ $# -gt 0 ]] || {
-        _pms_command_dotfiles_help
+        _pms_command_help_dotfiles
         return 1
     }
 
@@ -476,30 +526,34 @@ _pms_command_dotfiles() {
         return $?
     }
 
-    _pms_command_dotfiles_help
+    _pms_command_help_dotfiles
     return 1
 }
 
-_pms_command_dotfiles_help() {
+_pms_command_help_dotfiles() {
   echo
   echo "Usage: pms [options] dotfiles <command>"
   echo
   echo "Commands:"
+  echo "  push               Push changes"
+  echo "  add <file> [file]  Add file(s) to your repository (commit and push)"
+  echo "  git <command>      Runs the git command (example: pms dotfiles git status)"
   #echo "    init             Initialize your dotfiles repository"
   # scan would just scan $HOME for known dotfiles that are safe to add to
   # a git repo. Store known files in an array
   #echo "    scan             Scans your home directory for known dotfiles"
   #echo "    switch <branch>  Switch to a new branch to work on dotfiles"
-  #echo "    push             Push changes"
   #echo "    pull             Pull changes"
   #echo "    status           Show status of files"
   #echo "    diff             Display diff"
-  echo "  add <file> [file]  Add file(s) to your repository (commit and push)"
   #echo "  rm <file>          Removes file from your dotfiles repo"
-  echo "  git <command>      Runs the git command (example: pms dotfiles git status)"
   echo
 
   return 0
+}
+
+_pms_command_dotfiles_push() {
+    /usr/bin/git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME push origin $PMS_DOTFILES_BRANCH
 }
 
 _pms_command_dotfiles_init() {
@@ -520,23 +574,32 @@ _pms_command_dotfiles_init() {
     # ---
 }
 
+# @todo if no arguments, add all modified files
 _pms_command_dotfiles_add() {
-    local branch=master
-    local dotfiles_path="$HOME/.dotfiles"
-    local work_tree=$HOME
+    local files=$@
 
-    for f in "$@"; do
+    if [ $# -eq 0 ]; then
+        files=$(/usr/bin/git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME diff --cached --name-only)
+    fi
+
+    if [[ ${files[@]} -eq 0 ]]; then
+        _pms_message "error" "Nothing to do"
+        return 1
+    fi
+
+    for f in "$files"; do
+        _pms_message "info" "Adding $f"
         # --verbose
         # --force = Allow adding otherwise ignored files
-        /usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME -C $HOME add --verbose --force $f
+        /usr/bin/git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME add --verbose --force $f
         # @todo better commit messages
-        /usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME -C $HOME commit -m "$f"
+        /usr/bin/git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME commit -m "$f"
     done
-    # @todo support for different remote
-    # @todo support for different branch
-    /usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME -C $HOME push origin master
+
+    ## @todo use an option for this
+    _pms_command_dotfiles_push
 }
 
 _pms_command_dotfiles_git() {
-    /usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME -C $HOME $@
+    /usr/bin/git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME $@
 }
