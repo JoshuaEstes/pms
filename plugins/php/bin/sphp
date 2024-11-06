@@ -1,0 +1,98 @@
+# vim: set ft=bash:
+#!/usr/bin/env bash
+####
+# PHP Switcher Script
+#
+# Used to switch between different versions of PHP
+#
+# Usage: sphp 8.3
+####
+supported_php_versions=("5.6" "7.0" "7.1" "7.2" "7.3" "7.4" "8.0" "8.1" "8.2" "8.3" "8.4")
+
+if [[ -z "$1" ]]; then
+    echo "Usage: $(basename "$0") <version>"
+    echo
+    echo "\t<version> one of:" "${supported_php_versions[@]}"
+    echo
+    exit
+fi
+
+if [[ "$OSTYPE" == darwin* ]]; then
+    echo
+    echo "Only MacOSX is supported"
+    echo
+    return 1
+fi
+
+target_version=$1
+php_version="php@$target_version"
+homebrew_path=$(brew --prefix)
+php_opt_path="$homebrew_path/opt/"
+
+# create an array of installed php versions
+for version in ${supported_php_versions[*]}; do
+    if [[ -d "$homebrew_path/etc/php/$version" ]]; then
+        installed_php_versions+=("$version")
+    fi
+done
+unset version
+
+install_apcu() {
+    CFLAGS="-I/$homebrew_path/include" pecl install apcu
+}
+
+install_xdebug() {
+    pecl install xdebug
+}
+
+####
+# Usage install_php_version 8.3
+####
+install_php_version() {
+    echo " [cmd] brew install php@$1"
+    brew install "php@$1"
+}
+
+####
+# Usage: brew_unlink 5.6
+####
+brew_unlink() {
+    local homebrew_path=$(brew --prefix)
+
+    if [[ -d "$homebrew_path/etc/php/$1" ]]; then
+        echo " [cmd] brew unlink php@$1"
+        brew unlink "php@$1"
+    else
+        echo "php@$1 not installed, no need to unlink"
+    fi
+}
+
+####
+# Usage: brew_link 8.3
+####
+brew_link() {
+    echo " [cmd] brew link --force php@$1"
+    brew link --force "php@$1"
+}
+
+
+if [[ " ${supported_php_versions[*]} " == *"$target_version"* ]]; then
+    echo "Switching to $php_version"
+    for i in "${installed_php_versions[@]}"; do
+        brew_unlink "$i"
+    done
+    if [[ " ${installed_php_versions[*]} " == *"$target_version"* ]]; then
+        brew_link "$target_version"
+    else
+        echo "PHP $target_version not installed, installing now"
+        install_php_version "$target_version"
+        brew_link "$target_version"
+    fi
+else
+    echo "Unknown version of PHP. PHP Switcher can only handle arguments of:" "${supported_php_versions[@]}"
+    exit 1
+fi
+
+echo
+php -v
+echo

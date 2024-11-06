@@ -3,6 +3,9 @@
 # PHP Plugin
 ####
 
+# Add bin directory to path
+export PATH="$PATH:$PMS/plugins/php/bin"
+
 ####
 # This will display the PHP version
 _php_version() {
