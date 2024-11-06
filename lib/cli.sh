@@ -574,7 +574,7 @@ __pms_command_help_dotfiles() {
   echo
   echo "Commands:"
   __pms_command "push" "Push changes"
-  __pms_command "add <file> [file] ..." "Add file(s) to your repository (commit and push)"
+  __pms_command "add [file] [file] ..." "Add file(s) to your repository (commit and push)"
   __pms_command "git <command>" "Runs the git command (example: pms dotfiles git status)"
   #echo "    init             Initialize your dotfiles repository"
   # scan would just scan $HOME for known dotfiles that are safe to add to
@@ -617,10 +617,10 @@ __pms_command_dotfiles_add() {
     local files=$@
 
     if [ $# -eq 0 ]; then
-        files=$(/usr/bin/git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME diff --cached --name-only)
+        files=$(/usr/bin/git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME diff --name-only)
     fi
 
-    if [[ ${files[@]} -eq 0 ]]; then
+    if [[ "${#files[@]}" -eq 0 ]]; then
         _pms_message "error" "Nothing to do"
         return 1
     fi
