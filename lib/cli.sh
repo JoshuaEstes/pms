@@ -614,10 +614,11 @@ __pms_command_dotfiles_init() {
 
 # @todo if no arguments, add all modified files
 __pms_command_dotfiles_add() {
-    local files=$@
+    local files=( $@ )
 
     if [ $# -eq 0 ]; then
-        files=$(/usr/bin/git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME diff --name-only)
+        # Only add files that have been modified or deleted
+        files=( $(git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME diff --name-only --diff-filter=MD) )
     fi
 
     if [[ "${#files[@]}" -eq 0 ]]; then
@@ -625,19 +626,22 @@ __pms_command_dotfiles_add() {
         return 1
     fi
 
-    for f in "$files"; do
-        _pms_message "info" "Adding $f"
-        # --verbose
+    for f in "${files[@]}" ; do
+        #_pms_message "info" "Adding $f"
+        # --verbose = tell user it's been added
         # --force = Allow adding otherwise ignored files
-        /usr/bin/git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME add --verbose --force $f
-        # @todo better commit messages
-        /usr/bin/git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME commit -m "$f"
+        git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME add --verbose --force $f
     done
 
-    ## @todo use an option for this
+    echo "${files[@]}"
+
+    # @todo better commit messages, maybe ask user?
+    git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME commit -m "$f"
+
+    ## @todo use an option for this or ask the user if they want to push
     __pms_command_dotfiles_push
 }
 
 __pms_command_dotfiles_git() {
-    /usr/bin/git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME $@
+    git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME $@
 }
