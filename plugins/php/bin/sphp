@@ -17,11 +17,11 @@ if [[ -z "$1" ]]; then
     exit
 fi
 
-if [[ "$OSTYPE" == darwin* ]]; then
+if [[ "$OSTYPE" != darwin* ]]; then
     echo
     echo "Only MacOSX is supported"
     echo
-    return 1
+    exit 1
 fi
 
 target_version=$1
