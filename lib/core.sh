@@ -111,6 +111,8 @@ _pms_plugin_load() {
       # The env file is loaded first as there are options that it may use
       if [[ -f $PMS_LOCAL/plugins/$plugin/env && "$plugin" != "$PMS_SHELL" && "$plugin" != "pms" ]]; then
         _pms_source_file $PMS_LOCAL/plugins/$plugin/env
+      elif [[ -f $PMS/plugins/$plugin/env && "$plugin" != "$PMS_SHELL" && "$plugin" != "pms" ]]; then
+        _pms_source_file $PMS/plugins/$plugin/env
       fi
 
       # sh may or may not be found, we don't need to notify user if this is not
