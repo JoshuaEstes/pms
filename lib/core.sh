@@ -47,11 +47,12 @@ _pms_question_yn() {
 #   _pms_source_file $PMS/plugins/pms/env
 ####
 _pms_source_file() {
-    if [ -f $1 ]; then
-        if [ "$PMS_DEBUG" -eq "1" ]; then
+    if [ -f "$1" ]; then
+        if [ "${PMS_DEBUG:-0}" -eq 1 ]; then
             _pms_message "" "source $1"
         fi
-        source $1
+        # shellcheck source=/dev/null
+        source "$1"
     #else
     #    _pms_message_error "File '$1' could not be found"
     fi
@@ -70,24 +71,24 @@ _pms_theme_load() {
   _pms_message_section "info" "theme" "Loading '$PMS_THEME' theme"
   local theme_loaded=0
   # Generic sh theme files
-  if [ -f $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.sh ]; then
-    _pms_source_file $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.sh
+  if [ -f "$PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.sh" ]; then
+    _pms_source_file "$PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.sh"
     theme_loaded=1
-  elif [ -f $PMS/themes/$PMS_THEME/$PMS_THEME.theme.sh ]; then
-    _pms_source_file $PMS/themes/$PMS_THEME/$PMS_THEME.theme.sh
+  elif [ -f "$PMS/themes/$PMS_THEME/$PMS_THEME.theme.sh" ]; then
+    _pms_source_file "$PMS/themes/$PMS_THEME/$PMS_THEME.theme.sh"
     theme_loaded=1
   fi
 
   # Shell specific theme file
-  if [ -f $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL ]; then
-    _pms_source_file $PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL
+  if [ -f "$PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL" ]; then
+    _pms_source_file "$PMS_LOCAL/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL"
     theme_loaded=1
-  elif [ -f $PMS/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL ]; then
-    _pms_source_file $PMS/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL
+  elif [ -f "$PMS/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL" ]; then
+    _pms_source_file "$PMS/themes/$PMS_THEME/$PMS_THEME.theme.$PMS_SHELL"
     theme_loaded=1
   fi
 
-  if [ "$theme_loaded" -eq "0" ]; then
+  if [ "$theme_loaded" -eq 0 ]; then
     _pms_message "error" "Theme '$PMS_THEME' could not be loaded, loading the 'default' theme"
     _pms_theme_load default
   fi
@@ -109,35 +110,35 @@ _pms_plugin_load() {
       local plugin_loaded=0
 
       # The env file is loaded first as there are options that it may use
-      if [[ -f $PMS_LOCAL/plugins/$plugin/env && "$plugin" != "$PMS_SHELL" && "$plugin" != "pms" ]]; then
-        _pms_source_file $PMS_LOCAL/plugins/$plugin/env
-      elif [[ -f $PMS/plugins/$plugin/env && "$plugin" != "$PMS_SHELL" && "$plugin" != "pms" ]]; then
-        _pms_source_file $PMS/plugins/$plugin/env
+      if [[ -f "$PMS_LOCAL/plugins/$plugin/env" && "$plugin" != "$PMS_SHELL" && "$plugin" != "pms" ]]; then
+        _pms_source_file "$PMS_LOCAL/plugins/$plugin/env"
+      elif [[ -f "$PMS/plugins/$plugin/env" && "$plugin" != "$PMS_SHELL" && "$plugin" != "pms" ]]; then
+        _pms_source_file "$PMS/plugins/$plugin/env"
       fi
 
       # sh may or may not be found, we don't need to notify user if this is not
       # found because shell specific files are more important
-      if [ -f $PMS_LOCAL/plugins/$plugin/$plugin.plugin.sh ]; then
-        _pms_source_file $PMS_LOCAL/plugins/$plugin/$plugin.plugin.sh
+      if [ -f "$PMS_LOCAL/plugins/$plugin/$plugin.plugin.sh" ]; then
+        _pms_source_file "$PMS_LOCAL/plugins/$plugin/$plugin.plugin.sh"
         plugin_loaded=1
       # check core plugins
-      elif [ -f $PMS/plugins/$plugin/$plugin.plugin.sh ]; then
-        _pms_source_file $PMS/plugins/$plugin/$plugin.plugin.sh
+      elif [ -f "$PMS/plugins/$plugin/$plugin.plugin.sh" ]; then
+        _pms_source_file "$PMS/plugins/$plugin/$plugin.plugin.sh"
         plugin_loaded=1
       fi
 
       # check local directory first
-      if [ -f $PMS_LOCAL/plugins/$plugin/$plugin.plugin.$PMS_SHELL ]; then
-        _pms_source_file $PMS_LOCAL/plugins/$plugin/$plugin.plugin.$PMS_SHELL
+      if [ -f "$PMS_LOCAL/plugins/$plugin/$plugin.plugin.$PMS_SHELL" ]; then
+        _pms_source_file "$PMS_LOCAL/plugins/$plugin/$plugin.plugin.$PMS_SHELL"
         plugin_loaded=1
       # check core plugins
-      elif [ -f $PMS/plugins/$plugin/$plugin.plugin.$PMS_SHELL ]; then
-        _pms_source_file $PMS/plugins/$plugin/$plugin.plugin.$PMS_SHELL
+      elif [ -f "$PMS/plugins/$plugin/$plugin.plugin.$PMS_SHELL" ]; then
+        _pms_source_file "$PMS/plugins/$plugin/$plugin.plugin.$PMS_SHELL"
         plugin_loaded=1
       fi
 
       # Let user know plugin could not be found
-      if [ "$plugin_loaded" -eq "0" ]; then
+      if [ "$plugin_loaded" -eq 0 ]; then
           _pms_message_section "error" "plugin" "Plugin '$plugin' could not be loaded"
       fi
   done
@@ -148,18 +149,18 @@ _pms_plugin_load() {
 #
 # Usage: _pms_is_plugin_enabled "docker"
 _pms_is_plugin_enabled() {
-    local plugin=$1
+    local plugin="$1"
     if [ "$plugin" = "pms" ]; then
         return 0
     fi
 
-    for p in "${PMS_PLUGINS[@]}"; do
+    local p
+    # Iterate over plugins whether PMS_PLUGINS is an array or a plain string
+    for p in ${PMS_PLUGINS[@]}; do
         if [ "$p" = "$plugin" ]; then
             return 0
         fi
     done
-    unset p
-
     return 1
 }
 
@@ -171,7 +172,7 @@ _pms_is_plugin_enabled() {
 _pms_message() {
     local type=$1
     local message=$2
-    if [ -z $2 ]; then
+    if [ -z "$2" ]; then
         message=$1
     fi
 
@@ -210,7 +211,7 @@ _pms_message_section() {
 _pms_message_block() {
     local type=$1
     local message=$2
-    if [ -z $2 ]; then
+    if [ -z "$2" ]; then
         message=$1
     fi
     case $type in

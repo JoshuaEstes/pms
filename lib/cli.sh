@@ -26,7 +26,7 @@ pms() {
 }
 
 __pms_command() {
-    printf "\r  %-30s %s\n" $1 $2
+    printf "\r  %-30s %s\n" "$1" "$2"
 }
 
 __pms_command_about() {
@@ -102,7 +102,7 @@ __pms_command_help() {
 
 # @todo make sure it is a supported shell
 __pms_command_chsh() {
-    if [ -z $1 ]; then
+    if [ -z "$1" ]; then
         echo
         echo "What fucking shell you want to change to?"
         echo
@@ -112,8 +112,8 @@ __pms_command_chsh() {
         return 1
     fi
 
-    if [ -f /bin/$1 ]; then
-        chsh -s /bin/$1
+    if [ -f "/bin/$1" ]; then
+        chsh -s "/bin/$1"
     else
         _pms_message_block "error" "$1 is not fucking shell, try again..."
     fi
@@ -397,22 +397,22 @@ __pms_command_help_plugin() {
 
 # @todo Option for making this a local plugin
 __pms_command_plugin_make() {
-    if [ -z $1 ]; then
+    if [ -z "$1" ]; then
         _pms_message_block "error" "Usage: pms plugin make <plugin>"
         return 1
     fi
-    local plugin=$1
+    local plugin="$1"
 
-    if [ -d $PMS/plugins/$plugin ]; then
+    if [ -d "$PMS/plugins/$plugin" ]; then
         _pms_message_block "error" "Plugin $plugin already exists"
         return 1
     fi
 
-    mkdir -vp $PMS/plugins/$plugin
-    cp -v $PMS/templates/plugin/* $PMS/plugins/$plugin/
-    mv $PMS/plugins/$plugin/skeleton.plugin.bash $PMS/plugins/$plugin/$plugin.plugin.bash
-    mv $PMS/plugins/$plugin/skeleton.plugin.sh $PMS/plugins/$plugin/$plugin.plugin.sh
-    mv $PMS/plugins/$plugin/skeleton.plugin.zsh $PMS/plugins/$plugin/$plugin.plugin.zsh
+    mkdir -vp "$PMS/plugins/$plugin"
+    cp -v "$PMS/templates/plugin"/* "$PMS/plugins/$plugin/"
+    mv "$PMS/plugins/$plugin/skeleton.plugin.bash" "$PMS/plugins/$plugin/$plugin.plugin.bash"
+    mv "$PMS/plugins/$plugin/skeleton.plugin.sh" "$PMS/plugins/$plugin/$plugin.plugin.sh"
+    mv "$PMS/plugins/$plugin/skeleton.plugin.zsh" "$PMS/plugins/$plugin/$plugin.plugin.zsh"
 
     _pms_message_block "success" "Plugin Created"
 
@@ -423,22 +423,22 @@ __pms_command_plugin_list() {
     local plugin
     echo
     echo "Core Plugins:"
-    for plugin in $PMS/plugins/*; do
+    for plugin in "$PMS"/plugins/*; do
         plugin=${plugin##*/}
-        if _pms_is_plugin_enabled $plugin; then
-            printf "\r  %-20s [enabled]\n" $plugin
+        if _pms_is_plugin_enabled "$plugin"; then
+            printf "\r  %-20s [enabled]\n" "$plugin"
         else
-            printf "\r  %s\n" $plugin
+            printf "\r  %s\n" "$plugin"
         fi
     done
     echo
     echo "Local Plugins:"
-    for plugin in $PMS_LOCAL/plugins/*; do
+    for plugin in "$PMS_LOCAL"/plugins/*; do
         plugin=${plugin##*/}
-        if _pms_is_plugin_enabled $plugin; then
-            printf "\r  %-20s [enabled]\n" $plugin
+        if _pms_is_plugin_enabled "$plugin"; then
+            printf "\r  %-20s [enabled]\n" "$plugin"
         else
-            printf "\r  %s\n" $plugin
+            printf "\r  %s\n" "$plugin"
         fi
     done
     echo
@@ -448,58 +448,58 @@ __pms_command_plugin_list() {
 
 # @todo support for multiple plugins at a time
 __pms_command_plugin_enable() {
-    local plugin=$1
+    local plugin="$1"
     # Does directory exist?
-    if [ ! -d $PMS_LOCAL/plugins/$plugin ] && [ ! -d $PMS/plugins/$plugin ]; then
+    if [ ! -d "$PMS_LOCAL/plugins/$plugin" ] && [ ! -d "$PMS/plugins/$plugin" ]; then
         _pms_message "error" "The plugin '$plugin' is invalid and cannot be enabled"
         return 1
     fi
 
     # Check plugin is not already enabled
-    if _pms_is_plugin_enabled $plugin; then
+    if _pms_is_plugin_enabled "$plugin"; then
         _pms_message "error" "The plugin '$plugin' is already enabled"
         return 1
     fi
 
     # @todo if plugin cannot be loaded, do not do this
     _pms_message "info" "Adding '$plugin' to ~/.pms.plugins"
-    PMS_PLUGINS+=($plugin)
-    echo "PMS_PLUGINS=(${PMS_PLUGINS[*]})" > ~/.pms.plugins
+    PMS_PLUGINS+=("$plugin")
+    echo "PMS_PLUGINS=(${PMS_PLUGINS[*]})" > "$HOME/.pms.plugins"
 
     _pms_message "info" "Checking for plugin install script"
-    if [ -f $PMS_LOCAL/plugins/$plugin/install.sh ]; then
-        _pms_source_file $PMS_LOCAL/plugins/$plugin/install.sh
-    elif [ -f $PMS/plugins/$plugin/install.sh ]; then
-        _pms_source_file $PMS/plugins/$plugin/install.sh
+    if [ -f "$PMS_LOCAL/plugins/$plugin/install.sh" ]; then
+        _pms_source_file "$PMS_LOCAL/plugins/$plugin/install.sh"
+    elif [ -f "$PMS/plugins/$plugin/install.sh" ]; then
+        _pms_source_file "$PMS/plugins/$plugin/install.sh"
     fi
 
     # Shell specific install
-    if [ -f $PMS_LOCAL/plugins/$plugin/install.$PMS_SHELL ]; then
-        _pms_source_file $PMS_LOCAL/plugins/$plugin/install.$PMS_SHELL
-    elif [ -f $PMS/plugins/$plugin/install.$PMS_SHELL ]; then
-        _pms_source_file $PMS/plugins/$plugin/install.$PMS_SHELL
+    if [ -f "$PMS_LOCAL/plugins/$plugin/install.$PMS_SHELL" ]; then
+        _pms_source_file "$PMS_LOCAL/plugins/$plugin/install.$PMS_SHELL"
+    elif [ -f "$PMS/plugins/$plugin/install.$PMS_SHELL" ]; then
+        _pms_source_file "$PMS/plugins/$plugin/install.$PMS_SHELL"
     fi
 
     _pms_message "info" "Loading plugin"
-    _pms_plugin_load $plugin
+    _pms_plugin_load "$plugin"
 
   return 0
 }
 
 __pms_command_plugin_disable() {
-    local plugin=$1
+    local plugin="$1"
 
     # @todo support for multiple plugins at a time
     local _plugin_enabled=0
 
     # Check to see if the plugin is already enabled and if so, notify user and
     # exit
-    for p in "${PMS_PLUGINS[@]}"; do
+    for p in ${PMS_PLUGINS[@]}; do
         if [ "$p" = "${plugin}" ]; then
             _plugin_enabled=1
         fi
     done
-    if [ "$_plugin_enabled" -eq "0" ]; then
+    if [ "$_plugin_enabled" -eq 0 ]; then
         _pms_message_section "error" "$plugin" "The plugin is not enabled"
         return 1
     fi
@@ -507,28 +507,28 @@ __pms_command_plugin_disable() {
 
     # Remove from plugins
     local _plugins=()
-    for i in "${PMS_PLUGINS[@]}"; do
+    for i in ${PMS_PLUGINS[@]}; do
         if [ "$i" != "$plugin" ]; then
-            _plugins+=($i)
+            _plugins+=("$i")
         fi
     done
-    PMS_PLUGINS=$_plugins
+    PMS_PLUGINS=("${_plugins[@]}")
     # save .pms.plugins
-    echo "PMS_PLUGINS=(${_plugins[*]})" > ~/.pms.plugins
-    _pms_source_file ~/.pms.plugins
+    echo "PMS_PLUGINS=(${_plugins[*]})" > "$HOME/.pms.plugins"
+    _pms_source_file "$HOME/.pms.plugins"
 
     # Run uninstall script (if available)
-    if [ -f $PMS_LOCAL/plugins/$plugin/uninstall.sh ]; then
-        _pms_source_file $PMS_LOCAL/plugins/$plugin/uninstall.sh
-    elif [ -f $PMS/plugins/$plugin/uninstall.sh ]; then
-        _pms_source_file $PMS/plugins/$plugin/uninstall.sh
+    if [ -f "$PMS_LOCAL/plugins/$plugin/uninstall.sh" ]; then
+        _pms_source_file "$PMS_LOCAL/plugins/$plugin/uninstall.sh"
+    elif [ -f "$PMS/plugins/$plugin/uninstall.sh" ]; then
+        _pms_source_file "$PMS/plugins/$plugin/uninstall.sh"
     fi
 
     # Shell specific
-    if [ -f $PMS_LOCAL/plugins/$plugin/uninstall.$PMS_SHELL ]; then
-        _pms_source_file $PMS_LOCAL/plugins/$plugin/uninstall.$PMS_SHELL
-    elif [ -f $PMS/plugins/$plugin/uninstall.$PMS_SHELL ]; then
-        _pms_source_file $PMS/plugins/$plugin/uninstall.$PMS_SHELL
+    if [ -f "$PMS_LOCAL/plugins/$plugin/uninstall.$PMS_SHELL" ]; then
+        _pms_source_file "$PMS_LOCAL/plugins/$plugin/uninstall.$PMS_SHELL"
+    elif [ -f "$PMS/plugins/$plugin/uninstall.$PMS_SHELL" ]; then
+        _pms_source_file "$PMS/plugins/$plugin/uninstall.$PMS_SHELL"
     fi
 
     _pms_message_section "success" "$plugin" "Plugin has been disabled, you will need to reload pms by running 'pms reload'"
@@ -538,8 +538,8 @@ __pms_command_plugin_disable() {
 }
 
 __pms_command_plugin_info() {
-    if [ -f $PMS/plugins/$1/README.md ]; then
-        cat $PMS/plugins/$1/README.md
+    if [ -f "$PMS/plugins/$1/README.md" ]; then
+        cat "$PMS/plugins/$1/README.md"
     else
         _pms_message_block "error" "Plugin $1 has no README.md file"
 
@@ -614,11 +614,11 @@ __pms_command_dotfiles_init() {
 
 # @todo if no arguments, add all modified files
 __pms_command_dotfiles_add() {
-    local files=( $@ )
+    local files=( "$@" )
 
     if [ $# -eq 0 ]; then
         # Only add files that have been modified or deleted
-        files=( $(git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME diff --name-only --diff-filter=MD) )
+        files=( $(git --git-dir="$PMS_DOTFILES_GIT_DIR" --work-tree="$HOME" -C "$HOME" diff --name-only --diff-filter=MD) )
     fi
 
     if [[ "${#files[@]}" -eq 0 ]]; then
@@ -630,18 +630,18 @@ __pms_command_dotfiles_add() {
         #_pms_message "info" "Adding $f"
         # --verbose = tell user it's been added
         # --force = Allow adding otherwise ignored files
-        git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME add --verbose --force $f
+        git --git-dir="$PMS_DOTFILES_GIT_DIR" --work-tree="$HOME" -C "$HOME" add --verbose --force "$f"
     done
 
     echo "${files[@]}"
 
     # @todo better commit messages, maybe ask user?
-    git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME commit -m "$f"
+    git --git-dir="$PMS_DOTFILES_GIT_DIR" --work-tree="$HOME" -C "$HOME" commit -m "$f"
 
     ## @todo use an option for this or ask the user if they want to push
     __pms_command_dotfiles_push
 }
 
 __pms_command_dotfiles_git() {
-    git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME $@
+    git --git-dir="$PMS_DOTFILES_GIT_DIR" --work-tree="$HOME" -C "$HOME" "$@"
 }

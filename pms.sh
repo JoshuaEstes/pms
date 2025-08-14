@@ -6,30 +6,30 @@
 
 # Validate we can properly configure the shell
 # @todo Ensure that its a supported shell
-if [ -z $1 ]; then
+if [ -z "$1" ]; then
     echo
     echo "Usage: pms.sh PMS_SHELL"
     echo
     exit 1
 fi
-PMS_SHELL=$1
+PMS_SHELL="$1"
 
-if [ -z $PMS ]; then
+if [ -z "$PMS" ]; then
     echo "The PMS variable is not set. I have no fucking idea what you want me to load."
     exit 1
 fi
 
 # We want to make sure that ALL the PMS variables are set if the user does not
 # set them in one of the env files
-source $PMS/plugins/pms/env
-if [ "1" -eq "$PMS_DEBUG" ]; then
+source "$PMS/plugins/pms/env"
+if [ 1 -eq "${PMS_DEBUG:-0}" ]; then
     echo "source $PMS/plugins/pms/env"
 fi
 
 # If the shell has any variables that need to be set, we need to make sure they
 # get set
-source $PMS/plugins/$PMS_SHELL/env
-if [ "1" -eq "$PMS_DEBUG" ]; then
+source "$PMS/plugins/$PMS_SHELL/env"
+if [ 1 -eq "${PMS_DEBUG:-0}" ]; then
     echo "source $PMS/plugins/$PMS_SHELL/env"
 fi
 
@@ -39,22 +39,22 @@ fi
 #
 # @internal
 ####
-for lib in $PMS/lib/*.{sh,$PMS_SHELL}; do
+for lib in "$PMS"/lib/*.{sh,$PMS_SHELL}; do
     # @todo load all local libraries
-    source $lib
-    if [ "1" -eq "$PMS_DEBUG" ]; then
+    source "$lib"
+    if [ 1 -eq "${PMS_DEBUG:-0}" ]; then
         echo "source $lib"
     fi
 done
 unset lib
 
-_pms_source_file ~/.pms.plugins
-_pms_source_file ~/.pms.theme
+_pms_source_file "$HOME/.pms.plugins"
+_pms_source_file "$HOME/.pms.theme"
 
 # Load the PMS and SHELL plugins
 _pms_plugin_load pms $PMS_SHELL
 
-if [ "$PMS_DEBUG" -eq "1" ]; then
+if [ "${PMS_DEBUG:-0}" -eq 1 ]; then
     # If debug is enabled, we want to see the current settings at this point
     _pms_message_block "info" "-=[ PMS Settings ]=-"
     _pms_message "info"  "PMS                  : $PMS"
@@ -77,9 +77,9 @@ fi
 ####
 # Load all enabled plugins
 ####
-for plugin in "${PMS_PLUGINS[@]}"; do
+for plugin in ${PMS_PLUGINS[@]}; do
     if [[ "$plugin" != "$PMS_SHELL" && "$plugin" != "pms" ]]; then
-        _pms_plugin_load $plugin
+        _pms_plugin_load "$plugin"
     fi
 done
 unset plugin
