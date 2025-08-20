@@ -1,16 +1,15 @@
 ---
 name: 🚀 Feature Request
-about: RFCs, Ideas for Improvements, New Features, Plugin Requests
+about: RFCs, ideas for improvements, new features, or plugin requests
 
 ---
 
 **Description**
 <!--
-Make sure the description is detailed and includes WHAT as well as WHY you
-want this
+Provide a detailed description that explains what you want and why you want it.
 -->
 
 **Example**
 <!--
-A simple example of what you are expecting
+A simple example of what you are expecting.
 -->

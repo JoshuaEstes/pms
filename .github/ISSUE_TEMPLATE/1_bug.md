@@ -6,29 +6,31 @@ label: bug
 ---
 
 <!--
-If the bug is not related to a plugin or theme, leave as "na"
+If the bug is not related to a plugin or theme, leave the field as "N/A".
+Provide version numbers when possible.
 -->
-**OS**: xxx
-**Shell**: xxx
-**Plugin**: na
-**Theme**: na
+**OS**: 
+**Shell**: 
+**PMS Version**: 
+**Plugin**: N/A
+**Theme**: N/A
 
 **Description**
 <!--
-What's broken? Please be as detailed as possible
+What's broken? Please be as detailed as possible.
 -->
 
 **Steps to Reproduce**
 <!--
-Can this be reproduced?
+List the steps required to reproduce the issue.
 -->
 
 **Possible Solution**
 <!--
-Have you found a workaround for this issue?
+Have you found a workaround or identified a possible cause?
 -->
 
 **pms diagnostic**
 <!--
-Please run the command "pms diagnostic" and copy/paste the output here
+Run `pms diagnostic` and copy/paste the output here.
 -->
