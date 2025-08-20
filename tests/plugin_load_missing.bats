@@ -24,6 +24,9 @@ setup() {
 @test "_pms_plugin_load reports missing plugins" {
     run _pms_plugin_load "missing"
     [ "$status" -eq 0 ]
-    [[ "$output" == *"Plugin 'missing' could not be loaded"* ]]
+    case "$output" in
+        *"Plugin 'missing' could not be loaded"*) ;;
+        *) false ;;
+    esac
 }
 

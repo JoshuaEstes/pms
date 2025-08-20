@@ -27,11 +27,14 @@ setup() {
 @test "_pms_time records plugin load duration" {
     _pms_time "sample" _pms_plugin_load sample
     [ "${PMS_PLUGIN_TIME_NAMES[0]}" = "sample" ]
-    [[ "${PMS_PLUGIN_TIME_VALUES[0]}" -ge 0 ]]
+    [ "${PMS_PLUGIN_TIME_VALUES[0]}" -ge 0 ]
 }
 
 @test "__pms_command_diagnostic shows plugin timings" {
     _pms_time "sample" _pms_plugin_load sample
     run __pms_command_diagnostic
-    [[ "$output" == *"sample"* ]]
+    case "$output" in
+        *"sample"*) ;;
+        *) false ;;
+    esac
 }

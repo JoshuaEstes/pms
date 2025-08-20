@@ -7,6 +7,9 @@
         echo "$PROMPT"
     '
     [ "$status" -eq 0 ]
-    [[ "${lines[0]}" == *"vcs_info_msg_0_"* ]]
+    case "${lines[0]}" in
+        *"vcs_info_msg_0_"*) ;;
+        *) false ;;
+    esac
 }
 

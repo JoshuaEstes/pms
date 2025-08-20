@@ -6,7 +6,10 @@
     run bash -c "printf 'N\n' | scripts/uninstall.sh"
     [ "$status" -eq 0 ]
     [ -f "$HOME/.pms.theme" ]
-    [[ "$output" == *Canceled* ]]
+    case "$output" in
+        *Canceled*) ;;
+        *) false ;;
+    esac
 }
 
 @test "uninstall removes files on uppercase Y" {
@@ -17,5 +20,8 @@
     [ "$status" -eq 0 ]
     [ ! -f "$HOME/.pms.theme" ]
     [ ! -d "$HOME/.pms" ]
-    [[ "$output" == *"PMS has been uninstalled"* ]]
+    case "$output" in
+        *"PMS has been uninstalled"*) ;;
+        *) false ;;
+    esac
 }

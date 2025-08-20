@@ -1,6 +1,6 @@
 # AGENTS
 
-- Follow shell style used in this project: four-space indentation and POSIX-compatible syntax when possible.
+ - Follow shell style used in this project: four-space indentation and POSIX-compatible syntax when possible. Prefer single-bracket `[ ]` tests over `[[ ]]`.
 - Use descriptive variable names; avoid single-letter names except for indexes.
 - Run `shellcheck` on all modified shell scripts.
 - If tests exist, run them and ensure each test method covers one execution path.

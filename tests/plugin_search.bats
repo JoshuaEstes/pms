@@ -16,11 +16,30 @@ setup() {
     source "$PMS/lib/cli.sh"
 }
 
-@test "plugin search shows code and repository" {
+@test "plugin search shows code" {
     run __pms_command_plugin_search example
     [ "$status" -eq 0 ]
-    [[ "$output" == *"example"* ]]
-    [[ "$output" == *"Example Plugin"* ]]
-    [[ "$output" == *"pms-example-plugin.git"* ]]
+    case "$output" in
+        *example*) ;;
+        *) false ;;
+    esac
+}
+
+@test "plugin search shows description" {
+    run __pms_command_plugin_search example
+    [ "$status" -eq 0 ]
+    case "$output" in
+        *"Example Plugin"*) ;;
+        *) false ;;
+    esac
+}
+
+@test "plugin search shows repository" {
+    run __pms_command_plugin_search example
+    [ "$status" -eq 0 ]
+    case "$output" in
+        *"pms-example-plugin.git"*) ;;
+        *) false ;;
+    esac
 }
 

@@ -163,9 +163,13 @@ _pms_plugin_load() {
       local plugin_loaded=0
 
       # The env file is loaded first as there are options that it may use
-      if [[ -f "$PMS_LOCAL/plugins/$plugin/env" && "$plugin" != "$PMS_SHELL" && "$plugin" != "pms" ]]; then
+      if [ -f "$PMS_LOCAL/plugins/$plugin/env" ] \
+        && [ "$plugin" != "$PMS_SHELL" ] \
+        && [ "$plugin" != "pms" ]; then
         _pms_source_file "$PMS_LOCAL/plugins/$plugin/env"
-      elif [[ -f "$PMS/plugins/$plugin/env" && "$plugin" != "$PMS_SHELL" && "$plugin" != "pms" ]]; then
+      elif [ -f "$PMS/plugins/$plugin/env" ] \
+        && [ "$plugin" != "$PMS_SHELL" ] \
+        && [ "$plugin" != "pms" ]; then
         _pms_source_file "$PMS/plugins/$plugin/env"
       fi
 

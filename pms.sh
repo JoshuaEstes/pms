@@ -98,7 +98,7 @@ fi
 # Load all enabled plugins
 ####
 for plugin in "${PMS_PLUGINS[@]}"; do
-    if [[ "$plugin" != "$PMS_SHELL" && "$plugin" != "pms" ]]; then
+    if [ "$plugin" != "$PMS_SHELL" ] && [ "$plugin" != "pms" ]; then
         _pms_time "$plugin" _pms_plugin_load "$plugin"
     fi
 done
