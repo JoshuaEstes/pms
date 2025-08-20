@@ -1,13 +1,29 @@
 #!/usr/bin/env bash
+#
+# Uninstall PMS and restore original shell configuration.
+#
+# Usage:
+#   scripts/uninstall.sh [-n]
+#
+# Options:
+#   -n  Run non-interactively and assume "yes" for prompts.
+#
+# Environment Variables:
+#   PMS_INSTALL_DIR  Directory where PMS is installed (default: ~/.pms)
+####
+# shellcheck shell=bash
+
 set -e
 # Set to 1 to skip prompts.
-NO_INTERACTION=0
+UNINSTALL_NO_INTERACTION=0
+PMS_INSTALL_DIR=${PMS_INSTALL_DIR:-$HOME/.pms}
 
+# main orchestrates the uninstallation process.
 main() {
     while getopts "n" option; do
         case ${option} in
             n)
-                NO_INTERACTION=1
+                UNINSTALL_NO_INTERACTION=1
                 ;;
             *)
                 return 1
@@ -16,9 +32,9 @@ main() {
     done
 
     # Confirm with user they really want to uninstall PMS
-    if [ "$NO_INTERACTION" -eq "0" ]; then
-        read -r -p "Are you sure you want to uninstall PMS? [y/N] " confirm
-        if [ "${confirm}" != "y" ] && [ "${confirm}" != "Y" ]; then
+    if [ "$UNINSTALL_NO_INTERACTION" -eq "0" ]; then
+        read -r -p "Are you sure you want to uninstall PMS? [y/N] " user_response
+        if [ "$user_response" != "y" ] && [ "$user_response" != "Y" ]; then
             echo "Canceled"
             exit
         fi
@@ -26,9 +42,9 @@ main() {
 
     # Revert rc files (user confirmation)
     if [ -f ~/.bashrc.pms.bak ] && [ -f ~/.bashrc ]; then
-        if [ "$NO_INTERACTION" -eq "0" ]; then
-            read -r -p "Restore your ~/.bashrc with the backup ~/.bashrc.pms.bak? [Y/n] " confirm
-            if [ "${confirm}" != "n" ] && [ "${confirm}" != "N" ]; then
+        if [ "$UNINSTALL_NO_INTERACTION" -eq "0" ]; then
+            read -r -p "Restore your ~/.bashrc with the backup ~/.bashrc.pms.bak? [Y/n] " user_response
+            if [ "$user_response" != "n" ] && [ "$user_response" != "N" ]; then
                 mv ~/.bashrc.pms.bak ~/.bashrc
             fi
         else
@@ -36,9 +52,9 @@ main() {
         fi
     fi
     if [ -f ~/.zshrc.pms.bak ] && [ -f ~/.zshrc ]; then
-        if [ "$NO_INTERACTION" -eq "0" ]; then
-            read -r -p "Restore your ~/.zshrc with the backup ~/.zshrc.pms.bak? [Y/n] " confirm
-            if [ "${confirm}" != "n" ] && [ "${confirm}" != "N" ]; then
+        if [ "$UNINSTALL_NO_INTERACTION" -eq "0" ]; then
+            read -r -p "Restore your ~/.zshrc with the backup ~/.zshrc.pms.bak? [Y/n] " user_response
+            if [ "$user_response" != "n" ] && [ "$user_response" != "N" ]; then
                 mv ~/.zshrc.pms.bak ~/.zshrc
             fi
         else
@@ -54,9 +70,9 @@ main() {
 
     # Delete .env (user confirmation)
     if [ -f ~/.env ]; then
-        if [ "$NO_INTERACTION" -eq "0" ]; then
-            read -r -p "Would you like to delete ~/.env file? [Y/n] " confirm
-            if [ "${confirm}" != "n" ] && [ "${confirm}" != "N" ]; then
+        if [ "$UNINSTALL_NO_INTERACTION" -eq "0" ]; then
+            read -r -p "Would you like to delete ~/.env file? [Y/n] " user_response
+            if [ "$user_response" != "n" ] && [ "$user_response" != "N" ]; then
                 rm -fv ~/.env
             fi
         else
@@ -64,9 +80,9 @@ main() {
         fi
     fi
 
-    # Delete $PMS directory
-    echo "Removing ~/.pms directory"
-    rm -rf ~/.pms
+    # Delete PMS directory
+    echo "Removing $PMS_INSTALL_DIR directory"
+    rm -rf "$PMS_INSTALL_DIR"
 
     echo "PMS has been uninstalled. You should restart your terminal"
 }

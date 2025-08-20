@@ -1,54 +1,66 @@
 #!/usr/bin/env sh
 #
-# Environment Variables
-#   PMS         = path to PMS repository
-#   PMS_DEBUG   = 1 = enabled, 0 = disabled
-#   PMS_REPO    = default: JoshuaEstes/pms
-#   PMS_REMOTE  = default: https://github.com/$PMS_REPO.git
-#   PMS_BRANCH  = main
-#   PMS_SHELL   = target shell to configure (bash, zsh, etc.)
+# Install PMS into the target directory and configure the user's shell.
 #
+# Usage:
+#   PMS_INSTALL_DIR=/opt/pms scripts/install.sh
+#
+# Environment Variables:
+#   PMS_INSTALL_DIR  Path where PMS should be installed (default: ~/.pms)
+#   PMS_DEBUG        Set to 1 to enable verbose debug output
+#   PMS_REPO         Repository to clone (default: JoshuaEstes/pms)
+#   PMS_REMOTE       Remote URL of the repository (default: https://github.com/$PMS_REPO.git)
+#   PMS_BRANCH       Branch to checkout (default: main)
+#   PMS_SHELL        Target shell to configure (bash, zsh, etc.)
+####
+# shellcheck shell=sh
+
 set -e
-PMS=${PMS:-~/.pms}
+PMS_INSTALL_DIR=${PMS_INSTALL_DIR:-${PMS:-~/.pms}}
 PMS_DEBUG=${PMS_DEBUG:-0}
 PMS_REPO=${PMS_REPO:-JoshuaEstes/pms}
 PMS_REMOTE=${PMS_REMOTE:-https://github.com/${PMS_REPO}.git}
 PMS_BRANCH=${PMS_BRANCH:-main}
 PMS_SHELL=${PMS_SHELL:-${SHELL##*/}}
 
+
+# setup_pms clones the PMS repository and copies default configuration files.
 setup_pms() {
     printf '\r\n\t%sCloning PMS...%s\n\n' "$BLUE" "$RESET"
 
-    git clone --depth=1 --branch "$PMS_BRANCH" "$PMS_REMOTE" "$PMS" || {
+    git clone --depth=1 --branch "$PMS_BRANCH" "$PMS_REMOTE" "$PMS_INSTALL_DIR" || {
         echo "${RED}ERROR: git clone command failed${RESET}"
         exit 1
     }
 
     # Copy over config files if they do not currently exist
     echo "${BLUE}Copying PMS Environment Variables file over, this file stores various PMS settings that can be modified${RESET}"
-    cp -vfi "$PMS/templates/env" "$HOME/.env"
+    cp -vfi "$PMS_INSTALL_DIR/templates/env" "$HOME/.env"
 
     echo "${BLUE}Copying PMS Theme Config File, this file is used to store your currently selected theme${RESET}"
-    cp -vfi "$PMS/templates/pms.theme" "$HOME/.pms.theme"
+    cp -vfi "$PMS_INSTALL_DIR/templates/pms.theme" "$HOME/.pms.theme"
 
     echo "${BLUE}Copying PMS Plugins Config File, this file contains all your enabled plugins${RESET}"
-    cp -vfi "$PMS/templates/pms.plugins" "$HOME/.pms.plugins"
+    cp -vfi "$PMS_INSTALL_DIR/templates/pms.plugins" "$HOME/.pms.plugins"
 }
 
+
+# _setup_shell_rc backs up any existing RC file and installs the PMS version.
 _setup_shell_rc() {
     shell_name="$1"
-    rc_file="${shell_name}rc"
-    if [ -f "$HOME/.${rc_file}" ] || [ -h "$HOME/.${rc_file}" ]; then
-        echo "${YELLOW}Found existing .${rc_file} file, backing up${RESET}"
-        if [ ! -f "$HOME/.${rc_file}.pms.bak" ]; then
-            echo "${YELLOW}Moving $HOME/.${rc_file} -> $HOME/.${rc_file}.pms.bak${RESET}"
-            mv -vfi "$HOME/.${rc_file}" "$HOME/.${rc_file}.pms.bak"
+    shell_rc_file="${shell_name}rc"
+    if [ -f "$HOME/.${shell_rc_file}" ] || [ -h "$HOME/.${shell_rc_file}" ]; then
+        echo "${YELLOW}Found existing .${shell_rc_file} file, backing up${RESET}"
+        if [ ! -f "$HOME/.${shell_rc_file}.pms.bak" ]; then
+            echo "${YELLOW}Moving $HOME/.${shell_rc_file} -> $HOME/.${shell_rc_file}.pms.bak${RESET}"
+            mv -vfi "$HOME/.${shell_rc_file}" "$HOME/.${shell_rc_file}.pms.bak"
         fi
     fi
-    echo "${BLUE}Copy $PMS/templates/${rc_file} -> $HOME/.${rc_file} ${RESET}"
-    cp -vf "$PMS/templates/${rc_file}" "$HOME/.${rc_file}"
+    echo "${BLUE}Copy $PMS_INSTALL_DIR/templates/${shell_rc_file} -> $HOME/.${shell_rc_file} ${RESET}"
+    cp -vf "$PMS_INSTALL_DIR/templates/${shell_rc_file}" "$HOME/.${shell_rc_file}"
 }
 
+# setup_shell configures the user's shell and sets it as default if possible.
 setup_shell() {
     printf '\r\n\t%sSetting up shell...%s\n\n' "$BLUE" "$RESET"
     case "$PMS_SHELL" in
@@ -68,7 +80,7 @@ setup_shell() {
     esac
 }
 
-# Main function, this will be called to install everything
+# main orchestrates the installation process.
 main() {
   umask g-w,o-w
 
@@ -88,12 +100,12 @@ main() {
 
   if [ "$PMS_DEBUG" -eq "1" ]; then
       printf '%s' "$YELLOW"
-    echo "PMS:         $PMS"
-    echo "PMS_DEBUG:   $PMS_DEBUG"
-    echo "PMS_REPO:    $PMS_REPO"
-    echo "PMS_REMOTE:  $PMS_REMOTE"
-    echo "PMS_BRANCH:  $PMS_BRANCH"
-    echo "PMS_SHELL:   $PMS_SHELL"
+    echo "PMS_INSTALL_DIR: $PMS_INSTALL_DIR"
+    echo "PMS_DEBUG:       $PMS_DEBUG"
+    echo "PMS_REPO:        $PMS_REPO"
+    echo "PMS_REMOTE:      $PMS_REMOTE"
+    echo "PMS_BRANCH:      $PMS_BRANCH"
+    echo "PMS_SHELL:       $PMS_SHELL"
       printf '%s' "$RESET"
   fi
 
@@ -107,7 +119,7 @@ main() {
       exit 1
   fi
 
-  if [ -d "$PMS" ]; then
+  if [ -d "$PMS_INSTALL_DIR" ]; then
       echo "${YELLOW}Looks like PMS is already installed on your system. Please remove it and run this script again.${RESET}"
       exit 1
   fi

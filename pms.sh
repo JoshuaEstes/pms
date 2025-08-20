@@ -1,12 +1,23 @@
 ####
 # PMS
 #
-# This is the main entry point for PMS.
+# Main entry point for PMS. Loads libraries, plugins, and themes for the
+# requested shell.
+#
+# Usage:
+#   PMS=/path/to/pms ./pms.sh bash
+#
+# Environment Variables:
+#   PMS          Path to the PMS installation directory
+#   PMS_DEBUG    Set to 1 to enable verbose debug output
+#   PMS_SHELL    Target shell to configure (e.g., bash, zsh)
+#   PMS_PLUGINS  Space-separated list of plugins to load
+#   PMS_THEME    Name of the theme to load
 ####
 # shellcheck shell=bash
 
 # Define shells supported by PMS
-supported_shells="bash zsh"
+PMS_SUPPORTED_SHELLS="bash zsh"
 
 # Validate we can properly configure the shell
 if [ -z "$1" ]; then
@@ -31,7 +42,7 @@ if [ 1 -eq "${PMS_DEBUG:-0}" ]; then
 fi
 
 # Ensure the requested shell is supported and its environment file exists
-case " $supported_shells " in
+case " $PMS_SUPPORTED_SHELLS " in
     *" $PMS_SHELL "*) ;;
     *)
         echo "Unsupported shell: $PMS_SHELL"
@@ -39,17 +50,17 @@ case " $supported_shells " in
         ;;
 esac
 
-shell_env="$PMS/plugins/$PMS_SHELL/env"
-if [ ! -f "$shell_env" ]; then
-    echo "Environment file not found: $shell_env"
+PMS_SHELL_ENV_FILE="$PMS/plugins/$PMS_SHELL/env"
+if [ ! -f "$PMS_SHELL_ENV_FILE" ]; then
+    echo "Environment file not found: $PMS_SHELL_ENV_FILE"
     exit 1
 fi
 
 # If the shell has any variables that need to be set, we need to make sure they get set
 # shellcheck disable=SC1090
-source "$shell_env"
+source "$PMS_SHELL_ENV_FILE"
 if [ 1 -eq "${PMS_DEBUG:-0}" ]; then
-    echo "source $shell_env"
+    echo "source $PMS_SHELL_ENV_FILE"
 fi
 
 ####
