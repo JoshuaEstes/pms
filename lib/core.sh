@@ -1,4 +1,5 @@
 # vim: set ft=sh:
+# shellcheck shell=bash
 ####
 # Core functions
 #
@@ -7,7 +8,7 @@
 # won't change unless a new major version comes out.
 # Functions that have one underscore (_) are considered "protected" and can be
 # overwritten.
-# Function that have two underscores (__) are considered private/internal and
+# Functions with two underscores (__) are considered private/internal and
 # should never be overwritten.
 ####
 
@@ -19,13 +20,13 @@
 # Used to ask the user a yes/no question
 ####
 _pms_question_yn() {
-    local ans
+    local answer
     while true; do
-        read -r ans
-        case ${ans:0:1} in
-            n) return 1;;
-            y) return 0;;
-            *) echo "ONLY y and n are supported";;
+        read -r answer
+        case ${answer:0:1} in
+            n|N) return 1;;
+            y|Y) return 0;;
+            *) echo "Only 'y' and 'n' are supported";;
         esac
     done
 }
@@ -149,15 +150,16 @@ _pms_plugin_load() {
 #
 # Usage: _pms_is_plugin_enabled "docker"
 _pms_is_plugin_enabled() {
-    local plugin="$1"
-    if [ "$plugin" = "pms" ]; then
+    local plugin_to_check="$1"
+    if [ "$plugin_to_check" = "pms" ]; then
         return 0
     fi
 
-    local p
+    local enabled_plugin
     # Iterate over plugins whether PMS_PLUGINS is an array or a plain string
-    for p in ${PMS_PLUGINS[@]}; do
-        if [ "$p" = "$plugin" ]; then
+    # shellcheck disable=SC2068
+    for enabled_plugin in ${PMS_PLUGINS[@]}; do
+        if [ "$enabled_plugin" = "$plugin_to_check" ]; then
             return 0
         fi
     done
