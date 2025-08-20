@@ -5,8 +5,10 @@
 ####
 # shellcheck shell=bash
 
+# Define shells supported by PMS
+supported_shells="bash zsh"
+
 # Validate we can properly configure the shell
-# @todo Ensure that its a supported shell
 if [ -z "$1" ]; then
     echo
     echo "Usage: pms.sh PMS_SHELL"
@@ -16,22 +18,38 @@ fi
 PMS_SHELL="$1"
 
 if [ -z "$PMS" ]; then
-    echo "The PMS variable is not set. I have no fucking idea what you want me to load."
+    echo "The PMS variable is not set. I have no idea what you want me to load."
     exit 1
 fi
 
 # We want to make sure that ALL the PMS variables are set if the user does not
 # set them in one of the env files
+# shellcheck source=plugins/pms/env disable=SC1091
 source "$PMS/plugins/pms/env"
 if [ 1 -eq "${PMS_DEBUG:-0}" ]; then
     echo "source $PMS/plugins/pms/env"
 fi
 
-# If the shell has any variables that need to be set, we need to make sure they
-# get set
-source "$PMS/plugins/$PMS_SHELL/env"
+# Ensure the requested shell is supported and its environment file exists
+case " $supported_shells " in
+    *" $PMS_SHELL "*) ;;
+    *)
+        echo "Unsupported shell: $PMS_SHELL"
+        exit 1
+        ;;
+esac
+
+shell_env="$PMS/plugins/$PMS_SHELL/env"
+if [ ! -f "$shell_env" ]; then
+    echo "Environment file not found: $shell_env"
+    exit 1
+fi
+
+# If the shell has any variables that need to be set, we need to make sure they get set
+# shellcheck disable=SC1090
+source "$shell_env"
 if [ 1 -eq "${PMS_DEBUG:-0}" ]; then
-    echo "source $PMS/plugins/$PMS_SHELL/env"
+    echo "source $shell_env"
 fi
 
 ####
@@ -42,6 +60,7 @@ fi
 ####
 for lib in "$PMS"/lib/*.{sh,$PMS_SHELL}; do
     # @todo load all local libraries
+    # shellcheck disable=SC1090
     source "$lib"
     if [ 1 -eq "${PMS_DEBUG:-0}" ]; then
         echo "source $lib"
