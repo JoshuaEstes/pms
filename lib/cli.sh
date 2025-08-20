@@ -1,4 +1,5 @@
 # vim: set ft=sh:
+# shellcheck shell=bash
 ####
 # This file contains the PMS script that manages everything
 #
@@ -151,6 +152,14 @@ __pms_command_diagnostic() {
     echo "PMS_DOTFILES_REMOTE  : $PMS_DOTFILES_REMOTE"
     echo "PMS_DOTFILES_BRANCH  : $PMS_DOTFILES_BRANCH"
     echo "PMS_DOTFILES_GIT_DIR : $PMS_DOTFILES_GIT_DIR"
+    if [ "${#PMS_PLUGIN_TIME_NAMES[@]}" -gt 0 ]; then
+        echo
+        echo "-=[ Plugin Timings ]=-"
+        local timing_index
+        for timing_index in "${!PMS_PLUGIN_TIME_NAMES[@]}"; do
+            printf "%-20s : %s ms\n" "${PMS_PLUGIN_TIME_NAMES[$timing_index]}" "${PMS_PLUGIN_TIME_VALUES[$timing_index]}"
+        done
+    fi
     if [ -d $PMS ]; then
         echo "Hash                 : $(cd $PMS; git rev-parse --short HEAD)"
     else
@@ -730,7 +739,7 @@ __pms_command_plugin_enable() {
     fi
 
     _pms_message "info" "Loading plugin"
-    _pms_plugin_load "$plugin"
+    _pms_time "$plugin" _pms_plugin_load "$plugin"
 
   return 0
 }
