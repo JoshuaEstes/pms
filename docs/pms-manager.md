@@ -34,6 +34,9 @@ pms plugin list
 pms plugin enable [PLUGIN]
 ```
 
+When [`fzf`](https://github.com/junegunn/fzf) is installed and no plugin is
+specified, an interactive picker is displayed to help choose a plugin.
+
 ### Disabling Plugins
 
 ```shell
@@ -59,6 +62,9 @@ pms theme list
 ```shell
 pms theme switch [THEME]
 ```
+
+If `fzf` is available and no theme is provided, an interactive picker is shown
+to select the desired theme.
 
 ## Managing your Dotfiles
 
