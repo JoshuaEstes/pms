@@ -21,24 +21,6 @@ setup() {
     source "$PMS/lib/core.sh"
 }
 
-@test "_pms_project_file_load loads current directory project file" {
-    project_dir="$BATS_TEST_TMPDIR/project"
-    mkdir -p "$project_dir"
-    cat <<'EOP' > "$project_dir/.pms"
-PMS_PLUGINS=(git docker)
-PMS_THEME=monokai
-EOP
-    pushd "$project_dir" >/dev/null
-    PMS_PLUGINS=()
-    PMS_THEME=""
-    _pms_project_file_load
-    status=$?
-    [ "$status" -eq 0 ]
-    [ "${PMS_PLUGINS[*]}" = "git docker" ]
-    [ "$PMS_THEME" = "monokai" ]
-    popd >/dev/null
-}
-
 @test "_pms_project_file_load searches parent directories" {
     parent="$BATS_TEST_TMPDIR/parent"
     mkdir -p "$parent/sub"
@@ -51,15 +33,5 @@ EOP
     status=$?
     [ "$status" -eq 0 ]
     [ "$PMS_THEME" = "solarized" ]
-    popd >/dev/null
-}
-
-@test "_pms_project_file_load returns failure when no project file" {
-    empty_dir="$BATS_TEST_TMPDIR/empty"
-    mkdir -p "$empty_dir"
-    pushd "$empty_dir" >/dev/null
-    status=0
-    _pms_project_file_load || status=$?
-    [ "$status" -eq 1 ]
     popd >/dev/null
 }

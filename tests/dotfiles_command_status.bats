@@ -1,4 +1,5 @@
 #!/usr/bin/env bats
+# shellcheck shell=bash
 
 setup() {
     pms_root="$(cd "$BATS_TEST_DIRNAME/.." && pwd)"
@@ -34,29 +35,11 @@ setup() {
     source "$PMS/lib/cli.sh"
 }
 
-@test "dotfiles command shows help without subcommand" {
-    run pms dotfiles
-    [ "$status" -eq 1 ]
-    case "$output" in
-        *"Usage: pms [options] dotfiles <command>"*) ;;
-        *) false ;;
-    esac
-}
-
 @test "dotfiles status lists modified files" {
     run pms dotfiles status
     [ "$status" -eq 0 ]
     case "$output" in
         *"modified:   testfile.txt"*) ;;
-        *) false ;;
-    esac
-}
-
-@test "dotfiles diff shows file changes" {
-    run pms dotfiles diff
-    [ "$status" -eq 0 ]
-    case "$output" in
-        *"+modified"*) ;;
         *) false ;;
     esac
 }

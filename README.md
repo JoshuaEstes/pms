@@ -118,3 +118,5 @@ bats` or `brew install bats-core`), run all tests with:
 bats tests
 ```
 
+Each file in the `tests` directory exercises a single execution path.
+
