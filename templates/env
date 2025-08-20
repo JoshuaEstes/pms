@@ -1,4 +1,5 @@
 # vim: set ft=sh:
+# shellcheck shell=sh disable=SC2034
 ####
 #  _______   __                                __       __                   ______   __                  __  __
 # /       \ /  |                              /  \     /  |                 /      \ /  |                /  |/  |
@@ -51,4 +52,4 @@ PMS_DOTFILES_BRANCH=main
 # This will be the location where the git repo maintain your dotfiles. Your
 # dotfiles will not be stored here. You will be able to view and edit your
 # dotfiles in your $HOME directory
-PMS_DOTFILES_GIT_DIR=${HOME}/.dotfile
+PMS_DOTFILES_GIT_DIR=${HOME}/.dotfiles

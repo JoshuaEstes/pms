@@ -11,7 +11,7 @@ supports easy install/uninstall and a wide variety of plugins and themes.
 
 * [Themes](themes/) - Change the way your environment looks
 * [Plugins](plugins/) - Change the way your environment functions
-* Dotfiles - Change the way programs work in your environment
+* Dotfiles - Manage configuration files through a plugin-backed git repository
 * Multiple Shell Support
   * No matter the shell, you can easily swap between them and maintain similar functionality
 * [PMS Manager](pms-manager.md) - Easy to use and up modify tool to help you manage PMS

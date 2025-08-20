@@ -1,0 +1,19 @@
+# vim: set ft=sh:
+# shellcheck shell=sh disable=SC2034
+####
+# Dotfiles Plugin Environment
+#
+# Provides default configuration for managing dotfiles with PMS.
+####
+
+# Repository containing your dotfiles
+PMS_DOTFILES_REPO=${PMS_DOTFILES_REPO:-JoshuaEstes/dotfiles}
+
+# Remote URL used to push and pull changes
+PMS_DOTFILES_REMOTE=${PMS_DOTFILES_REMOTE:-git@github.com:${PMS_DOTFILES_REPO}.git}
+
+# Branch used for your dotfiles repository
+PMS_DOTFILES_BRANCH=${PMS_DOTFILES_BRANCH:-main}
+
+# Location of the bare git repository that tracks your dotfiles
+PMS_DOTFILES_GIT_DIR=${PMS_DOTFILES_GIT_DIR:-${HOME}/.dotfiles}

@@ -6,7 +6,7 @@ title: PMS Features
 
 * [Themes](themes/)
 * [Plugins](plugins/)
-* Dotfiles Management
+* Dotfiles Plugin for managing configuration files
 * Multiple Shell Support
   * No matter the shell, you can easily swap between them and maintain similar functionality
 * PMS Manager

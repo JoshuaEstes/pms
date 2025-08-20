@@ -35,7 +35,7 @@ power of PMS ;)
   * Shell Options, Auto Completions, Commands, and more are just some of the
     things plugins can provide.
 * Dotfiles
-  * Get help managing those dotfiles! No more custom install or update scripts
+  * Managed through a dedicated plugin
   * Your dotfiles are backed up to your own git repository
 * Multiple Shell Support (Bash, Zsh, etc.)
   * Works to load sane defaults for you (with the help of various plugins)
