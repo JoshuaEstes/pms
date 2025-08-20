@@ -13,10 +13,13 @@
 ####
 # shellcheck shell=bash
 
-set -e
+set -eu
+# Exit on error or undefined variable
+set -o pipefail
+# Catch failures in pipelines
 # Set to 1 to skip prompts.
 UNINSTALL_NO_INTERACTION=0
-PMS_INSTALL_DIR=${PMS_INSTALL_DIR:-$HOME/.pms}
+PMS_INSTALL_DIR=${PMS_INSTALL_DIR:-"$HOME/.pms"}
 
 # main orchestrates the uninstallation process.
 main() {
@@ -36,47 +39,47 @@ main() {
         read -r -p "Are you sure you want to uninstall PMS? [y/N] " user_response
         if [ "$user_response" != "y" ] && [ "$user_response" != "Y" ]; then
             echo "Canceled"
-            exit
+            exit 0
         fi
     fi
 
     # Revert rc files (user confirmation)
-    if [ -f ~/.bashrc.pms.bak ] && [ -f ~/.bashrc ]; then
+    if [ -f "$HOME/.bashrc.pms.bak" ] && [ -f "$HOME/.bashrc" ]; then
         if [ "$UNINSTALL_NO_INTERACTION" -eq "0" ]; then
             read -r -p "Restore your ~/.bashrc with the backup ~/.bashrc.pms.bak? [Y/n] " user_response
             if [ "$user_response" != "n" ] && [ "$user_response" != "N" ]; then
-                mv ~/.bashrc.pms.bak ~/.bashrc
+                mv "$HOME/.bashrc.pms.bak" "$HOME/.bashrc"
             fi
         else
-            mv ~/.bashrc.pms.bak ~/.bashrc
+            mv "$HOME/.bashrc.pms.bak" "$HOME/.bashrc"
         fi
     fi
-    if [ -f ~/.zshrc.pms.bak ] && [ -f ~/.zshrc ]; then
+    if [ -f "$HOME/.zshrc.pms.bak" ] && [ -f "$HOME/.zshrc" ]; then
         if [ "$UNINSTALL_NO_INTERACTION" -eq "0" ]; then
             read -r -p "Restore your ~/.zshrc with the backup ~/.zshrc.pms.bak? [Y/n] " user_response
             if [ "$user_response" != "n" ] && [ "$user_response" != "N" ]; then
-                mv ~/.zshrc.pms.bak ~/.zshrc
+                mv "$HOME/.zshrc.pms.bak" "$HOME/.zshrc"
             fi
         else
-            mv ~/.zshrc.pms.bak ~/.zshrc
+            mv "$HOME/.zshrc.pms.bak" "$HOME/.zshrc"
         fi
     fi
 
     # Delete PMS Config files
-    echo "Removing ~/.pms.theme file"
-    rm -fv ~/.pms.theme
-    echo "Removing ~/.pms.plugins file"
-    rm -fv ~/.pms.plugins
+    echo "Removing $HOME/.pms.theme file"
+    rm -fv "$HOME/.pms.theme"
+    echo "Removing $HOME/.pms.plugins file"
+    rm -fv "$HOME/.pms.plugins"
 
     # Delete .env (user confirmation)
-    if [ -f ~/.env ]; then
+    if [ -f "$HOME/.env" ]; then
         if [ "$UNINSTALL_NO_INTERACTION" -eq "0" ]; then
             read -r -p "Would you like to delete ~/.env file? [Y/n] " user_response
             if [ "$user_response" != "n" ] && [ "$user_response" != "N" ]; then
-                rm -fv ~/.env
+                rm -fv "$HOME/.env"
             fi
         else
-            rm -fv ~/.env
+            rm -fv "$HOME/.env"
         fi
     fi
 
