@@ -1,13 +1,14 @@
+# shellcheck shell=sh disable=SC2034
 # vim: set ft=sh:
 ####
-# Colors
+# Color definitions
 #
-# This file will setup all the different colors you can use to fuck around with
-# and try to give others seizures or some shit
+# Provides ANSI escape sequences for formatting terminal output.
+# Usage: wrap text with variables, e.g., "${color_red}text${color_reset}".
 ####
 color_reset=$(printf '\033[0m')
 
-# FG
+# Foreground colors
 color_black=$(printf '\033[30m')
 color_red=$(printf '\033[31m')
 color_green=$(printf '\033[32m')
@@ -25,8 +26,7 @@ color_bright_magenta=$(printf '\033[95m')
 color_bright_cyan=$(printf '\033[96m')
 color_bright_white=$(printf '\033[97m')
 
-# BG
-# @todo
+# TODO: add background color variables
 
-# effects
+# Text effects
 color_bold=$(printf '\033[1m')
