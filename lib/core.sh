@@ -13,8 +13,38 @@
 ####
 
 ####
-# @todo Interactive Helpers
-# Allows PMS to ask questions and get confirmations from the user
+# Ask the user for input with optional default and validation
+#
+# Usage: _pms_prompt "Prompt" "default" "regex"
+#
+# Examples:
+#   name=$(_pms_prompt "Name?")
+#   color=$(_pms_prompt "Color?" "blue")
+#   answer=$(_pms_prompt "Continue? [y/N]" "n" "[yYnN]")
+####
+_pms_prompt() {
+    local prompt_message="$1"
+    local default_value="$2"
+    local validation_pattern="${3:-.*}"
+    local user_input
+
+    while true; do
+        if [ -n "$default_value" ]; then
+            printf "%s [%s] " "$prompt_message" "$default_value"
+        else
+            printf "%s " "$prompt_message"
+        fi
+        IFS= read -r user_input
+        if [ -z "$user_input" ] && [ -n "$default_value" ]; then
+            user_input="$default_value"
+        fi
+        if printf '%s' "$user_input" | grep -Eq "^(${validation_pattern})$"; then
+            printf '%s' "$user_input"
+            return 0
+        fi
+        echo "Invalid response"
+    done
+}
 
 ####
 # Used to ask the user a yes/no question

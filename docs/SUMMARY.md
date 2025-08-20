@@ -17,3 +17,5 @@
   * [\_\_PLUGIN\_\_ Template](plugins/plugin\_templates\_for\_docs.md)
 * [Themes](themes/README.md)
   * [default](themes/default.md)
+* [Developer Guides](developer/README.md)
+  * [Prompt Helper](developer/prompt-helper.md)
