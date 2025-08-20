@@ -110,6 +110,13 @@ __pms_command_help() {
     return 0
 }
 
+# Detect if fzf is available for interactive selections
+if command -v fzf >/dev/null 2>&1; then
+    PMS_HAS_FZF=1
+else
+    PMS_HAS_FZF=0
+fi
+
 # @todo make sure it is a supported shell
 __pms_command_chsh() {
     if [ -z "$1" ]; then
@@ -159,17 +166,17 @@ __pms_command_diagnostic() {
             printf "%-20s : %s ms\n" "${PMS_PLUGIN_TIME_NAMES[$timing_index]}" "${PMS_PLUGIN_TIME_VALUES[$timing_index]}"
         done
     fi
-    if [ -d $PMS ]; then
-        echo "Hash                 : $(cd $PMS; git rev-parse --short HEAD)"
+    if [ -d "$PMS" ]; then
+        echo "Hash                 : $(cd "$PMS" || exit; git rev-parse --short HEAD)"
     else
         echo "Hash                 : PMS not installed"
     fi
     echo
     echo "-=[ Contents of ~/.pms.theme ]=-"
-    cat ~/.pms.theme
+    cat "$HOME/.pms.theme"
     echo
     echo "-=[ Contents of ~/.pms.plugins ]=-"
-    cat ~/.pms.plugins
+    cat "$HOME/.pms.plugins"
     echo
     echo "-=[ Shell ]=-"
     echo "SHELL                : $SHELL"
@@ -350,12 +357,12 @@ __pms_command_help_theme_info() {
 
 __pms_command_theme_list() {
     _pms_message_block "info" "Core Themes"
-    for theme in $PMS/themes/*; do
+    for theme in "$PMS"/themes/*; do
         theme=${theme%*/}
         _pms_message "info" "${theme##*/}"
     done
     _pms_message_block "info" "Local Themes"
-    for theme in $PMS_LOCAL/themes/*; do
+    for theme in "$PMS_LOCAL"/themes/*; do
         theme=${theme%*/}
         _pms_message "info" "${theme##*/}"
     done
@@ -365,31 +372,53 @@ __pms_command_theme_list() {
 }
 
 __pms_command_theme_switch() {
+    # Switches to a theme. When called without arguments and fzf is available,
+    # an interactive picker is displayed.
     local theme=$1
 
+    if [ -z "$theme" ]; then
+        if [ "$PMS_HAS_FZF" -eq 1 ]; then
+            local available_themes=()
+            local theme_dir
+            for theme_dir in "$PMS"/themes/* "$PMS_LOCAL"/themes/*; do
+                [ -d "$theme_dir" ] || continue
+                theme_dir=${theme_dir##*/}
+                available_themes+=("$theme_dir")
+            done
+            theme=$(printf '%s\n' "${available_themes[@]}" | sort | fzf --prompt="Theme> ")
+            if [ -z "$theme" ]; then
+                _pms_message "error" "No theme selected"
+                return 1
+            fi
+        else
+            _pms_message "error" "A theme name is required"
+            return 1
+        fi
+    fi
+
     # Does theme exist?
-    if [ ! -d $PMS_LOCAL/themes/$theme ] && [ ! -d $PMS/themes/$theme ]; then
+    if [ ! -d "$PMS_LOCAL/themes/$theme" ] && [ ! -d "$PMS/themes/$theme" ]; then
         _pms_message "error" "The theme '$theme' is invalid"
         return 1
     fi
     # @todo make all this better and support PMS_LOCAL
-    if [ -f $PMS/themes/$PMS_THEME/uninstall.sh ]; then
-        _pms_source_file $PMS/themes/$PMS_THEME/uninstall.sh
+    if [ -f "$PMS/themes/$PMS_THEME/uninstall.sh" ]; then
+        _pms_source_file "$PMS/themes/$PMS_THEME/uninstall.sh"
     fi
-    echo "PMS_THEME=$theme" > ~/.pms.theme
+    echo "PMS_THEME=$theme" > "$HOME/.pms.theme"
     PMS_THEME=$theme
     # @todo make all this better and support PMS_LOCAL
-    if [ -f $PMS/themes/$theme/install.sh ]; then
-        _pms_source_file $PMS/themes/$theme/install.sh
+    if [ -f "$PMS/themes/$theme/install.sh" ]; then
+        _pms_source_file "$PMS/themes/$theme/install.sh"
     fi
-    _pms_theme_load $theme
+    _pms_theme_load "$theme"
 
     return 0
 }
 
 __pms_command_theme_info() {
-    if [ -f $PMS/themes/$1/README.md ]; then
-        cat $PMS/themes/$1/README.md
+    if [ -f "$PMS/themes/$1/README.md" ]; then
+        cat "$PMS/themes/$1/README.md"
     else
         _pms_message_block "error" "Theme $1 has no README.md file"
 
@@ -705,7 +734,32 @@ __pms_command_plugin_update() {
 
 # @todo support for multiple plugins at a time
 __pms_command_plugin_enable() {
+    # Enables a plugin. When no plugin is provided and fzf is available,
+    # an interactive picker is displayed.
     local plugin="$1"
+
+    if [ -z "$plugin" ]; then
+        if [ "$PMS_HAS_FZF" -eq 1 ]; then
+            local available_plugins=()
+            local plugin_dir
+            for plugin_dir in "$PMS"/plugins/* "$PMS_LOCAL"/plugins/*; do
+                [ -d "$plugin_dir" ] || continue
+                plugin_dir=${plugin_dir##*/}
+                if ! _pms_is_plugin_enabled "$plugin_dir"; then
+                    available_plugins+=("$plugin_dir")
+                fi
+            done
+            plugin=$(printf '%s\n' "${available_plugins[@]}" | sort | fzf --prompt="Plugin> ")
+            if [ -z "$plugin" ]; then
+                _pms_message "error" "No plugin selected"
+                return 1
+            fi
+        else
+            _pms_message "error" "A plugin name is required"
+            return 1
+        fi
+    fi
+
     # Does directory exist?
     if [ ! -d "$PMS_LOCAL/plugins/$plugin" ] && [ ! -d "$PMS/plugins/$plugin" ]; then
         _pms_message "error" "The plugin '$plugin' is invalid and cannot be enabled"
@@ -740,7 +794,7 @@ __pms_command_plugin_enable() {
     _pms_message "info" "Loading plugin"
     _pms_time "$plugin" _pms_plugin_load "$plugin"
 
-  return 0
+    return 0
 }
 
 __pms_command_plugin_disable() {
