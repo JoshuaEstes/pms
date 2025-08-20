@@ -161,7 +161,7 @@ __pms_command_diagnostic() {
     echo "PMS_DOTFILES_BRANCH  : $PMS_DOTFILES_BRANCH"
     echo "PMS_DOTFILES_GIT_DIR : $PMS_DOTFILES_GIT_DIR"
     if [ -d $PMS ]; then
-        echo "Hash                 : $(cd $PMS; git rev-parse --short HEAD)"
+        echo "Hash                 : $(cd "$PMS" || exit; git rev-parse --short HEAD)"
     else
         echo "Hash                 : PMS not installed"
     fi
@@ -226,17 +226,17 @@ __pms_command_diagnostic() {
 
 __pms_command_upgrade() {
   local checkpoint=$PWD
-  cd "$PMS"
+  cd "$PMS" || exit
   _pms_message_block "info" "Upgrading to latest PMS version"
   git pull origin main || {
       _pms_message "error" "Error pulling down updates..."
-      cd "$checkpoint"
+      cd "$checkpoint" || exit
       return 1
   }
   _pms_message_block "info" "Copying files"
   # @todo _pms_file_copy <src> <dest>
-  cp -v $PMS/templates/bashrc ~/.bashrc
-  cp -v $PMS/templates/zshrc ~/.zshrc
+  cp -v "$PMS"/templates/bashrc ~/.bashrc
+  cp -v "$PMS"/templates/zshrc ~/.zshrc
   _pms_message_block "info" "Running update scripts for enabled plugins..."
 
   local plugin
@@ -251,7 +251,7 @@ __pms_command_upgrade() {
   done
   _pms_message_block "info" "Completed update scripts"
   _pms_message_block "success" "Upgrade complete, you may need to reload your environment (pms reload)"
-  cd "$checkpoint"
+  cd "$checkpoint" || exit
   __pms_command_reload
 
     return 0
