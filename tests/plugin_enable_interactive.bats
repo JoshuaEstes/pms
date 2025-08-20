@@ -34,5 +34,8 @@ FZF
 
 @test "plugin enable uses fzf when no argument" {
     __pms_command_plugin_enable
-    [[ "${PMS_PLUGINS[*]}" == *"bash"* ]]
+    case " ${PMS_PLUGINS[*]} " in
+        *" bash "*) ;;
+        *) false ;;
+    esac
 }

@@ -25,6 +25,9 @@ setup() {
     PMS_THEME="default"
     run _pms_theme_load "$PMS_THEME"
     [ "$status" -eq 0 ]
-    [[ "$output" == *"[theme] Loading 'default' theme"* ]]
+    case "$output" in
+        *"[theme] Loading 'default' theme"*) ;;
+        *) false ;;
+    esac
 }
 

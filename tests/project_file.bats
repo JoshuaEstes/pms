@@ -34,7 +34,7 @@ EOP
     _pms_project_file_load
     status=$?
     [ "$status" -eq 0 ]
-    [[ "${PMS_PLUGINS[*]}" = "git docker" ]]
+    [ "${PMS_PLUGINS[*]}" = "git docker" ]
     [ "$PMS_THEME" = "monokai" ]
     popd >/dev/null
 }
