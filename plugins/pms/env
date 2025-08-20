@@ -1,4 +1,5 @@
 # vim: set ft=sh:
+# shellcheck shell=sh disable=SC2034
 ####
 # PMS Environment Variables
 #
@@ -37,17 +38,3 @@ PMS_CACHE_DIR=${PMS_CACHE_DIR:-${PMS}/cache}
 # Log directory
 PMS_LOG_DIR=${PMS_LOG_DIR:-${PMS}/log}
 
-###
-# This is the repository that updates will be pushed to
-PMS_DOTFILES_REPO=${PMS_DOTFILES_REPO:-JoshuaEstes/dotfiles}
-PMS_DOTFILES_REMOTE=${PMS_DOTFILES_REMOTE:-git@github.com:${PMS_DOTFILES_REPO}.git}
-
-###
-# What is the branch that we will be using for dotfiles
-PMS_DOTFILES_BRANCH=${PMS_DOTFILES_BRANCH:-main}
-
-###
-# This will be the location where the git repo maintain your dotfiles. Your
-# dotfiles will not be stored here. You will be able to view and edit your
-# dotfiles in your $HOME directory
-PMS_DOTFILES_GIT_DIR=${PMS_DOTFILES_GIT_DIR:-${HOME}/.dotfiles}

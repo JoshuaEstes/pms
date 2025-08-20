@@ -72,11 +72,7 @@ if [ "${PMS_DEBUG:-0}" -eq 1 ]; then
     _pms_message "info"  "PMS_BRANCH           : $PMS_BRANCH"
     _pms_message "info"  "PMS_THEME            : $PMS_THEME"
     _pms_message "info"  "PMS_PLUGINS          : ${PMS_PLUGINS[*]}"
-    _pms_message "info"  "PMS_SHELL            : $PMS_SHELL"
-    _pms_message "info"  "PMS_DOTFILES_REPO    : $PMS_DOTFILES_REPO"
-    _pms_message "info"  "PMS_DOTFILES_REMOTE  : $PMS_DOTFILES_REMOTE"
-    _pms_message "info"  "PMS_DOTFILES_BRANCH  : $PMS_DOTFILES_BRANCH"
-    _pms_message "info"  "PMS_DOTFILES_GIT_DIR : $PMS_DOTFILES_GIT_DIR\n"
+    _pms_message "info"  "PMS_SHELL            : $PMS_SHELL\n"
 fi
 
 ####

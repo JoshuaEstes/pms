@@ -62,7 +62,7 @@ pms theme switch [THEME]
 
 ## Managing your Dotfiles
 
-Dotfiles are a very important part of being a developer and most like to make sure those files are backed up. The PMS Manager supports managing your dotfiles using git.
+Dotfile management is provided by the `dotfiles` plugin, which is enabled by default. Dotfiles are a very important part of being a developer and most like to make sure those files are backed up. The PMS Manager supports managing your dotfiles using git.
 
 The repository that will be managed will look something like [this](https://github.com/JoshuaEstes/dotfiles)
 
