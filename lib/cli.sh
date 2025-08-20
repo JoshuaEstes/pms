@@ -108,8 +108,7 @@ __pms_command_help() {
     local plugin
     for plugin in "${PMS_PLUGINS[@]}"; do
         type __pms_command_help_"${plugin}" &>/dev/null && {
-            __pms_command_help_"${plugin}" "$@"
-            return $?
+            __pms_command "${plugin}"
         }
     done
 
