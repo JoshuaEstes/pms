@@ -13,9 +13,12 @@
 #   PMS_BRANCH       Branch to checkout (default: main)
 #   PMS_SHELL        Target shell to configure (bash, zsh, etc.)
 ####
-# shellcheck shell=sh
+# shellcheck shell=sh disable=SC3040
 
-set -e
+set -eu
+# Exit on error or undefined variable
+set -o pipefail
+# Catch failures in pipelines
 PMS_INSTALL_DIR=${PMS_INSTALL_DIR:-${PMS:-~/.pms}}
 PMS_DEBUG=${PMS_DEBUG:-0}
 PMS_REPO=${PMS_REPO:-JoshuaEstes/pms}
