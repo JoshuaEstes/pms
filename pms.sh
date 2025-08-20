@@ -3,6 +3,7 @@
 #
 # This is the main entry point for PMS.
 ####
+# shellcheck shell=bash
 
 # Validate we can properly configure the shell
 # @todo Ensure that its a supported shell
@@ -51,6 +52,9 @@ unset lib
 _pms_source_file "$HOME/.pms.plugins"
 _pms_source_file "$HOME/.pms.theme"
 
+# Load project configuration if present
+_pms_project_file_load
+
 # Load the PMS and SHELL plugins
 _pms_time "pms" _pms_plugin_load pms
 _pms_time "$PMS_SHELL" _pms_plugin_load "$PMS_SHELL"
@@ -78,7 +82,7 @@ fi
 ####
 # Load all enabled plugins
 ####
-for plugin in ${PMS_PLUGINS[@]}; do
+for plugin in "${PMS_PLUGINS[@]}"; do
     if [[ "$plugin" != "$PMS_SHELL" && "$plugin" != "pms" ]]; then
         _pms_time "$plugin" _pms_plugin_load "$plugin"
     fi
@@ -89,5 +93,5 @@ unset plugin
 ####
 # Load Theme
 ####
-_pms_theme_load $PMS_THEME
+_pms_theme_load "$PMS_THEME"
 ####

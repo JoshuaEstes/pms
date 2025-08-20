@@ -59,6 +59,32 @@ _pms_source_file() {
     fi
 }
 
+####
+# Search upwards for a '.pms' file and source it
+#
+# Usage: _pms_project_file_load
+#
+# The project file may define variables like PMS_PLUGINS and PMS_THEME
+# to override user defaults for a given directory tree.
+#
+# @internal
+####
+_pms_project_file_load() {
+    local search_dir project_file
+    search_dir="$PWD"
+    while [ "$search_dir" != "/" ]; do
+        project_file="$search_dir/.pms"
+        if [ -f "$project_file" ]; then
+            _pms_message_section "info" "project" "Loading '$project_file'"
+            # shellcheck source=/dev/null
+            source "$project_file"
+            return 0
+        fi
+        search_dir="$(dirname "$search_dir")"
+    done
+    return 1
+}
+
 PMS_PLUGIN_TIME_NAMES=()
 PMS_PLUGIN_TIME_VALUES=()
 
