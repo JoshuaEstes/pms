@@ -30,9 +30,9 @@ _pms_prompt() {
 
     while true; do
         if [ -n "$default_value" ]; then
-            printf "%s [%s] " "$prompt_message" "$default_value"
+            printf "%s [%s] " "$prompt_message" "$default_value" >&2
         else
-            printf "%s " "$prompt_message"
+            printf "%s " "$prompt_message" >&2
         fi
         IFS= read -r user_input
         if [ -z "$user_input" ] && [ -n "$default_value" ]; then
@@ -42,7 +42,7 @@ _pms_prompt() {
             printf '%s' "$user_input"
             return 0
         fi
-        echo "Invalid response"
+        echo "Invalid response" >&2
     done
 }
 

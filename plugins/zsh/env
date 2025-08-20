@@ -1,14 +1,14 @@
 # vim: set ft=sh:
+# shellcheck shell=sh disable=SC2034
 ####
 # zsh environment variables
 #
 # These MUST only set default values. The user may have already set these in
-# one of the env files
-#
-# @todo document what this shit does
+# one of the env files.
 ####
 
+# Maximum size of the directory stack
 DIRSTACKSIZE=${DIRSTACKSIZE:-10}
 
-# 0.1 second delay
+# Key binding timeout in tenths of a second
 KEYTIMEOUT=${KEYTIMEOUT:-1}
