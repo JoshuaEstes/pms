@@ -27,3 +27,13 @@ pms plugin install https://example.com/your/plugin.git
 ```
 
 The repository is cloned into your local PMS plugins directory and enabled automatically.
+
+## Updating Plugins
+
+Update a plugin to its latest commit:
+
+```sh
+pms plugin update <plugin>
+```
+
+Replace `<plugin>` with the name of the plugin's directory.

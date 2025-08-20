@@ -420,8 +420,8 @@ __pms_command_help_plugin() {
     __pms_command "enable <plugin>" "Enables and installs a plugin"
     __pms_command "disable <plugin>" "Disables a plugin"
     __pms_command "info <plugin>" "Displays information about a plugin"
+    __pms_command "update <plugin>" "Fetches the latest version of a plugin"
     __pms_command "make <plugin>" "Creates a new plugin"
-    #echo "  update <plugin>    Updates a plugin"
     #echo "  validate <plugin>  Validate plugin"
     #echo "  reload <plugin>    Reloads enabled plugins"
     echo
@@ -439,7 +439,7 @@ __pms_command_help_plugin_list() {
     echo
     echo "Usage: pms plugin list"
     echo
-    echo "Lists all available plugins."
+    echo "Lists all available plugins with their versions."
     echo
 
     return 0
@@ -490,6 +490,15 @@ __pms_command_help_plugin_info() {
     echo "Displays information about a plugin."
     echo
 
+    return 0
+}
+
+__pms_command_help_plugin_update() {
+    echo
+    echo "Usage: pms plugin update <plugin>"
+    echo
+    echo "Fetches the latest commit for the specified plugin."
+    echo
     return 0
 }
 
@@ -573,36 +582,86 @@ __pms_command_plugin_install() {
         return 1
     fi
 
+    _pms_plugin_get_version "$PMS_LOCAL/plugins/$plugin" >/dev/null
+
     __pms_command_plugin_enable "$plugin"
 
     return $?
 }
 
+_pms_plugin_get_version() {
+    local dir="$1"
+    local version_file="$dir/.pms-version"
+    local version
+
+    if [ -f "$version_file" ]; then
+        read -r version < "$version_file"
+    elif git -C "$dir" rev-parse HEAD >/dev/null 2>&1; then
+        version=$(git -C "$dir" rev-parse HEAD)
+        echo "$version" > "$version_file"
+    else
+        version="unknown"
+    fi
+
+    printf '%s' "${version:0:7}"
+}
+
 __pms_command_plugin_list() {
-    local plugin
+    local plugin version
     echo
     echo "Core Plugins:"
     for plugin in "$PMS"/plugins/*; do
         plugin=${plugin##*/}
+        version=$(_pms_plugin_get_version "$PMS/plugins/$plugin")
         if _pms_is_plugin_enabled "$plugin"; then
-            printf "\r  %-20s [enabled]\n" "$plugin"
+            printf "\r  %-20s %-8s [enabled]\n" "$plugin" "$version"
         else
-            printf "\r  %s\n" "$plugin"
+            printf "\r  %-20s %s\n" "$plugin" "$version"
         fi
     done
     echo
     echo "Local Plugins:"
     for plugin in "$PMS_LOCAL"/plugins/*; do
         plugin=${plugin##*/}
+        version=$(_pms_plugin_get_version "$PMS_LOCAL/plugins/$plugin")
         if _pms_is_plugin_enabled "$plugin"; then
-            printf "\r  %-20s [enabled]\n" "$plugin"
+            printf "\r  %-20s %-8s [enabled]\n" "$plugin" "$version"
         else
-            printf "\r  %s\n" "$plugin"
+            printf "\r  %-20s %s\n" "$plugin" "$version"
         fi
     done
     echo
 
     return 0
+}
+
+__pms_command_plugin_update() {
+    local plugin="$1"
+    local path
+
+    if [ -z "$plugin" ]; then
+        _pms_message_block "error" "Usage: pms plugin update <plugin>"
+        return 1
+    fi
+
+    if [ -d "$PMS_LOCAL/plugins/$plugin/.git" ]; then
+        path="$PMS_LOCAL/plugins/$plugin"
+    elif [ -d "$PMS/plugins/$plugin/.git" ]; then
+        path="$PMS/plugins/$plugin"
+    else
+        _pms_message_block "error" "Plugin '$plugin' is not a git repository"
+        return 1
+    fi
+
+    _pms_message "info" "Updating '$plugin'"
+    if git -C "$path" pull --ff-only; then
+        _pms_plugin_get_version "$path" >/dev/null
+        _pms_message_section "success" "$plugin" "Plugin updated"
+        return 0
+    fi
+
+    _pms_message "error" "Failed to update '$plugin'"
+    return 1
 }
 
 # @todo support for multiple plugins at a time
