@@ -115,3 +115,22 @@ else
     color_underline=''
     color_reverse=''
 fi
+
+####
+# Apply a color to text and reset formatting
+#
+# Usage: colorize <color_var> "<text>"
+#
+# Arguments:
+#   color_var - name of the color variable to apply
+#   text      - text to colorize
+####
+colorize() {
+    color_var=$1
+    color_text=$2
+
+    eval "printf '%s%s%s\n' \"\${$color_var}\" \"$color_text\" \"$color_reset\""
+
+    unset color_var
+    unset color_text
+}
