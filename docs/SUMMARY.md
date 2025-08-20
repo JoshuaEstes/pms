@@ -8,6 +8,7 @@
 * [Environment Variables](environment-variables.md)
 * [Upgrade PMS](upgrade.md)
 * [PMS Manager](pms-manager.md)
+* [Profiling Startup Times](startup-profiling.md)
 * [Plugins](plugins/README.md)
   * [cd](plugins/cd.md)
   * [composer](plugins/composer.md)

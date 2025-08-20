@@ -59,6 +59,32 @@ _pms_source_file() {
     fi
 }
 
+PMS_PLUGIN_TIME_NAMES=()
+PMS_PLUGIN_TIME_VALUES=()
+
+_pms_now() {
+    local now
+    if now=$(date +%s%3N 2>/dev/null); then
+        printf '%s\n' "$now"
+    else
+        printf '%s000\n' "$(date +%s)"
+    fi
+}
+
+_pms_time() {
+    local timing_label=$1
+    shift
+    local start_time end_time elapsed_time exit_code
+    start_time=$(_pms_now)
+    "$@"
+    exit_code=$?
+    end_time=$(_pms_now)
+    elapsed_time=$(( end_time - start_time ))
+    PMS_PLUGIN_TIME_NAMES+=("$timing_label")
+    PMS_PLUGIN_TIME_VALUES+=("$elapsed_time")
+    return $exit_code
+}
+
 ####
 # Loads the theme files
 #

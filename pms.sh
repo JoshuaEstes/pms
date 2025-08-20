@@ -52,7 +52,8 @@ _pms_source_file "$HOME/.pms.plugins"
 _pms_source_file "$HOME/.pms.theme"
 
 # Load the PMS and SHELL plugins
-_pms_plugin_load pms $PMS_SHELL
+_pms_time "pms" _pms_plugin_load pms
+_pms_time "$PMS_SHELL" _pms_plugin_load "$PMS_SHELL"
 
 if [ "${PMS_DEBUG:-0}" -eq 1 ]; then
     # If debug is enabled, we want to see the current settings at this point
@@ -79,7 +80,7 @@ fi
 ####
 for plugin in ${PMS_PLUGINS[@]}; do
     if [[ "$plugin" != "$PMS_SHELL" && "$plugin" != "pms" ]]; then
-        _pms_plugin_load "$plugin"
+        _pms_time "$plugin" _pms_plugin_load "$plugin"
     fi
 done
 unset plugin
