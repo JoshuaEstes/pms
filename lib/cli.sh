@@ -13,11 +13,17 @@ pms() {
         return 1
     }
 
-    local command=$1
+    local command="$1"
     shift
 
-    type __pms_command_${command} &>/dev/null && {
-        __pms_command_${command} "$@"
+    if ! type "__pms_command_${command}" >/dev/null 2>&1; then
+        if [ -d "$PMS/plugins/$command" ] || [ -d "$PMS_LOCAL/plugins/$command" ]; then
+            _pms_plugin_load "$command"
+        fi
+    fi
+
+    type "__pms_command_${command}" >/dev/null 2>&1 && {
+        "__pms_command_${command}" "$@"
         return $?
     }
 
@@ -62,11 +68,17 @@ EOF
 # pms help theme list = _pms_command_help_theme_list
 __pms_command_help() {
     if [ $# -gt 0 ]; then
-        local command=$1
+        local command="$1"
         shift
 
-        type __pms_command_help_${command} &>/dev/null && {
-            __pms_command_help_${command} "$@"
+        if ! type "__pms_command_help_${command}" >/dev/null 2>&1; then
+            if [ -d "$PMS/plugins/$command" ] || [ -d "$PMS_LOCAL/plugins/$command" ]; then
+                _pms_plugin_load "$command"
+            fi
+        fi
+
+        type "__pms_command_help_${command}" >/dev/null 2>&1 && {
+            "__pms_command_help_${command}" "$@"
             return $?
         }
     fi
@@ -86,10 +98,7 @@ __pms_command_help() {
 
     local plugin
     for plugin in "${PMS_PLUGINS[@]}"; do
-        type __pms_command_help_${plugin} &>/dev/null && {
-            __pms_command_help_${plugin} "$@"
-            return $?
-        }
+        type "__pms_command_help_${plugin}" >/dev/null 2>&1 && "__pms_command_help_${plugin}" "$@"
     done
 
     echo
@@ -494,7 +503,7 @@ __pms_command_plugin_disable() {
 
     # Check to see if the plugin is already enabled and if so, notify user and
     # exit
-    for p in ${PMS_PLUGINS[@]}; do
+    for p in "${PMS_PLUGINS[@]}"; do
         if [ "$p" = "${plugin}" ]; then
             _plugin_enabled=1
         fi
@@ -507,7 +516,7 @@ __pms_command_plugin_disable() {
 
     # Remove from plugins
     local _plugins=()
-    for i in ${PMS_PLUGINS[@]}; do
+    for i in "${PMS_PLUGINS[@]}"; do
         if [ "$i" != "$plugin" ]; then
             _plugins+=("$i")
         fi
@@ -549,99 +558,3 @@ __pms_command_plugin_info() {
     return 0
 }
 
-# @todo Make dotfiles a plugin
-__pms_command_dotfiles() {
-    [[ $# -gt 0 ]] || {
-        __pms_command_help_dotfiles
-        return 1
-    }
-
-    local command=$1
-    shift
-
-    type __pms_command_dotfiles_${command} &>/dev/null && {
-        __pms_command_dotfiles_${command} "$@"
-        return $?
-    }
-
-    __pms_command_help_dotfiles
-    return 1
-}
-
-__pms_command_help_dotfiles() {
-  echo
-  echo "Usage: pms [options] dotfiles <command>"
-  echo
-  echo "Commands:"
-  __pms_command "push" "Push changes"
-  __pms_command "add [file] [file] ..." "Add file(s) to your repository (commit and push)"
-  __pms_command "git <command>" "Runs the git command (example: pms dotfiles git status)"
-  #echo "    init             Initialize your dotfiles repository"
-  # scan would just scan $HOME for known dotfiles that are safe to add to
-  # a git repo. Store known files in an array
-  #echo "    scan             Scans your home directory for known dotfiles"
-  #echo "    switch <branch>  Switch to a new branch to work on dotfiles"
-  #echo "    pull             Pull changes"
-  #echo "    status           Show status of files"
-  #echo "    diff             Display diff"
-  #echo "  rm <file>          Removes file from your dotfiles repo"
-  echo
-
-  return 0
-}
-
-__pms_command_dotfiles_push() {
-    /usr/bin/git --git-dir=$PMS_DOTFILES_GIT_DIR --work-tree=$HOME -C $HOME push origin $PMS_DOTFILES_BRANCH
-}
-
-__pms_command_dotfiles_init() {
-    # @todo
-    # 1. Ask if user wants to start a new repo
-    # y) git init, git config, git remote add
-    # n) git clone, git config
-    # ---
-    # Use existing or create new?
-    # Existing
-    #   git clone --bare REPO_URL $HOME/.dotfiles
-    #   git checkout
-    #   git config --local status.showUntrackedFiles no
-    # Create New
-    #   git init --bare $HOME/.dotfiles
-    #   git config --local status.showUntrackedFiles no
-    #   git remote add origin REPO_URL
-    # ---
-}
-
-# @todo if no arguments, add all modified files
-__pms_command_dotfiles_add() {
-    local files=( "$@" )
-
-    if [ $# -eq 0 ]; then
-        # Only add files that have been modified or deleted
-        files=( $(git --git-dir="$PMS_DOTFILES_GIT_DIR" --work-tree="$HOME" -C "$HOME" diff --name-only --diff-filter=MD) )
-    fi
-
-    if [[ "${#files[@]}" -eq 0 ]]; then
-        _pms_message "error" "Nothing to do"
-        return 1
-    fi
-
-    for f in "${files[@]}" ; do
-        #_pms_message "info" "Adding $f"
-        # --verbose = tell user it's been added
-        # --force = Allow adding otherwise ignored files
-        git --git-dir="$PMS_DOTFILES_GIT_DIR" --work-tree="$HOME" -C "$HOME" add --verbose --force "$f"
-    done
-
-    echo "${files[@]}"
-
-    # @todo better commit messages, maybe ask user?
-    git --git-dir="$PMS_DOTFILES_GIT_DIR" --work-tree="$HOME" -C "$HOME" commit -m "$f"
-
-    ## @todo use an option for this or ask the user if they want to push
-    __pms_command_dotfiles_push
-}
-
-__pms_command_dotfiles_git() {
-    git --git-dir="$PMS_DOTFILES_GIT_DIR" --work-tree="$HOME" -C "$HOME" "$@"
-}

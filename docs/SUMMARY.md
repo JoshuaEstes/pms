@@ -12,6 +12,7 @@
   * [cd](plugins/cd.md)
   * [composer](plugins/composer.md)
   * [git](plugins/git.md)
+  * [dotfiles](plugins/dotfiles.md)
   * [phpbrew](plugins/phpbrew.md)
   * [vim](plugins/vim.md)
   * [\_\_PLUGIN\_\_ Template](plugins/plugin\_templates\_for\_docs.md)
