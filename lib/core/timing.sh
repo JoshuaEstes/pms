@@ -9,17 +9,20 @@ PMS_PLUGIN_TIME_VALUES=()
 
 ####
 # Return the current time in milliseconds.
+# Falls back to seconds when millisecond precision is not available.
 #
 # Usage:
 #   _pms_now
 ####
 _pms_now() {
     local current_time
-    if current_time=$(date +%s%3N 2>/dev/null); then
-        printf '%s\n' "$current_time"
-    else
-        printf '%s000\n' "$(date +%s)"
-    fi
+    current_time=$(date +%s%3N 2>/dev/null)
+    case $current_time in
+        (''|*[!0-9]*)
+            current_time=$(date +%s)000
+            ;;
+    esac
+    printf '%s\n' "$current_time"
 }
 
 ####
