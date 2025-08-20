@@ -107,3 +107,14 @@ really cool shit with git.
 
 * [User Guides](https://docs.codewithjoshua.com/pms)
 * [Developer Guides](https://docs.codewithjoshua.com/pms)
+
+# Tests
+
+PMS uses [Bats](https://bats-core.readthedocs.io/) for unit tests. After
+installing Bats with your package manager (for example, `sudo apt-get install
+bats` or `brew install bats-core`), run all tests with:
+
+```
+bats tests
+```
+
