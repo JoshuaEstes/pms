@@ -6,8 +6,7 @@
 #   PMS_REPO    = default: JoshuaEstes/pms
 #   PMS_REMOTE  = default: https://github.com/$PMS_REPO.git
 #   PMS_BRANCH  = main
-#
-# @todo limit install to just one shell using PMS_SHELL?
+#   PMS_SHELL   = target shell to configure (bash, zsh, etc.)
 #
 set -e
 PMS=${PMS:-~/.pms}
@@ -15,9 +14,10 @@ PMS_DEBUG=${PMS_DEBUG:-0}
 PMS_REPO=${PMS_REPO:-JoshuaEstes/pms}
 PMS_REMOTE=${PMS_REMOTE:-https://github.com/${PMS_REPO}.git}
 PMS_BRANCH=${PMS_BRANCH:-main}
+PMS_SHELL=${PMS_SHELL:-${SHELL##*/}}
 
 setup_pms() {
-    echo "\r\n\t${BLUE}Cloning PMS...${RESET}\n\n"
+    printf '\r\n\t%sCloning PMS...%s\n\n' "$BLUE" "$RESET"
 
     git clone --depth=1 --branch "$PMS_BRANCH" "$PMS_REMOTE" "$PMS" || {
         echo "${RED}ERROR: git clone command failed${RESET}"
@@ -26,37 +26,46 @@ setup_pms() {
 
     # Copy over config files if they do not currently exist
     echo "${BLUE}Copying PMS Environment Variables file over, this file stores various PMS settings that can be modified${RESET}"
-    cp -vfi $PMS/templates/env ~/.env
+    cp -vfi "$PMS/templates/env" "$HOME/.env"
 
     echo "${BLUE}Copying PMS Theme Config File, this file is used to store your currently selected theme${RESET}"
-    cp -vfi $PMS/templates/pms.theme ~/.pms.theme
+    cp -vfi "$PMS/templates/pms.theme" "$HOME/.pms.theme"
 
     echo "${BLUE}Copying PMS Plugins Config File, this file contains all your enabled plugins${RESET}"
-    cp -vfi $PMS/templates/pms.plugins ~/.pms.plugins
+    cp -vfi "$PMS/templates/pms.plugins" "$HOME/.pms.plugins"
 }
 
 _setup_shell_rc() {
-    # @todo better support
-    if [ -f ~/.$1 ] || [ -h ~/.$1 ]; then
-        echo "${YELLOW}Found existing .$1 file, backing up${RESET}"
-        if [ ! -f ~/.$1.pms.bak ]; then
-            echo "${YELLOW}Moving ~/.$1 -> ~/.$1.pms.bak${RESET}"
-            mv -vfi ~/.$1 ~/.$1.pms.bak
+    shell_name="$1"
+    rc_file="${shell_name}rc"
+    if [ -f "$HOME/.${rc_file}" ] || [ -h "$HOME/.${rc_file}" ]; then
+        echo "${YELLOW}Found existing .${rc_file} file, backing up${RESET}"
+        if [ ! -f "$HOME/.${rc_file}.pms.bak" ]; then
+            echo "${YELLOW}Moving $HOME/.${rc_file} -> $HOME/.${rc_file}.pms.bak${RESET}"
+            mv -vfi "$HOME/.${rc_file}" "$HOME/.${rc_file}.pms.bak"
         fi
     fi
-    echo "${BLUE}Copy $PMS/templates/$1 -> ~/.$1 ${RESET}"
-    cp -vf $PMS/templates/$1 ~/.$1
-}
-
-setup_rcfiles() {
-    echo "\r\n\t${BLUE}Setting up rc files...${RESET}\n\n"
-    _setup_shell_rc bashrc
-    _setup_shell_rc zshrc
+    echo "${BLUE}Copy $PMS/templates/${rc_file} -> $HOME/.${rc_file} ${RESET}"
+    cp -vf "$PMS/templates/${rc_file}" "$HOME/.${rc_file}"
 }
 
 setup_shell() {
-    echo "\r\n\t${BLUE}Setting up shell...${RESET}\n\n"
-    # @todo
+    printf '\r\n\t%sSetting up shell...%s\n\n' "$BLUE" "$RESET"
+    case "$PMS_SHELL" in
+        bash|zsh)
+            _setup_shell_rc "$PMS_SHELL"
+            if command -v chsh >/dev/null 2>&1; then
+                current_shell_name=${SHELL##*/}
+                if [ "$current_shell_name" != "$PMS_SHELL" ]; then
+                    echo "${BLUE}Changing default shell to $PMS_SHELL${RESET}"
+                    chsh -s "$(command -v "$PMS_SHELL")"
+                fi
+            fi
+            ;;
+        *)
+            echo "${YELLOW}Skipping shell setup; unsupported shell '$PMS_SHELL'${RESET}"
+            ;;
+    esac
 }
 
 # Main function, this will be called to install everything
@@ -78,13 +87,14 @@ main() {
   fi
 
   if [ "$PMS_DEBUG" -eq "1" ]; then
-    printf "${YELLOW}"
+      printf '%s' "$YELLOW"
     echo "PMS:         $PMS"
     echo "PMS_DEBUG:   $PMS_DEBUG"
     echo "PMS_REPO:    $PMS_REPO"
     echo "PMS_REMOTE:  $PMS_REMOTE"
     echo "PMS_BRANCH:  $PMS_BRANCH"
-    printf "${RESET}"
+    echo "PMS_SHELL:   $PMS_SHELL"
+      printf '%s' "$RESET"
   fi
 
   if [ ! -x "$(command -v git)" ]; then
@@ -92,8 +102,8 @@ main() {
       exit 1
   fi
 
-  if [ ! -x "$(command -v bash)" ] && [ ! -x "$(command -v zsh)" ]; then
-      echo "${RED}ERROR: It appears the you do not have one of the supported shells installed${RESET}"
+  if [ ! -x "$(command -v "$PMS_SHELL")" ]; then
+      echo "${RED}ERROR: It appears that $PMS_SHELL is not installed${RESET}"
       exit 1
   fi
 
@@ -103,10 +113,9 @@ main() {
   fi
 
   setup_pms
-  setup_rcfiles
   setup_shell
 
-  printf "${GREEN}"
+  printf '%s' "$GREEN"
 cat <<-'EOF'
 
 Thanks for installing...
@@ -137,7 +146,7 @@ Developer Guides - https://github.com/JoshuaEstes/pms/wiki
 
 
 EOF
-  printf "${RESET}"
+  printf '%s' "$RESET"
 }
 
 main "$@"
