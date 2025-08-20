@@ -16,46 +16,65 @@ PMS_REPO=${PMS_REPO:-JoshuaEstes/pms}
 PMS_REMOTE=${PMS_REMOTE:-https://github.com/${PMS_REPO}.git}
 PMS_BRANCH=${PMS_BRANCH:-main}
 
+_copy_file() (
+    src_file="$1"
+    dest_file="$2"
+    desc="$3"
+
+    if [ -e "$dest_file" ]; then
+        overwrite=$(_pms_prompt "Overwrite existing $desc? [y/N]" "n" "[yYnN]")
+        case "$overwrite" in
+            y|Y) cp -vf "$src_file" "$dest_file";;
+            *) printf 'Skipping %s\n' "$desc";;
+        esac
+    else
+        cp -vf "$src_file" "$dest_file"
+    fi
+)
+
 setup_pms() {
-    echo "\r\n\t${BLUE}Cloning PMS...${RESET}\n\n"
+    printf "\r\n\t%sCloning PMS...%s\n\n" "$BLUE" "$RESET"
 
     git clone --depth=1 --branch "$PMS_BRANCH" "$PMS_REMOTE" "$PMS" || {
         echo "${RED}ERROR: git clone command failed${RESET}"
         exit 1
     }
 
+    # shellcheck source=lib/core.sh
+    . "$PMS/lib/core.sh"
+
     # Copy over config files if they do not currently exist
-    echo "${BLUE}Copying PMS Environment Variables file over, this file stores various PMS settings that can be modified${RESET}"
-    cp -vfi $PMS/templates/env ~/.env
+    printf "%sCopying PMS Environment Variables file over, this file stores various PMS settings that can be modified%s\n" "$BLUE" "$RESET"
+    _copy_file "$PMS/templates/env" "$HOME/.env" "$HOME/.env"
 
-    echo "${BLUE}Copying PMS Theme Config File, this file is used to store your currently selected theme${RESET}"
-    cp -vfi $PMS/templates/pms.theme ~/.pms.theme
+    printf "%sCopying PMS Theme Config File, this file is used to store your currently selected theme%s\n" "$BLUE" "$RESET"
+    _copy_file "$PMS/templates/pms.theme" "$HOME/.pms.theme" "$HOME/.pms.theme"
 
-    echo "${BLUE}Copying PMS Plugins Config File, this file contains all your enabled plugins${RESET}"
-    cp -vfi $PMS/templates/pms.plugins ~/.pms.plugins
+    printf "%sCopying PMS Plugins Config File, this file contains all your enabled plugins%s\n" "$BLUE" "$RESET"
+    _copy_file "$PMS/templates/pms.plugins" "$HOME/.pms.plugins" "$HOME/.pms.plugins"
 }
 
 _setup_shell_rc() {
     # @todo better support
-    if [ -f ~/.$1 ] || [ -h ~/.$1 ]; then
-        echo "${YELLOW}Found existing .$1 file, backing up${RESET}"
-        if [ ! -f ~/.$1.pms.bak ]; then
-            echo "${YELLOW}Moving ~/.$1 -> ~/.$1.pms.bak${RESET}"
-            mv -vfi ~/.$1 ~/.$1.pms.bak
+    if [ -f "$HOME/.$1" ] || [ -h "$HOME/.$1" ]; then
+        printf "%sFound existing .$1 file, backing up%s\n" "$YELLOW" "$RESET"
+        if [ ! -f "$HOME/.$1.pms.bak" ]; then
+            printf "%sMoving $HOME/.$1 -> $HOME/.$1.pms.bak%s\n" "$YELLOW" "$RESET"
+            mv -vfi "$HOME/.$1" "$HOME/.$1.pms.bak"
         fi
     fi
-    echo "${BLUE}Copy $PMS/templates/$1 -> ~/.$1 ${RESET}"
-    cp -vf $PMS/templates/$1 ~/.$1
+    printf "%sCopy $PMS/templates/$1 -> $HOME/.$1 %s\n" "$BLUE" "$RESET"
+    cp -vf "$PMS/templates/$1" "$HOME/.$1"
 }
 
 setup_rcfiles() {
-    echo "\r\n\t${BLUE}Setting up rc files...${RESET}\n\n"
+    printf "\r\n\t%sSetting up rc files...%s\n\n" "$BLUE" "$RESET"
     _setup_shell_rc bashrc
     _setup_shell_rc zshrc
 }
 
 setup_shell() {
-    echo "\r\n\t${BLUE}Setting up shell...${RESET}\n\n"
+    printf "\r\n\t%sSetting up shell...%s\n\n" "$BLUE" "$RESET"
     # @todo
 }
 
@@ -78,13 +97,13 @@ main() {
   fi
 
   if [ "$PMS_DEBUG" -eq "1" ]; then
-    printf "${YELLOW}"
+    printf '%s' "$YELLOW"
     echo "PMS:         $PMS"
     echo "PMS_DEBUG:   $PMS_DEBUG"
     echo "PMS_REPO:    $PMS_REPO"
     echo "PMS_REMOTE:  $PMS_REMOTE"
     echo "PMS_BRANCH:  $PMS_BRANCH"
-    printf "${RESET}"
+    printf '%s' "$RESET"
   fi
 
   if [ ! -x "$(command -v git)" ]; then
@@ -106,7 +125,7 @@ main() {
   setup_rcfiles
   setup_shell
 
-  printf "${GREEN}"
+  printf '%s' "$GREEN"
 cat <<-'EOF'
 
 Thanks for installing...
@@ -137,7 +156,7 @@ Developer Guides - https://github.com/JoshuaEstes/pms/wiki
 
 
 EOF
-  printf "${RESET}"
+  printf '%s' "$RESET"
 }
 
 main "$@"

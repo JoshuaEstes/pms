@@ -13,8 +13,38 @@
 ####
 
 ####
-# @todo Interactive Helpers
-# Allows PMS to ask questions and get confirmations from the user
+# Ask the user for input with optional default and validation
+#
+# Usage: _pms_prompt "Prompt" "default" "regex"
+#
+# Examples:
+#   name=$(_pms_prompt "Name?")
+#   color=$(_pms_prompt "Color?" "blue")
+#   answer=$(_pms_prompt "Continue? [y/N]" "n" "[yYnN]")
+####
+_pms_prompt() {
+    local prompt_message="$1"
+    local default_value="$2"
+    local validation_pattern="${3:-.*}"
+    local user_input
+
+    while true; do
+        if [ -n "$default_value" ]; then
+            printf "%s [%s] " "$prompt_message" "$default_value"
+        else
+            printf "%s " "$prompt_message"
+        fi
+        IFS= read -r user_input
+        if [ -z "$user_input" ] && [ -n "$default_value" ]; then
+            user_input="$default_value"
+        fi
+        if printf '%s' "$user_input" | grep -Eq "^(${validation_pattern})$"; then
+            printf '%s' "$user_input"
+            return 0
+        fi
+        echo "Invalid response"
+    done
+}
 
 ####
 # Used to ask the user a yes/no question
@@ -178,13 +208,14 @@ _pms_message() {
         message=$1
     fi
 
+    # shellcheck disable=SC2154 # color variables are defined elsewhere
     case $type in
-        info) printf "\r${color_blue}$message${color_reset}\n" ;;
-        success) printf "\r${color_green}$message${color_reset}\n" ;;
-        warn) printf "\r${color_yellow}$message${color_reset}\n" ;;
-        error) printf "\r${color_red}$message${color_reset}\n" ;;
-        debug) printf "\r$message\n" ;;
-        *) printf "\r$message\n" ;;
+        info) printf '\r%s%s%s\n' "$color_blue" "$message" "$color_reset" ;;
+        success) printf '\r%s%s%s\n' "$color_green" "$message" "$color_reset" ;;
+        warn) printf '\r%s%s%s\n' "$color_yellow" "$message" "$color_reset" ;;
+        error) printf '\r%s%s%s\n' "$color_red" "$message" "$color_reset" ;;
+        debug) printf '\r%s\n' "$message" ;;
+        *) printf '\r%s\n' "$message" ;;
     esac
 }
 
@@ -196,13 +227,14 @@ _pms_message_section() {
     local type=$1
     local section=$2
     local message=$3
+    # shellcheck disable=SC2154
     case $type in
-        info) printf "\r[${color_blue}$section${color_reset}] $message${color_reset}\n" ;;
-        success) printf "\r[${color_green}$section${color_reset}] $message${color_reset}\n" ;;
-        warn) printf "\r[${color_yellow}$section${color_reset}] $message${color_reset}\n" ;;
-        error) printf "\r[${color_red}$section${color_reset}] $message${color_reset}\n" ;;
-        debug) printf "\r[$section] $message\n" ;;
-        *) printf "\r[$section] $message\n" ;;
+        info) printf '\r[%s%s%s] %s%s\n' "$color_blue" "$section" "$color_reset" "$message" "$color_reset" ;;
+        success) printf '\r[%s%s%s] %s%s\n' "$color_green" "$section" "$color_reset" "$message" "$color_reset" ;;
+        warn) printf '\r[%s%s%s] %s%s\n' "$color_yellow" "$section" "$color_reset" "$message" "$color_reset" ;;
+        error) printf '\r[%s%s%s] %s%s\n' "$color_red" "$section" "$color_reset" "$message" "$color_reset" ;;
+        debug) printf '\r[%s] %s\n' "$section" "$message" ;;
+        *) printf '\r[%s] %s\n' "$section" "$message" ;;
     esac
 }
 
@@ -216,12 +248,13 @@ _pms_message_block() {
     if [ -z "$2" ]; then
         message=$1
     fi
+    # shellcheck disable=SC2154
     case $type in
-        info) printf "\r\n\t${color_blue}$message${color_reset}\n\n" ;;
-        success) printf "\r\n\t${color_green}$message${color_reset}\n\n" ;;
-        warn) printf "\r\n\t${color_yellow}$message${color_reset}\n\n" ;;
-        error) printf "\r\n\t${color_red}$message${color_reset}\n\n" ;;
-        debug) printf "\r\n\t$message\n\n" ;;
-        *) printf "\r\n\t$message\n\n" ;;
+        info) printf '\r\n\t%s%s%s\n\n' "$color_blue" "$message" "$color_reset" ;;
+        success) printf '\r\n\t%s%s%s\n\n' "$color_green" "$message" "$color_reset" ;;
+        warn) printf '\r\n\t%s%s%s\n\n' "$color_yellow" "$message" "$color_reset" ;;
+        error) printf '\r\n\t%s%s%s\n\n' "$color_red" "$message" "$color_reset" ;;
+        debug) printf '\r\n\t%s\n\n' "$message" ;;
+        *) printf '\r\n\t%s\n\n' "$message" ;;
     esac
 }
