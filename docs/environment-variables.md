@@ -33,6 +33,7 @@ defined by [plugins](plugins/) to modify behavior.
 | `PMS_BRANCH` | Branch to check out (see [install.sh](../scripts/install.sh)) |
 | `PMS_THEME` | Active theme name (loaded in [lib/core.sh](../lib/core.sh)) |
 | `PMS_PLUGINS` | Space-separated plugin list (used by [pms.sh](../pms.sh)) |
+| `PMS_PLUGIN_INDEX` | File path or URL for plugin search and install index |
 
 ## Overriding defaults
 

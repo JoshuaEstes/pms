@@ -10,6 +10,10 @@ Plugins are focused on enhancing your experience in the shell.
 
 ## Searching for Plugins
 
+Plugins are listed in an index defined by `PMS_PLUGIN_INDEX`. By default this
+uses the `plugins.txt` file in the PMS installation directory. Each line is
+formatted as `code|name|description|repo`.
+
 Use the plugin index to find new plugins:
 
 ```sh
@@ -20,7 +24,13 @@ Omit `<term>` to list all indexed plugins.
 
 ## Installing Plugins
 
-Install a plugin directly from a Git repository:
+Install a plugin using its code from the index:
+
+```sh
+pms plugin install example
+```
+
+You can also install directly from a Git repository:
 
 ```sh
 pms plugin install https://example.com/your/plugin.git

@@ -1,0 +1,5 @@
+# code|name|description|repo
+example|Example Plugin|Sample plugin demonstrating structure|https://github.com/JoshuaEstes/pms-example-plugin.git
+taskwarrior|Taskwarrior|Integrates Taskwarrior task manager|https://github.com/JoshuaEstes/pms-taskwarrior-plugin.git
+tmux|Tmux|Adds tmux enhancements|https://github.com/JoshuaEstes/pms-tmux-plugin.git
+
