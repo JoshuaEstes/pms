@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 ####
 # PMS
 #
@@ -66,28 +67,34 @@ fi
 ####
 # Load libraries from the PMS installation followed by any local libraries.
 # This includes generic `.sh` files and shell-specific implementations.
+# Using `find` avoids shell globbing errors when directories are empty.
 #
 # @internal
 ####
-for lib in "$PMS"/lib/*.{sh,$PMS_SHELL}; do
+pms_libs="$(
+    find "$PMS/lib" -maxdepth 1 -type f \( -name '*.sh' -o -name "*.$PMS_SHELL" \)
+)"
+for library_file in $pms_libs; do
     # shellcheck disable=SC1090
-    source "$lib"
+    . "$library_file"
     if [ 1 -eq "${PMS_DEBUG:-0}" ]; then
-        echo "source $lib"
+        echo "source $library_file"
     fi
 done
-unset lib
+unset pms_libs library_file
 
 if [ -d "$PMS_LOCAL/lib" ]; then
-    for local_lib in "$PMS_LOCAL"/lib/*.{sh,$PMS_SHELL}; do
-        [ -f "$local_lib" ] || continue
+    local_libs="$(
+        find "$PMS_LOCAL/lib" -maxdepth 1 -type f \( -name '*.sh' -o -name "*.$PMS_SHELL" \)
+    )"
+    for local_library in $local_libs; do
         # shellcheck disable=SC1090
-        source "$local_lib"
+        . "$local_library"
         if [ 1 -eq "${PMS_DEBUG:-0}" ]; then
-            echo "source $local_lib"
+            echo "source $local_library"
         fi
     done
-    unset local_lib
+    unset local_libs local_library
 fi
 
 _pms_source_file "$HOME/.pms.plugins"
