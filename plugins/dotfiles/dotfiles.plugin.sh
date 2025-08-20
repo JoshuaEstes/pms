@@ -33,6 +33,8 @@ __pms_command_help_dotfiles() {
     echo "Commands:"
     __pms_command "push" "Push changes"
     __pms_command "add [file] [file] ..." "Add file(s) to your repository (commit and push)"
+    __pms_command "status" "Show repository status"
+    __pms_command "diff [file] [file] ..." "Show changes in dotfiles"
     __pms_command "git <command>" "Runs the git command (example: pms dotfiles git status)"
     echo
     return 0
@@ -60,6 +62,16 @@ __pms_command_dotfiles_add() {
     done
     git --git-dir="$PMS_DOTFILES_GIT_DIR" --work-tree="$HOME" -C "$HOME" commit -m "Update dotfiles"
     __pms_command_dotfiles_push
+}
+
+# Shows the status of the dotfiles repository
+__pms_command_dotfiles_status() {
+    git --git-dir="$PMS_DOTFILES_GIT_DIR" --work-tree="$HOME" -C "$HOME" status "$@"
+}
+
+# Displays diff for dotfiles
+__pms_command_dotfiles_diff() {
+    git --git-dir="$PMS_DOTFILES_GIT_DIR" --work-tree="$HOME" -C "$HOME" diff "$@"
 }
 
 # Runs arbitrary git command within the dotfiles repository

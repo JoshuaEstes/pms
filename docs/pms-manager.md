@@ -103,3 +103,19 @@ Adding files is quick, just run `pms dotfiles add FILE` and PMS will add the fil
 ### Pulling down changes
 
 Run `pms dotfiles pull` if you have made any changes in your repository that you want to pull down to your machine.
+
+### Checking repository status
+
+Use `pms dotfiles status` to see which files have been modified in your dotfiles repository.
+
+```shell
+pms dotfiles status
+```
+
+### Viewing changes
+
+To review the exact changes in your files before committing, run:
+
+```shell
+pms dotfiles diff
+```
