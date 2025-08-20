@@ -71,30 +71,25 @@ fi
 #
 # @internal
 ####
-pms_libs="$(
-    find "$PMS/lib" -maxdepth 1 -type f \( -name '*.sh' -o -name "*.$PMS_SHELL" \)
-)"
-for library_file in $pms_libs; do
+# Load core and auxiliary libraries in a stable order. The while loop avoids
+# shell-specific word-splitting issues and guarantees each file is sourced
+# individually.
+while IFS= read -r library_file; do
     # shellcheck disable=SC1090
     . "$library_file"
     if [ 1 -eq "${PMS_DEBUG:-0}" ]; then
         echo "source $library_file"
     fi
-done
-unset pms_libs library_file
+done < <(find "$PMS/lib" -maxdepth 1 -type f \( -name '*.sh' -o -name "*.$PMS_SHELL" \) | sort)
 
 if [ -d "$PMS_LOCAL/lib" ]; then
-    local_libs="$(
-        find "$PMS_LOCAL/lib" -maxdepth 1 -type f \( -name '*.sh' -o -name "*.$PMS_SHELL" \)
-    )"
-    for local_library in $local_libs; do
+    while IFS= read -r local_library; do
         # shellcheck disable=SC1090
         . "$local_library"
         if [ 1 -eq "${PMS_DEBUG:-0}" ]; then
             echo "source $local_library"
         fi
-    done
-    unset local_libs local_library
+    done < <(find "$PMS_LOCAL/lib" -maxdepth 1 -type f \( -name '*.sh' -o -name "*.$PMS_SHELL" \) | sort)
 fi
 
 _pms_source_file "$HOME/.pms.plugins"
