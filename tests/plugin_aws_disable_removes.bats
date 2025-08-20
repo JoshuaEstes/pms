@@ -1,13 +1,14 @@
 #!/usr/bin/env bats
+# shellcheck shell=bash
 
 setup() {
     pms_root="$(cd "$BATS_TEST_DIRNAME/.." && pwd)"
     export PMS="$pms_root"
     export PMS_LOCAL="$BATS_TEST_TMPDIR/local"
-    mkdir -p "$PMS_LOCAL/plugins/sample"
-    touch "$PMS_LOCAL/plugins/sample/sample.plugin.sh"
+    mkdir -p "$PMS_LOCAL/plugins"
     export PMS_SHELL="bash"
     export PMS_DEBUG=0
+    export HOME="$BATS_TEST_TMPDIR"
     # shellcheck disable=SC2034
     color_blue=""
     # shellcheck disable=SC2034
@@ -24,17 +25,9 @@ setup() {
     source "$PMS/lib/cli.sh"
 }
 
-@test "_pms_time records plugin load duration" {
-    _pms_time "sample" _pms_plugin_load sample
-    [ "${PMS_PLUGIN_TIME_NAMES[0]}" = "sample" ]
-    [ "${PMS_PLUGIN_TIME_VALUES[0]}" -ge 0 ]
-}
-
-@test "__pms_command_diagnostic shows plugin timings" {
-    _pms_time "sample" _pms_plugin_load sample
-    run __pms_command_diagnostic
-    case "$output" in
-        *"sample"*) ;;
-        *) false ;;
-    esac
+@test "disabling aws plugin removes it from enabled list" {
+    __pms_command_plugin_enable aws
+    __pms_command_plugin_disable aws
+    run _pms_is_plugin_enabled aws
+    [ "$status" -eq 1 ]
 }
