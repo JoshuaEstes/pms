@@ -160,17 +160,17 @@ __pms_command_diagnostic() {
     echo "PMS_DOTFILES_REMOTE  : $PMS_DOTFILES_REMOTE"
     echo "PMS_DOTFILES_BRANCH  : $PMS_DOTFILES_BRANCH"
     echo "PMS_DOTFILES_GIT_DIR : $PMS_DOTFILES_GIT_DIR"
-    if [ -d $PMS ]; then
+    if [ -d "$PMS" ]; then
         echo "Hash                 : $(cd "$PMS" || exit; git rev-parse --short HEAD)"
     else
         echo "Hash                 : PMS not installed"
     fi
     echo
     echo "-=[ Contents of ~/.pms.theme ]=-"
-    cat ~/.pms.theme
+    cat "$HOME/.pms.theme"
     echo
     echo "-=[ Contents of ~/.pms.plugins ]=-"
-    cat ~/.pms.plugins
+    cat "$HOME/.pms.plugins"
     echo
     echo "-=[ Shell ]=-"
     echo "SHELL                : $SHELL"
@@ -241,12 +241,14 @@ __pms_command_upgrade() {
 
   local plugin
   for plugin in "${PMS_PLUGINS[@]}"; do
-    if [ -f $PMS_LOCAL/plugins/$plugin/update.sh ]; then
+    if [ -f "$PMS_LOCAL/plugins/$plugin/update.sh" ]; then
         _pms_message_section "info" "$plugin (local)" "plugin updating..."
-        source $PMS_LOCAL/plugins/$plugin/update.sh
-    elif [ -f $PMS/plugins/$plugin/update.sh ]; then
-        _pms_message_section "info" $plugin "plugin updating..."
-        source $PMS/plugins/$plugin/update.sh
+        # shellcheck source=/dev/null
+        source "$PMS_LOCAL/plugins/$plugin/update.sh"
+    elif [ -f "$PMS/plugins/$plugin/update.sh" ]; then
+        _pms_message_section "info" "$plugin" "plugin updating..."
+        # shellcheck source=/dev/null
+        source "$PMS/plugins/$plugin/update.sh"
     fi
   done
   _pms_message_block "info" "Completed update scripts"
@@ -285,8 +287,8 @@ __pms_command_theme() {
     local command=$1
     shift
 
-    type __pms_command_theme_${command} &>/dev/null && {
-        __pms_command_theme_${command} "$@"
+    type "__pms_command_theme_${command}" >/dev/null 2>&1 && {
+        "__pms_command_theme_${command}" "$@"
         return $?
     }
 
@@ -351,12 +353,12 @@ __pms_command_help_theme_info() {
 
 __pms_command_theme_list() {
     _pms_message_block "info" "Core Themes"
-    for theme in $PMS/themes/*; do
+    for theme in "$PMS"/themes/*; do
         theme=${theme%*/}
         _pms_message "info" "${theme##*/}"
     done
     _pms_message_block "info" "Local Themes"
-    for theme in $PMS_LOCAL/themes/*; do
+    for theme in "$PMS_LOCAL"/themes/*; do
         theme=${theme%*/}
         _pms_message "info" "${theme##*/}"
     done
@@ -369,28 +371,28 @@ __pms_command_theme_switch() {
     local theme=$1
 
     # Does theme exist?
-    if [ ! -d $PMS_LOCAL/themes/$theme ] && [ ! -d $PMS/themes/$theme ]; then
+    if [ ! -d "$PMS_LOCAL/themes/$theme" ] && [ ! -d "$PMS/themes/$theme" ]; then
         _pms_message "error" "The theme '$theme' is invalid"
         return 1
     fi
     # @todo make all this better and support PMS_LOCAL
-    if [ -f $PMS/themes/$PMS_THEME/uninstall.sh ]; then
-        _pms_source_file $PMS/themes/$PMS_THEME/uninstall.sh
+    if [ -f "$PMS/themes/$PMS_THEME/uninstall.sh" ]; then
+        _pms_source_file "$PMS/themes/$PMS_THEME/uninstall.sh"
     fi
     echo "PMS_THEME=$theme" > ~/.pms.theme
     PMS_THEME=$theme
     # @todo make all this better and support PMS_LOCAL
-    if [ -f $PMS/themes/$theme/install.sh ]; then
-        _pms_source_file $PMS/themes/$theme/install.sh
+    if [ -f "$PMS/themes/$theme/install.sh" ]; then
+        _pms_source_file "$PMS/themes/$theme/install.sh"
     fi
-    _pms_theme_load $theme
+    _pms_theme_load "$theme"
 
     return 0
 }
 
 __pms_command_theme_info() {
-    if [ -f $PMS/themes/$1/README.md ]; then
-        cat $PMS/themes/$1/README.md
+    if [ -f "$PMS/themes/$1/README.md" ]; then
+        cat "$PMS/themes/$1/README.md"
     else
         _pms_message_block "error" "Theme $1 has no README.md file"
 
@@ -409,8 +411,8 @@ __pms_command_plugin() {
     local command=$1
     shift
 
-    type __pms_command_plugin_${command} &>/dev/null && {
-        __pms_command_plugin_${command} "$@"
+    type "__pms_command_plugin_${command}" >/dev/null 2>&1 && {
+        "__pms_command_plugin_${command}" "$@"
         return $?
     }
 
