@@ -1,8 +1,11 @@
 # vim: set ft=sh:
+# shellcheck shell=sh disable=SC2034
 
-# @todo document
+# Location of the zsh history file
 HISTFILE=$PMS/cache/zsh_history
 
+# Number of commands to keep in memory
 HISTSIZE=50000
 
+# Number of history entries saved to disk
 SAVEHIST=10000
