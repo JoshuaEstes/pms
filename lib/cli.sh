@@ -415,6 +415,8 @@ __pms_command_help_plugin() {
     echo
     echo "Commands:"
     __pms_command "list" "Lists all available plugins"
+    __pms_command "search [term]" "Searches the plugin index"
+    __pms_command "install <repo>" "Installs a plugin from a Git repository"
     __pms_command "enable <plugin>" "Enables and installs a plugin"
     __pms_command "disable <plugin>" "Disables a plugin"
     __pms_command "info <plugin>" "Displays information about a plugin"
@@ -440,6 +442,24 @@ __pms_command_help_plugin_list() {
     echo "Lists all available plugins."
     echo
 
+    return 0
+}
+
+__pms_command_help_plugin_search() {
+    echo
+    echo "Usage: pms plugin search [term]"
+    echo
+    echo "Searches the plugin index for matching plugins."
+    echo
+    return 0
+}
+
+__pms_command_help_plugin_install() {
+    echo
+    echo "Usage: pms plugin install <repo>"
+    echo
+    echo "Installs a plugin from a Git repository and enables it."
+    echo
     return 0
 }
 
@@ -505,6 +525,57 @@ __pms_command_plugin_make() {
     _pms_message_block "success" "Plugin Created"
 
     return 0
+}
+
+__pms_command_plugin_search() {
+    local query="$1"
+    local index_url="${PMS_PLUGIN_INDEX_URL:-https://raw.githubusercontent.com/JoshuaEstes/pms-plugin-index/main/index.txt}"
+    local data
+
+    if ! data=$(curl -fsSL "$index_url"); then
+        _pms_message_block "error" "Unable to fetch plugin index"
+        return 1
+    fi
+
+    echo
+    while IFS='|' read -r plugin description repo; do
+        if [ -z "$query" ] || printf '%s %s\n' "$plugin" "$description" | grep -iq "$query"; then
+            _pms_command "$plugin" "$description"
+        fi
+    done <<EOF
+$data
+EOF
+    echo
+
+    return 0
+}
+
+__pms_command_plugin_install() {
+    if [ -z "$1" ]; then
+        _pms_message_block "error" "Usage: pms plugin install <repo>"
+        return 1
+    fi
+
+    local repo="$1"
+    local plugin
+    plugin=$(basename "$repo")
+    plugin=${plugin%.git}
+
+    if [ -d "$PMS_LOCAL/plugins/$plugin" ] || [ -d "$PMS/plugins/$plugin" ]; then
+        _pms_message "error" "Plugin '$plugin' already exists"
+        return 1
+    fi
+
+    _pms_message "info" "Cloning '$repo'"
+    if ! git clone "$repo" "$PMS_LOCAL/plugins/$plugin"; then
+        _pms_message "error" "Failed to clone repository"
+        rm -rf "$PMS_LOCAL/plugins/$plugin"
+        return 1
+    fi
+
+    __pms_command_plugin_enable "$plugin"
+
+    return $?
 }
 
 __pms_command_plugin_list() {
