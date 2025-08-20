@@ -1,4 +1,5 @@
 # vim: set ft=zsh:
+# shellcheck shell=sh
 # Perform implicit tees or cats when multiple redirections are attempted
 setopt multios
 
@@ -9,3 +10,11 @@ setopt prompt_subst
 
 # Completions
 autoload -U compaudit compinit
+
+completion_dump="${PMS_CACHE_DIR}/zcompdump"
+if compaudit >/dev/null 2>&1; then
+    mkdir -p "${PMS_CACHE_DIR}"
+    compinit -d "${completion_dump}"
+else
+    printf 'pms: insecure completion directories detected, skipping compinit\n' >&2
+fi
