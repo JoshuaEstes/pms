@@ -416,7 +416,7 @@ __pms_command_help_plugin() {
     echo "Commands:"
     __pms_command "list" "Lists all available plugins"
     __pms_command "search [term]" "Searches the plugin index"
-    __pms_command "install <repo>" "Installs a plugin from a Git repository"
+    __pms_command "install <code|repo>" "Installs a plugin from the index or a Git repository"
     __pms_command "enable <plugin>" "Enables and installs a plugin"
     __pms_command "disable <plugin>" "Disables a plugin"
     __pms_command "info <plugin>" "Displays information about a plugin"
@@ -450,15 +450,16 @@ __pms_command_help_plugin_search() {
     echo "Usage: pms plugin search [term]"
     echo
     echo "Searches the plugin index for matching plugins."
+    echo "Set PMS_PLUGIN_INDEX to override the default index file."
     echo
     return 0
 }
 
 __pms_command_help_plugin_install() {
     echo
-    echo "Usage: pms plugin install <repo>"
+    echo "Usage: pms plugin install <code|repo>"
     echo
-    echo "Installs a plugin from a Git repository and enables it."
+    echo "Installs a plugin by code from the plugin index or directly from a Git repository and enables it."
     echo
     return 0
 }
@@ -531,25 +532,48 @@ __pms_command_plugin_make() {
     mv "$PMS/plugins/$plugin/skeleton.plugin.sh" "$PMS/plugins/$plugin/$plugin.plugin.sh"
     mv "$PMS/plugins/$plugin/skeleton.plugin.zsh" "$PMS/plugins/$plugin/$plugin.plugin.zsh"
 
-    _pms_message_block "success" "Plugin Created"
+_pms_message_block "success" "Plugin Created"
 
     return 0
 }
 
+# Fetch plugin index from a file or URL
+_pms_plugin_index_fetch() {
+    local index="${PMS_PLUGIN_INDEX:-$PMS/plugins.txt}"
+
+    if printf '%s\n' "$index" | grep -qE '^https?://' ; then
+        curl -fsSL "$index"
+    else
+        cat "$index"
+    fi
+}
+
+# Lookup plugin information by code
+_pms_plugin_index_lookup() {
+    local code="$1" line
+    line=$(_pms_plugin_index_fetch | grep "^${code}\\|" || true)
+    [ -n "$line" ] || return 1
+    printf '%s\n' "$line"
+}
+
 __pms_command_plugin_search() {
     local query="$1"
-    local index_url="${PMS_PLUGIN_INDEX_URL:-https://raw.githubusercontent.com/JoshuaEstes/pms-plugin-index/main/index.txt}"
     local data
 
-    if ! data=$(curl -fsSL "$index_url"); then
+    if ! data=$(_pms_plugin_index_fetch); then
         _pms_message_block "error" "Unable to fetch plugin index"
         return 1
     fi
 
     echo
-    while IFS='|' read -r plugin description repo; do
-        if [ -z "$query" ] || printf '%s %s\n' "$plugin" "$description" | grep -iq "$query"; then
-            _pms_command "$plugin" "$description"
+    printf "\r  %-12s %-20s %-40s %s\n" "Code" "Name" "Description" "Repository"
+    while IFS='|' read -r code name description repo; do
+        [ -z "$code" ] && continue
+        case "$code" in
+            \#*) continue ;;
+        esac
+        if [ -z "$query" ] || printf '%s %s %s %s\n' "$code" "$name" "$description" "$repo" | grep -iq "$query"; then
+            printf "\r  %-12s %-20s %-40s %s\n" "$code" "$name" "$description" "$repo"
         fi
     done <<EOF
 $data
@@ -561,14 +585,21 @@ EOF
 
 __pms_command_plugin_install() {
     if [ -z "$1" ]; then
-        _pms_message_block "error" "Usage: pms plugin install <repo>"
+        _pms_message_block "error" "Usage: pms plugin install <code|repo>"
         return 1
     fi
 
-    local repo="$1"
-    local plugin
-    plugin=$(basename "$repo")
-    plugin=${plugin%.git}
+    local identifier="$1" plugin repo line
+    line=$(_pms_plugin_index_lookup "$identifier") || true
+    if [ -n "$line" ]; then
+        IFS='|' read -r plugin _ _ repo <<EOF
+$line
+EOF
+    else
+        repo="$identifier"
+        plugin=$(basename "$repo")
+        plugin=${plugin%.git}
+    fi
 
     if [ -d "$PMS_LOCAL/plugins/$plugin" ] || [ -d "$PMS/plugins/$plugin" ]; then
         _pms_message "error" "Plugin '$plugin' already exists"
@@ -712,7 +743,7 @@ __pms_command_plugin_disable() {
 
     # Check to see if the plugin is already enabled and if so, notify user and
     # exit
-    for p in ${PMS_PLUGINS[@]}; do
+    for p in "${PMS_PLUGINS[@]}"; do
         if [ "$p" = "${plugin}" ]; then
             _plugin_enabled=1
         fi
@@ -725,7 +756,7 @@ __pms_command_plugin_disable() {
 
     # Remove from plugins
     local _plugins=()
-    for i in ${PMS_PLUGINS[@]}; do
+    for i in "${PMS_PLUGINS[@]}"; do
         if [ "$i" != "$plugin" ]; then
             _plugins+=("$i")
         fi
