@@ -242,37 +242,66 @@ __pms_command_diagnostic() {
     return 0
 }
 
-# Upgrade PMS to the latest version.
-# shellcheck disable=SC2086,SC2164
-__pms_command_upgrade() {
-  local checkpoint=$PWD
-  cd "$PMS"
-  _pms_message_block "info" "Upgrading to latest PMS version"
-  git pull origin main || {
-      _pms_message "error" "Error pulling down updates..."
-      cd "$checkpoint"
-      return 1
-  }
-  _pms_message_block "info" "Copying files"
-  # @todo _pms_file_copy <src> <dest>
-  cp -v $PMS/templates/bashrc ~/.bashrc
-  cp -v $PMS/templates/zshrc ~/.zshrc
-  _pms_message_block "info" "Running update scripts for enabled plugins..."
-
-  local plugin
-  for plugin in "${PMS_PLUGINS[@]}"; do
-    if [ -f $PMS_LOCAL/plugins/$plugin/update.sh ]; then
-        _pms_message_section "info" "$plugin (local)" "plugin updating..."
-        source $PMS_LOCAL/plugins/$plugin/update.sh
-    elif [ -f $PMS/plugins/$plugin/update.sh ]; then
-        _pms_message_section "info" $plugin "plugin updating..."
-        source $PMS/plugins/$plugin/update.sh
+# Copy a file with verbose output and error handling.
+#
+# Usage:
+#   _pms_file_copy SOURCE DESTINATION
+_pms_file_copy() {
+    if [ $# -ne 2 ]; then
+        _pms_message "error" "Usage: _pms_file_copy <source> <destination>"
+        return 1
     fi
-  done
-  _pms_message_block "info" "Completed update scripts"
-  _pms_message_block "success" "Upgrade complete, you may need to reload your environment (pms reload)"
-  cd "$checkpoint"
-  __pms_command_reload
+
+    local source_file="$1"
+    local destination_file="$2"
+
+    if ! cp -v "$source_file" "$destination_file"; then
+        _pms_message "error" "Failed to copy '$source_file' to '$destination_file'"
+        return 1
+    fi
+
+    return 0
+}
+
+# Upgrade PMS to the latest version.
+__pms_command_upgrade() {
+    local checkpoint="$PWD"
+
+    if ! cd "$PMS"; then
+        _pms_message "error" "Unable to change directory to '$PMS'"
+        return 1
+    fi
+
+    _pms_message_block "info" "Upgrading to latest PMS version"
+    if ! git pull origin main; then
+        _pms_message "error" "Error pulling down updates..."
+        cd "$checkpoint" || return 1
+        return 1
+    fi
+
+    _pms_message_block "info" "Copying files"
+    _pms_file_copy "$PMS/templates/bashrc" "$HOME/.bashrc"
+    _pms_file_copy "$PMS/templates/zshrc" "$HOME/.zshrc"
+    _pms_message_block "info" "Running update scripts for enabled plugins..."
+
+    local plugin
+    for plugin in "${PMS_PLUGINS[@]}"; do
+        if [ -f "$PMS_LOCAL/plugins/$plugin/update.sh" ]; then
+            _pms_message_section "info" "$plugin (local)" "plugin updating..."
+            # shellcheck source=/dev/null
+            source "$PMS_LOCAL/plugins/$plugin/update.sh"
+        elif [ -f "$PMS/plugins/$plugin/update.sh" ]; then
+            _pms_message_section "info" "$plugin" "plugin updating..."
+            # shellcheck source=/dev/null
+            source "$PMS/plugins/$plugin/update.sh"
+        fi
+    done
+
+    _pms_message_block "info" "Completed update scripts"
+    _pms_message_block "success" "Upgrade complete, you may need to reload your environment (pms reload)"
+
+    cd "$checkpoint" || return 1
+    __pms_command_reload
 
     return 0
 }
