@@ -150,6 +150,9 @@ _pms_theme_load() {
 ####
 # Loads Plugin
 #
+# Detects plugin files and, for zsh, adds any `completions` directory to
+# `fpath` before sourcing plugin scripts.
+#
 # Usage: _pms_load_plugin [PLUGIN] [PLUGIN]...
 #
 # Example: _pms_load_plugin git git-prompt
@@ -157,10 +160,27 @@ _pms_theme_load() {
 # @internal
 ####
 _pms_plugin_load() {
-  local plugin
-  for plugin in "$@"; do
-      _pms_message_section "info" "plugin" "Loading '$plugin'"
-      local plugin_loaded=0
+    local plugin
+    for plugin in "$@"; do
+        _pms_message_section "info" "plugin" "Loading '$plugin'"
+        local plugin_loaded=0
+        local plugin_directory=""
+
+        if [ -d "$PMS_LOCAL/plugins/$plugin" ]; then
+            plugin_directory="$PMS_LOCAL/plugins/$plugin"
+        elif [ -d "$PMS/plugins/$plugin" ]; then
+            plugin_directory="$PMS/plugins/$plugin"
+        fi
+
+        if [ "$PMS_SHELL" = "zsh" ] \
+            && [ -n "$plugin_directory" ] \
+            && [ -d "$plugin_directory/completions" ]; then
+            # Add plugin completion directory to fpath for zsh completions
+            case " ${fpath[*]} " in
+                *" $plugin_directory/completions "*) ;;
+                *) fpath+=("$plugin_directory/completions") ;;
+            esac
+        fi
 
       # The env file is loaded first as there are options that it may use
       if [ -f "$PMS_LOCAL/plugins/$plugin/env" ] \

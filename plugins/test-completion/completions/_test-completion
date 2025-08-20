@@ -1,0 +1,5 @@
+#compdef test-completion
+# shellcheck shell=sh disable=SC2039
+
+# Basic completion for testing purposes
+_arguments '*:file:_files'

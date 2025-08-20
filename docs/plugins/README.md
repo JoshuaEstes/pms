@@ -47,3 +47,11 @@ pms plugin update <plugin>
 ```
 
 Replace `<plugin>` with the name of the plugin's directory.
+
+## Completion Scripts
+
+Plugins can ship shell completion files by placing them in a `completions`
+directory inside the plugin. PMS adds this directory to the shell's lookup
+path when the plugin loads. For zsh, the directory is appended to `fpath`
+before `compinit` runs so that the shell can find the completion functions
+automatically.
