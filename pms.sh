@@ -64,13 +64,12 @@ if [ 1 -eq "${PMS_DEBUG:-0}" ]; then
 fi
 
 ####
-# This will load up libraries from the code base. It will load sh and then load
-# specific shell libraries
+# Load libraries from the PMS installation followed by any local libraries.
+# This includes generic `.sh` files and shell-specific implementations.
 #
 # @internal
 ####
 for lib in "$PMS"/lib/*.{sh,$PMS_SHELL}; do
-    # @todo load all local libraries
     # shellcheck disable=SC1090
     source "$lib"
     if [ 1 -eq "${PMS_DEBUG:-0}" ]; then
@@ -78,6 +77,18 @@ for lib in "$PMS"/lib/*.{sh,$PMS_SHELL}; do
     fi
 done
 unset lib
+
+if [ -d "$PMS_LOCAL/lib" ]; then
+    for local_lib in "$PMS_LOCAL"/lib/*.{sh,$PMS_SHELL}; do
+        [ -f "$local_lib" ] || continue
+        # shellcheck disable=SC1090
+        source "$local_lib"
+        if [ 1 -eq "${PMS_DEBUG:-0}" ]; then
+            echo "source $local_lib"
+        fi
+    done
+    unset local_lib
+fi
 
 _pms_source_file "$HOME/.pms.plugins"
 _pms_source_file "$HOME/.pms.theme"
