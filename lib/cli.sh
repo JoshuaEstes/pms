@@ -63,9 +63,7 @@ EOF
     return 0
 }
 
-# @todo if there are arguments, check other help functions, example would be
-# pms help theme = _pms_command_help_theme
-# pms help theme list = _pms_command_help_theme_list
+# Display help for commands and subcommands
 __pms_command_help() {
     if [ $# -gt 0 ]; then
         local command="$1"
@@ -75,6 +73,18 @@ __pms_command_help() {
             if [ -d "$PMS/plugins/$command" ] || [ -d "$PMS_LOCAL/plugins/$command" ]; then
                 _pms_plugin_load "$command"
             fi
+        fi
+
+        if [ $# -gt 0 ]; then
+            local subcommand="$1"
+            shift
+
+            type "__pms_command_help_${command}_${subcommand}" >/dev/null 2>&1 && {
+                "__pms_command_help_${command}_${subcommand}" "$@"
+                return $?
+            }
+
+            set -- "$subcommand" "$@"
         fi
 
         type "__pms_command_help_${command}" >/dev/null 2>&1 && {
@@ -286,23 +296,57 @@ __pms_command_theme() {
 }
 
 __pms_command_help_theme() {
-  echo
-  echo "Usage: pms [options] theme <command>"
-  echo
-  echo "Commands:"
-  __pms_command "list" "Displays available themes"
-  __pms_command "switch <theme>" "Switch to a specific theme"
-  __pms_command "info <theme>" "Displays information about a theme"
-  #echo "  reload             Reloads current theme"
-  #echo "  use <theme>        Temporary use theme"
-  #echo "  preview <theme>    Preview theme"
-  #echo "  validate <theme>   Validate theme"
-  #echo "  make <theme>       Creates a new theme"
-  echo
+    echo
+    echo "Usage: pms [options] theme <command>"
+    echo
+    echo "Commands:"
+    __pms_command "list" "Displays available themes"
+    __pms_command "switch <theme>" "Switch to a specific theme"
+    __pms_command "info <theme>" "Displays information about a theme"
+    #echo "  reload             Reloads current theme"
+    #echo "  use <theme>        Temporary use theme"
+    #echo "  preview <theme>    Preview theme"
+    #echo "  validate <theme>   Validate theme"
+    #echo "  make <theme>       Creates a new theme"
+    echo
+    _pms_message "Examples:"
+    _pms_message_block "pms help theme list"
+    _pms_message_block "pms help theme switch"
+    echo
 
-  # @todo Allow plugins to hook into this
+    # @todo Allow plugins to hook into this
 
-  return 0
+    return 0
+}
+
+__pms_command_help_theme_list() {
+    echo
+    echo "Usage: pms theme list"
+    echo
+    echo "Displays available themes."
+    echo
+
+    return 0
+}
+
+__pms_command_help_theme_switch() {
+    echo
+    echo "Usage: pms theme switch <theme>"
+    echo
+    echo "Switches to the specified theme."
+    echo
+
+    return 0
+}
+
+__pms_command_help_theme_info() {
+    echo
+    echo "Usage: pms theme info <theme>"
+    echo
+    echo "Displays information about a theme."
+    echo
+
+    return 0
 }
 
 __pms_command_theme_list() {
@@ -375,33 +419,77 @@ __pms_command_plugin() {
 }
 
 __pms_command_help_plugin() {
-    if [ $# -gt 0 ]; then
-        local command=$1
-        shift
+    echo
+    echo "Usage: pms [options] plugin <command>"
+    echo
+    echo "Commands:"
+    __pms_command "list" "Lists all available plugins"
+    __pms_command "enable <plugin>" "Enables and installs a plugin"
+    __pms_command "disable <plugin>" "Disables a plugin"
+    __pms_command "info <plugin>" "Displays information about a plugin"
+    __pms_command "make <plugin>" "Creates a new plugin"
+    #echo "  update <plugin>    Updates a plugin"
+    #echo "  validate <plugin>  Validate plugin"
+    #echo "  reload <plugin>    Reloads enabled plugins"
+    echo
+    _pms_message "Examples:"
+    _pms_message_block "pms help plugin enable"
+    _pms_message_block "pms help plugin list"
+    echo
 
-        type __pms_command_help_plugin_${command} &>/dev/null && {
-            __pms_command_help_plugin_${command} "$@"
-            return $?
-        }
-    fi
+    # @todo allow plugins to hook into this
 
-  echo
-  echo "Usage: pms [options] plugin [command]"
-  echo
-  echo "Commands:"
-  __pms_command "list" "Lists all available plugins"
-  __pms_command "enable <plugin>" "Enables and install plugin"
-  __pms_command "disable <plugin>" "Disables a plugin"
-  __pms_command "info <plugin>" "Displays information about a plugin"
-  __pms_command "make <plugin>" "Creates a new plugin"
-  #echo "  update <plugin>    Updates a plugin"
-  #echo "  validate <plugin>  Validate plugin"
-  #echo "  reload <plugin>    Reloads enabled plugins"
-  echo
+    return 0
+}
 
-  # @todo allow plugins to hook into this
+__pms_command_help_plugin_list() {
+    echo
+    echo "Usage: pms plugin list"
+    echo
+    echo "Lists all available plugins."
+    echo
 
-  return 0
+    return 0
+}
+
+__pms_command_help_plugin_enable() {
+    echo
+    echo "Usage: pms plugin enable <plugin>"
+    echo
+    echo "Enables and installs the specified plugin."
+    echo
+
+    return 0
+}
+
+__pms_command_help_plugin_disable() {
+    echo
+    echo "Usage: pms plugin disable <plugin>"
+    echo
+    echo "Disables the specified plugin."
+    echo
+
+    return 0
+}
+
+__pms_command_help_plugin_info() {
+    echo
+    echo "Usage: pms plugin info <plugin>"
+    echo
+    echo "Displays information about a plugin."
+    echo
+
+    return 0
+}
+
+__pms_command_help_plugin_make() {
+    echo
+    echo "Usage: pms plugin make <plugin>"
+    echo
+    echo "Creates a new plugin scaffold."
+    echo
+
+    return 0
 }
 
 # @todo Option for making this a local plugin
