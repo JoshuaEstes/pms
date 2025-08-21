@@ -108,16 +108,32 @@ _pms_is_plugin_enabled() {
         return 0
     fi
 
-    local enabled_plugin
-    local -a enabled_list=()
-    if declare -p PMS_PLUGINS >/dev/null 2>&1 && [ "$(declare -p PMS_PLUGINS 2>/dev/null | awk '{print $2}')" = "-a" ]; then
-        enabled_list=("${PMS_PLUGINS[@]}")
+    # Normalize PMS_PLUGINS into positional parameters for robust iteration
+    # Works when PMS_PLUGINS is an array or a space-separated string across bash, zsh, and POSIX sh.
+    if [ -n "${BASH_VERSION:-}" ]; then
+        if declare -p PMS_PLUGINS >/dev/null 2>&1 \
+            && [ "$(declare -p PMS_PLUGINS 2>/dev/null | awk '{print $2}')" = "-a" ]; then
+            # shellcheck disable=SC2124
+            set -- "${PMS_PLUGINS[@]}"
+        else
+            # shellcheck disable=SC2086
+            set -- $PMS_PLUGINS
+        fi
+    elif [ -n "${ZSH_VERSION:-}" ]; then
+        if typeset -p PMS_PLUGINS 2>/dev/null | grep -q 'typeset -a'; then
+            set -- "${PMS_PLUGINS[@]}"
+        else
+            # Use zsh word-splitting expansion for scalars
+            eval "set -- ${=PMS_PLUGINS}"
+        fi
     else
-        # shellcheck disable=SC2206
-        read -r -a enabled_list <<< "$PMS_PLUGINS"
+        # POSIX sh fallback: split scalar by IFS
+        # shellcheck disable=SC2086
+        set -- $PMS_PLUGINS
     fi
 
-    for enabled_plugin in "${enabled_list[@]}"; do
+    local enabled_plugin
+    for enabled_plugin in "$@"; do
         if [ "$enabled_plugin" = "$plugin_to_check" ]; then
             return 0
         fi
