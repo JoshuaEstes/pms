@@ -39,12 +39,17 @@ _pms_time() {
     local elapsed_time
     local exit_code
     start_time=$(_pms_now)
+    if [ "${PMS_DEBUG:-0}" -eq 1 ]; then
+        _pms_message_section "debug" "timing" "start '$timing_label'" >&2
+    fi
     "$@"
     exit_code=$?
     end_time=$(_pms_now)
     elapsed_time=$(( end_time - start_time ))
     PMS_PLUGIN_TIME_NAMES+=("$timing_label")
     PMS_PLUGIN_TIME_VALUES+=("$elapsed_time")
+    if [ "${PMS_DEBUG:-0}" -eq 1 ]; then
+        _pms_message_section "debug" "timing" "'$timing_label' took ${elapsed_time} ms" >&2
+    fi
     return $exit_code
 }
-

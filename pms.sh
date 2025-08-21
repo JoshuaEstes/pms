@@ -115,20 +115,30 @@ if [ "${PMS_DEBUG:-0}" -eq 1 ]; then
     _pms_message "info"  "PMS_BRANCH           : $PMS_BRANCH"
     _pms_message "info"  "PMS_THEME            : $PMS_THEME"
     _pms_message "info"  "PMS_PLUGINS          : ${PMS_PLUGINS[*]}"
-    _pms_message "info"  "PMS_SHELL            : $PMS_SHELL\n"
+    _pms_message "info"  "PMS_SHELL            : $PMS_SHELL"
 fi
 
 ####
 # Load all enabled plugins
 ####
-# Iterate plugins whether PMS_PLUGINS is an array or a plain string
-# shellcheck disable=SC2068
-for plugin in ${PMS_PLUGINS[@]}; do
+# Build a normalized list of plugins regardless of string/array definition
+plugins_to_load=()
+if declare -p PMS_PLUGINS >/dev/null 2>&1 && [ "$(declare -p PMS_PLUGINS 2>/dev/null | awk '{print $2}')" = "-a" ]; then
+    # PMS_PLUGINS is a bash array
+    plugins_to_load=("${PMS_PLUGINS[@]}")
+else
+    # PMS_PLUGINS is a string; split on IFS into an array safely
+    # shellcheck disable=SC2206
+    read -r -a plugins_to_load <<< "$PMS_PLUGINS"
+fi
+
+for plugin in "${plugins_to_load[@]}"; do
     if [ "$plugin" != "$PMS_SHELL" ] && [ "$plugin" != "pms" ]; then
         _pms_time "$plugin" _pms_plugin_load "$plugin"
     fi
 done
 unset plugin
+unset plugins_to_load
 ####
 
 ####

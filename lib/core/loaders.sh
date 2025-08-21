@@ -109,13 +109,18 @@ _pms_is_plugin_enabled() {
     fi
 
     local enabled_plugin
-    # Iterate over plugins whether PMS_PLUGINS is an array or a plain string
-    # shellcheck disable=SC2068
-    for enabled_plugin in ${PMS_PLUGINS[@]}; do
+    local -a enabled_list=()
+    if declare -p PMS_PLUGINS >/dev/null 2>&1 && [ "$(declare -p PMS_PLUGINS 2>/dev/null | awk '{print $2}')" = "-a" ]; then
+        enabled_list=("${PMS_PLUGINS[@]}")
+    else
+        # shellcheck disable=SC2206
+        read -r -a enabled_list <<< "$PMS_PLUGINS"
+    fi
+
+    for enabled_plugin in "${enabled_list[@]}"; do
         if [ "$enabled_plugin" = "$plugin_to_check" ]; then
             return 0
         fi
     done
     return 1
 }
-
