@@ -121,7 +121,9 @@ fi
 ####
 # Load all enabled plugins
 ####
-for plugin in "${PMS_PLUGINS[@]}"; do
+# Iterate plugins whether PMS_PLUGINS is an array or a plain string
+# shellcheck disable=SC2068
+for plugin in ${PMS_PLUGINS[@]}; do
     if [ "$plugin" != "$PMS_SHELL" ] && [ "$plugin" != "pms" ]; then
         _pms_time "$plugin" _pms_plugin_load "$plugin"
     fi
