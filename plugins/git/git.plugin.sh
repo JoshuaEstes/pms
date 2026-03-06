@@ -41,4 +41,4 @@ git_global_ignore_update() {
 
 alias ggiu='git_global_ignore_update'
 
-git_setup_global_ignore
+#git_setup_global_ignore
